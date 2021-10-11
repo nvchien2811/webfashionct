@@ -30,7 +30,7 @@ export default function Home(){
     )
     const ItemProduct = itemProductNew.map((item)=>{
         return(
-            <Col xl={6} md={8} xs={12} >
+            <Col xl={6} md={8} xs={12} style={{display:'flex', justifyContent:'center' }} >
                 <Product
                     item={item}
                 />
@@ -42,11 +42,11 @@ export default function Home(){
            {slide()}
            <div className="contentHome" >
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM MỚI</span>
-              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} style={{ paddingLeft:40 }}>
+              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} >
                   {ItemProduct}
               </Row>
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM BÁN CHẠY</span>
-              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} style={{ paddingLeft:40 }}>
+              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} >
                   {ItemProduct}
               </Row>
            </div>

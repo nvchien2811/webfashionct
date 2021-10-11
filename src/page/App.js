@@ -25,7 +25,7 @@ export default function App() {
   const [top, settop] = useState(true);
   useEffect(()=>{
     document.addEventListener('scroll', () => {
-      const isTop = window.scrollY < 150;
+      const isTop = window.scrollY < 200;
       settop(isTop);
     });
     getMenu()

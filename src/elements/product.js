@@ -6,7 +6,7 @@ const { Meta } = Card;
 export default function product(props){
     const {image,name,price,id} = props.item;
     const path={
-        pathname:`/product/id=${id}`
+        pathname:`/product/id#${id}`
     }
     return(
             <Card
