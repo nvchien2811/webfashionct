@@ -1,0 +1,30 @@
+.imgCarousel{
+   width: 100%;
+   height:400px;
+ 
+}
+.contentHome{
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.itemProduct{
+    width:240px;
+    border-radius: 10px;
+}
+@media only screen and (max-width:600px){
+    .imgCarousel{
+        width: 100%;
+        height:180px; 
+        resize: cover;
+    }
+    .topbar>span{
+        font-size: 12px;
+        margin-left: -10%;
+    }
+    .itemProduct{
+        width:150px
+    }
+}
