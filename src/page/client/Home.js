@@ -31,7 +31,7 @@ export default function Home(){
     const ItemProduct = itemProductNew.map((item)=>{
         let length = itemProductNew.length
         let ranMd;
-        if(32/length==16){
+        if(32/length===16){
             ranMd=12;
         }else{
             ranMd=32/length;

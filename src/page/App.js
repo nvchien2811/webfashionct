@@ -3,6 +3,8 @@ import { Layout, Menu,Input,Row,Col } from 'antd';
 import * as FetchAPI from '../util/fetchApi';
 import logo from '../images/Fashion-removebg-preview.png';
 import Home from './client/Home';
+import MenuProduct from './client/MenuProduct';
+import ProductDetails from './client/ProductDetails';
 import '../css/App.css';
 import {
   BrowserRouter as Router,
@@ -37,8 +39,11 @@ export default function App() {
         <SubMenu key={category.slug} title={category.name}>
             {res2.map((item)=>{
                 if(item.idCategory===category.id){
+                  const localmenu = {
+                    pathname:`/menuproduct/id=${item.id}`
+                  }
                   return(
-                    <Menu.Item key={item.slug} onClick={()=>console.log(item.name)}>{item.name}</Menu.Item>
+                    <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
                   )
                 }   
             })}
@@ -70,7 +75,7 @@ export default function App() {
   const Navigation = ()=>(
     <Header className="header" style={top ? {width:'100%'}:{position:'fixed',width:'100%',top:0,elevation:10,zIndex:100}}>
       <Menu style={{ justifyContent:'center',alignItems:'center' }} theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-        <Menu.Item key="1">Trang chủ</Menu.Item>
+        <Menu.Item key="1">Trang chủ <Link to={"/home"}/></Menu.Item>
         <Menu.Item key="2">Giới thiệu</Menu.Item>
         <SubMenu key="3" title="Sản phẩm">
           {menu}
@@ -94,6 +99,12 @@ export default function App() {
               <Switch>
                 <Route path="/home">
                   <Home />
+                </Route>
+                <Route path="/menuproduct">
+                  <MenuProduct/>
+                </Route>
+                <Route path="/product">
+                  <ProductDetails/>
                 </Route>
                 <Route path="/">
                   <Home />
