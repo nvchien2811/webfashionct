@@ -52,6 +52,10 @@ export default function Home(){
               <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]}>
                   {ItemProduct}
               </Row>
+              <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM BÁN CHẠY</span>
+              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]}>
+                  {ItemProduct}
+              </Row>
            </div>
        </div>
     )
