@@ -57,7 +57,7 @@ export default function App() {
       <Row className="top" >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
             <img src={logo} width='120' height='100' alt="logo"/>
-            <span style={{ fontSize:17,color:'gray' }}> Just Beautyful Be Your Style</span>
+            <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
           <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
             <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17 }} to={{ pathname:"/" }} >
