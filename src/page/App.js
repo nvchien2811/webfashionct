@@ -87,6 +87,24 @@ export default function App() {
       </Menu>
   </Header>
   )
+  const Body = ()=>(
+    <Content className="site-layout" >
+        <Switch>
+          <Route path="/home">
+            <Home />
+          </Route>
+          <Route path="/menuproduct">
+            <MenuProduct/>
+          </Route>
+          <Route path="/product">
+            <ProductDetails/>
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+    </Content>
+  )
   return (
     <Router>
       <Layout className="layout">
@@ -95,23 +113,7 @@ export default function App() {
           </div>
           {Top()}
           {Navigation()}
-          <Content className="site-layout" >
-              <Switch>
-                <Route path="/home">
-                  <Home />
-                </Route>
-                <Route path="/menuproduct">
-                  <MenuProduct/>
-                </Route>
-                <Route path="/product">
-                  <ProductDetails/>
-                </Route>
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-          </Content>
-
+          {Body()}
         <Footer style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
     </Layout>
     </Router>

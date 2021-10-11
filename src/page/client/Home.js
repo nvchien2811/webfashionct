@@ -29,15 +29,8 @@ export default function Home(){
         </Carousel>
     )
     const ItemProduct = itemProductNew.map((item)=>{
-        let length = itemProductNew.length
-        let ranMd;
-        if(32/length===16){
-            ranMd=12;
-        }else{
-            ranMd=32/length;
-        }
         return(
-            <Col xl={24/length} md={ranMd} xs={12} >
+            <Col xl={6} md={8} xs={12} >
                 <Product
                     item={item}
                 />
@@ -49,11 +42,11 @@ export default function Home(){
            {slide()}
            <div className="contentHome" >
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM MỚI</span>
-              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]}>
+              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} style={{ paddingLeft:40 }}>
                   {ItemProduct}
               </Row>
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM BÁN CHẠY</span>
-              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]}>
+              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} style={{ paddingLeft:40 }}>
                   {ItemProduct}
               </Row>
            </div>

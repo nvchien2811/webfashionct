@@ -9,16 +9,15 @@ export default function product(props){
         pathname:`/product/id=${id}`
     }
     return(
-        <Link to={path}>
             <Card
                 className="itemProduct"
                 hoverable
                 cover={<Image alt="example" src={image} />}
-                as={Link}
-                to={"/product"}
             >
-                <Meta title={name} description={getPriceVND(price)+ " đ"} />
+                <Link to={path}>
+                    <Meta title={name} description={getPriceVND(price)+ " đ"} />
+                </Link>
             </Card>
-        </Link>
+       
     )
 }
