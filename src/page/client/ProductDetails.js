@@ -11,13 +11,16 @@ export default function ProductDetails(){
     const [nameProductType, setnameProductType] = useState("");
     useEffect(() => {    
         const getDetailProduct = async()=>{
-            let idProduct = window.location.hash.substring(1);
-            const data = {
-                "id":idProduct
+            try {
+                let idProduct = window.location.hash.substring(1);
+                const data = {
+                    "id":idProduct
+                }
+                const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
+                setdataProduct(res[0]);
+                getName(res[0]);
+            } catch (error) {
             }
-            const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
-            setdataProduct(res[0]);
-            getName(res[0]);
         }
         getDetailProduct();
     }, [])
