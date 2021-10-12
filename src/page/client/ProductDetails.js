@@ -1,14 +1,16 @@
 import React,{useState,useEffect} from 'react';
-import {Image,Row,Col,Breadcrumb,Rate } from 'antd';
+import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button  } from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {Link} from 'react-router-dom';
 import * as MENU from '../../util/menuProduct';
+const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
     const [showContent, setshowContent] = useState(false);
     const [nameCategory, setnameCategory] = useState("");
     const [nameProductType, setnameProductType] = useState("");
+    const [quanity, setquanity] = useState(1);
     useEffect(() => {    
         const getDetailProduct = async()=>{
             try {
@@ -32,15 +34,48 @@ export default function ProductDetails(){
         setnameProductType(product_type.name);
         setshowContent(true);
     }
+    const line = ()=>(
+        <div style={{ backgroundColor:'gray',height:1,marginTop:10 }}/>
+    )
     const contentProduct = ()=>(
         <div style={{ display:'flex',flexDirection:'column' }}>
             <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>   
             <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={5} />
             <span><span style={{ fontWeight:'bold' }}>Mã SP :</span>{dataProduct.id}</span>
             <span style={{ fontSize:16 }}>{dataProduct.description}</span>
-            <div style={{ backgroundColor:'gray',height:1,marginTop:10,marginBottom:10 }}/>
+            {line()}
             <span style={{ fontSize:20 }}>Giá: {getPriceVND(dataProduct.price)+" đ"}</span>
-            <div style={{ backgroundColor:'gray',height:1,marginTop:10 }}/>
+            {line()}
+
+            <div style={{ display:'flex',flexDirection:'row',alignItems:'center',paddingTop:20,paddingBottom:20 }}>
+                <span style={{ fontSize:18 }}>Tùy chọn : </span>
+                <div style={{ padding:"0px 10px"}}> 
+                  <Select style={{ width: 120 }} placeholder="Chọn Size">
+                        <Option>M</Option>
+                  </Select>
+                </div>
+            </div>
+
+            <div style={{ display:'flex',flexDirection:'row',alignItems:'center',paddingTop:20,paddingBottom:20 }}>
+                <span style={{ fontSize:18 }}>Số lượng : </span>
+                <div style={{ padding:"0px 10px"}}> 
+                    <InputNumber  
+                        style={{ textAlign:'center' }} 
+                        min={1} 
+                        max={10}
+                        value={quanity}
+                        onChange = {(e)=>{setquanity(e)}}
+                    /> 
+                </div>
+            </div>
+
+            {line()}
+            <div style={{ paddingTop:15 }}>
+                <Button type="primary" danger style={{ width:150,height:50,borderRadius:10}}>
+                    <span style={{ fontWeight:'bold' }}>MUA HÀNG</span>
+                </Button>
+            </div>
+
         </div> 
     )
     const Direction = ()=>(
@@ -58,7 +93,7 @@ export default function ProductDetails(){
         </Breadcrumb>
     )
     return(
-        <div style={{  padding:"50px 100px" }}>
+        <div style={{ padding:"20px 10%" }}>
             {showContent &&
             <div>
             <div style={{ paddingBottom:30}}>

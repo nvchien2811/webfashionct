@@ -1,18 +1,13 @@
 import React ,{useEffect,useState} from 'react';
-import { Layout, Menu,Input,Row,Col } from 'antd';
+import { Layout, Menu,Input,Row,Col,BackTop } from 'antd';
 import * as FetchAPI from '../util/fetchApi';
 import logo from '../images/Fashion-removebg-preview.png';
 import Home from './client/Home';
 import MenuProduct from './client/MenuProduct';
 import ProductDetails from './client/ProductDetails';
 import '../css/App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import {HistoryOutlined,PhoneOutlined} from '@ant-design/icons';
+import {BrowserRouter as Router,Switch,Route, Link} from "react-router-dom";
+import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi'
 const { Header, Footer,Content} = Layout;
@@ -117,6 +112,11 @@ export default function App() {
           {Navigation()}
           {Body()}
           <Footer style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
+          <BackTop>
+            <div className="back-top">
+              <ArrowUpOutlined />
+            </div>
+          </BackTop>
         </Layout>
       }
      
