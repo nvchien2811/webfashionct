@@ -5,11 +5,13 @@ import logo from '../images/Fashion-removebg-preview.png';
 import Home from './client/Home';
 import MenuProduct from './client/MenuProduct';
 import ProductDetails from './client/ProductDetails';
+import CategoryProduct from './client/CategoryProduct';
 import '../css/App.css';
-import {BrowserRouter as Router,Switch,Route, Link} from "react-router-dom";
+import {Switch,Route, Link,useHistory} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
-import {BiMap} from 'react-icons/bi'
+import {BiMap} from 'react-icons/bi';
+
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -18,37 +20,43 @@ export default function App() {
   const [menu, setmenu] = useState();
   const [top, settop] = useState(true);
   const [showContent, setshowContent] = useState(false);
+  const history = useHistory();
   useEffect(()=>{
     document.addEventListener('scroll', () => {
       const isTop = window.scrollY < 200;
       settop(isTop);
     });
-    getMenu()
+    getMenu();
   },[])
   const getMenu = async()=>{
-    let item = [];
-    const res = await FetchAPI.getAPI("/product/getCategory");
-    const res2 = await FetchAPI.getAPI("/product/getProductType");
-    res.map((category)=>(
-      item.push(
-        <SubMenu key={category.slug} title={category.name}>
-            {res2.map((item)=>{
-                if(item.idCategory===category.id){
-                  const localmenu = {
-                    pathname:`/menuproduct/id#${item.id}`
-                  }
-                  return(
-                    <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
-                  )
-                }   
-            })}
-        </SubMenu>
+    try {
+      let item = [];
+      const res = await FetchAPI.getAPI("/product/getCategory");
+      const res2 = await FetchAPI.getAPI("/product/getProductType");
+      res.map((category)=>(
+        item.push(
+          <SubMenu key={category.slug} title={category.name} onTitleClick={()=>history.push(`/category/id#${category.id}`)}>
+              {res2.map((item)=>{
+                  if(item.idCategory===category.id){
+                    const localmenu = {
+                      pathname:`/menuproduct/id#${item.id}`
+                    }
+                    return(
+                      <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
+                    )
+                  }   
+              })}
+          </SubMenu>
+        )
       )
-    )
-    )
-    setmenu(item);
-    setshowContent(true);
+      )
+      setmenu(item);
+      setshowContent(true);
+    } catch (error) {
+      
+    }
   }
+ 
   const Top = ()=>(
       <Row className="top" >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
@@ -70,12 +78,12 @@ export default function App() {
   )
   const Navigation = ()=>(
     <Header className="header" style={top ? {width:'100%'}:{position:'fixed',width:'100%',top:0,elevation:10,zIndex:100}}>
-      <Menu style={{ justifyContent:'center',alignItems:'center' }} theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+      <Menu style={{ justifyContent:'center',alignItems:'center' }} theme="dark" mode="horizontal" defaultSelectedKeys={['1']} >
         <Menu.Item key="1">Trang chủ <Link to={"/home"}/></Menu.Item>
-        <Menu.Item key="2">Giới thiệu</Menu.Item>
-        <SubMenu key="3" title="Sản phẩm">
+        <SubMenu key="2" title="Sản phẩm">
           {menu}
         </SubMenu>
+        <Menu.Item key="3">Giới thiệu</Menu.Item>
         <Menu.Item key="4">Sản phẩm khuyến mãi</Menu.Item>
         <Menu.Item key="5">Bộ sưu tập</Menu.Item>
         <Menu.Item key="6">Chính sách</Menu.Item>
@@ -92,6 +100,9 @@ export default function App() {
           <Route path="/menuproduct">
             <MenuProduct/>
           </Route>
+          <Route path="/category">
+            <CategoryProduct/>
+          </Route>
           <Route path="/product">
             <ProductDetails/>
           </Route>
@@ -102,7 +113,7 @@ export default function App() {
     </Content>
   )
   return (
-    <Router>
+    <div >
       {showContent && 
        <Layout className="layout">
           <div className="topbar" >
@@ -120,7 +131,7 @@ export default function App() {
         </Layout>
       }
      
-    </Router>
+    </div>
   );
 }
 

@@ -8,6 +8,7 @@ import '../../css/Product.css'
 export default function MenuProduct(){
     const [showContent, setshowContent] = useState(false);
     const [nameCategory, setnameCategory] = useState("");
+    const [idCategory, setidCategory] = useState();
     const [nameProductType, setnameProductType] = useState("");
     const [dataProduct, setdataProduct] = useState([]);
     const [empty, setempty] = useState(false);
@@ -18,6 +19,7 @@ export default function MenuProduct(){
                 const idProductType = window.location.hash.substring(1); 
                 const product_type = await MENU.getPrductTypeById({"id":idProductType});
                 setnameProductType(product_type.name)
+                setidCategory(product_type.idCategory)
                 const category = await MENU.getCategoryById({"id":product_type.idCategory});
                 setnameCategory(category.name);
                 getDataProduct(idProductType);
@@ -45,7 +47,7 @@ export default function MenuProduct(){
                 <Link to={"/home"}>Trang chủ</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link >{nameCategory}</Link>
+                <Link to={`/category/id#${idCategory}`}>{nameCategory}</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
                {nameProductType}

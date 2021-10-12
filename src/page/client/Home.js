@@ -16,7 +16,7 @@ export default function Home(){
         setitemProductNew(res);
     }
     const slide = ()=>(
-        <Carousel autoplay>
+        <Carousel autoplay >
             <div >
                 <img className="imgCarousel" src={slider1} alt="slider1"  />
             </div>
@@ -38,11 +38,11 @@ export default function Home(){
         )
     })
     return(
-       <div>
+       <div >
            {slide()}
            <div className="contentHome" >
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM MỚI</span>
-              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} >
+              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]}  >
                   {ItemProduct}
               </Row>
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM BÁN CHẠY</span>
