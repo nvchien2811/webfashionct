@@ -1,11 +1,14 @@
 import React,{useState,useEffect} from 'react';
-import {Image,Row,Col} from 'antd';
+import {Image,Row,Col,Breadcrumb,Rate } from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
-import { Rate } from 'antd';
 import {getPriceVND} from '../../contain/getPriceVND';
+import {Link} from 'react-router-dom';
+import * as MENU from '../../util/menuProduct';
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
     const [showContent, setshowContent] = useState(false);
+    const [nameCategory, setnameCategory] = useState("");
+    const [nameProductType, setnameProductType] = useState("");
     useEffect(() => {
         getDetailProduct();
     }, [])
@@ -17,8 +20,14 @@ export default function ProductDetails(){
             "id":idProduct
         }
         const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
-        console.log("234")
         setdataProduct(res[0]);
+        getName(res[0]);
+    }
+    const getName = async(data)=>{
+        const category = await MENU.getNameCategory({"id":data.idCategory});
+        const product_type = await MENU.getNameProductType({"id":data.idProductType});
+        setnameCategory(category);
+        setnameProductType(product_type);
         setshowContent(true);
     }
     const contentProduct = ()=>(
@@ -32,9 +41,27 @@ export default function ProductDetails(){
             <div style={{ backgroundColor:'gray',height:1,marginTop:10 }}/>
         </div> 
     )
+    const Direction = ()=>(
+        <Breadcrumb style={{ fontSize:18 }}>
+            <Breadcrumb.Item>
+                <Link to={"/home"}>Trang chủ</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+                <Link >{nameCategory}</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+                <Link to={`/menuproduct/id#${dataProduct.idProductType}`}>{nameProductType}</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>{dataProduct.name}</Breadcrumb.Item>
+        </Breadcrumb>
+    )
     return(
         <div style={{  padding:"50px 100px" }}>
             {showContent &&
+            <div>
+            <div style={{ paddingBottom:30}}>
+                {Direction()}
+            </div>       
             <Row>
                <Col xl={8} sm={24} style={{ display:'flex',justifyContent:'center',paddingRight:20 }}>
                    <Image src={dataProduct.image} width={350} />
@@ -46,6 +73,7 @@ export default function ProductDetails(){
                    <span style={{ fontSize:18,fontWeight:'bold' }}>SẢN PHẨM LIÊN QUAN</span>
                </Col>
             </Row>
+            </div>
             }
         </div>
     )

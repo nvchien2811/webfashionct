@@ -20,9 +20,9 @@ const { SubMenu } = Menu;
 const { Search } = Input;
 
 export default function App() {
-
   const [menu, setmenu] = useState();
   const [top, settop] = useState(true);
+  const [showContent, setshowContent] = useState(false);
   useEffect(()=>{
     document.addEventListener('scroll', () => {
       const isTop = window.scrollY < 200;
@@ -40,7 +40,7 @@ export default function App() {
             {res2.map((item)=>{
                 if(item.idCategory===category.id){
                   const localmenu = {
-                    pathname:`/menuproduct/id=${item.id}`
+                    pathname:`/menuproduct/id#${item.id}`
                   }
                   return(
                     <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
@@ -52,6 +52,7 @@ export default function App() {
     )
     )
     setmenu(item);
+    setshowContent(true);
   }
   const Top = ()=>(
       <Row className="top" >
@@ -107,15 +108,18 @@ export default function App() {
   )
   return (
     <Router>
-      <Layout className="layout">
+      {showContent && 
+       <Layout className="layout">
           <div className="topbar" >
               <span  style={{ color:'white',alignItems:'center' }}> <BiMap style={{fontSize:20,paddingTop:8}}/> 8 Đặng Văn Ngữ | <HistoryOutlined /> 08:00 - 17:00 | <PhoneOutlined /> 0705982473</span>
           </div>
           {Top()}
           {Navigation()}
           {Body()}
-        <Footer style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
-    </Layout>
+          <Footer style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
+        </Layout>
+      }
+     
     </Router>
   );
 }
