@@ -9,25 +9,24 @@ export default function ProductDetails(){
     const [showContent, setshowContent] = useState(false);
     const [nameCategory, setnameCategory] = useState("");
     const [nameProductType, setnameProductType] = useState("");
-    useEffect(() => {
+    useEffect(() => {    
+        const getDetailProduct = async()=>{
+            let idProduct = window.location.hash.substring(1);
+            const data = {
+                "id":idProduct
+            }
+            const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
+            setdataProduct(res[0]);
+            getName(res[0]);
+        }
         getDetailProduct();
     }, [])
 
-
-    const getDetailProduct = async()=>{
-        let idProduct = window.location.hash.substring(1);
-        const data = {
-            "id":idProduct
-        }
-        const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
-        setdataProduct(res[0]);
-        getName(res[0]);
-    }
     const getName = async(data)=>{
-        const category = await MENU.getNameCategory({"id":data.idCategory});
-        const product_type = await MENU.getNameProductType({"id":data.idProductType});
-        setnameCategory(category);
-        setnameProductType(product_type);
+        const category = await MENU.getCategoryById({"id":data.idCategory});
+        const product_type = await MENU.getPrductTypeById({"id":data.idProductType});
+        setnameCategory(category.name);
+        setnameProductType(product_type.name);
         setshowContent(true);
     }
     const contentProduct = ()=>(
