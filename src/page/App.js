@@ -28,6 +28,7 @@ export default function App() {
       settop(isTop);
     });
     getMenu();
+    console.log("testpull");
   },[])
   const getMenu = async()=>{
     try {
