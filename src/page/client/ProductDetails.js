@@ -11,16 +11,20 @@ export default function ProductDetails(){
     const [nameCategory, setnameCategory] = useState("");
     const [nameProductType, setnameProductType] = useState("");
     const [quanity, setquanity] = useState(1);
+    const [datasize, setdatasize] = useState();
+    const [size, setsize] = useState();
     useEffect(() => {    
         const getDetailProduct = async()=>{
             try {
                 let idProduct = window.location.hash.substring(1);
+                getSize(idProduct);
                 const data = {
                     "id":idProduct
                 }
                 const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
                 setdataProduct(res[0]);
                 getName(res[0]);
+              
             } catch (error) {
             }
         }
@@ -33,6 +37,17 @@ export default function ProductDetails(){
         setnameCategory(category.name);
         setnameProductType(product_type.name);
         setshowContent(true);
+    }
+    const getSize = async(id)=>{
+        let i = [];
+        const data = {"id":id};
+        const res = await FetchAPI.postDataAPI('/product/getProductInventory',data);
+        res.map((item)=>{
+            i.push(
+                <Option value={item.size}>{item.size}</Option>
+            )
+        })
+        setdatasize(i);
     }
     const line = ()=>(
         <div style={{ backgroundColor:'gray',height:1,marginTop:10 }}/>
@@ -50,8 +65,8 @@ export default function ProductDetails(){
             <div style={{ display:'flex',flexDirection:'row',alignItems:'center',paddingTop:20,paddingBottom:20 }}>
                 <span style={{ fontSize:18 }}>Tùy chọn : </span>
                 <div style={{ padding:"0px 10px"}}> 
-                  <Select style={{ width: 120 }} placeholder="Chọn Size">
-                        <Option>M</Option>
+                  <Select style={{ width: 120 }} placeholder="Chọn Size" onChange={(e)=>setsize(e)}>
+                        {datasize}
                   </Select>
                 </div>
             </div>
@@ -84,7 +99,7 @@ export default function ProductDetails(){
                 <Link to={"/home"}>Trang chủ</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link >{nameCategory}</Link>
+                <Link to={`/category/id#${dataProduct.idCategory}`}>{nameCategory}</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
                 <Link to={`/menuproduct/id#${dataProduct.idProductType}`}>{nameProductType}</Link>
@@ -99,15 +114,15 @@ export default function ProductDetails(){
             <div style={{ paddingBottom:30}}>
                 {Direction()}
             </div>       
-            <Row>
-               <Col xl={8} sm={24} style={{ display:'flex',justifyContent:'center',paddingRight:20 }}>
+            <Row  gutter={{ xs: 8, sm: 16, md: 24, lg: 30 }}>
+               <Col xl={8} sm={24} style={{ display:'flex',paddingRight:20 }}>
                    <Image src={dataProduct.image} width={350} />
                </Col>
                <Col xl={12} sm={24}>
                     {contentProduct()}
                </Col>
-               <Col className="productRelate" xl={4} >
-                   <span style={{ fontSize:18,fontWeight:'bold' }}>SẢN PHẨM LIÊN QUAN</span>
+               <Col className="productRelate" xl={4} style={{ justifyContent:'center' }}>
+                   <span style={{ fontSize:16,fontWeight:'bold' }}>SẢN PHẨM LIÊN QUAN</span>
                </Col>
             </Row>
             </div>
