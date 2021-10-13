@@ -3,7 +3,8 @@ import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button  } from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {Link} from 'react-router-dom';
-import * as MENU from '../../util/menuProduct';
+import * as MENU from '../../util/menuProduct'
+
 const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
@@ -13,6 +14,7 @@ export default function ProductDetails(){
     const [quanity, setquanity] = useState(1);
     const [datasize, setdatasize] = useState();
     const [size, setsize] = useState();
+    
     useEffect(() => {    
         const getDetailProduct = async()=>{
             try {
@@ -24,7 +26,7 @@ export default function ProductDetails(){
                 const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
                 setdataProduct(res[0]);
                 getName(res[0]);
-              
+                
             } catch (error) {
             }
         }
@@ -42,30 +44,43 @@ export default function ProductDetails(){
         let i = [];
         const data = {"id":id};
         const res = await FetchAPI.postDataAPI('/product/getProductInventory',data);
-        res.map((item)=>{
+        res.map((item)=>(
             i.push(
-                <Option value={item.size}>{item.size}</Option>
+                <Option value={item.size}>{item.size +"- "}<span style={{ color:'gray' }}>{item.quanity}</span></Option>
             )
-        })
+        ))
         setdatasize(i);
     }
     const line = ()=>(
         <div style={{ backgroundColor:'gray',height:1,marginTop:10 }}/>
     )
-    const contentProduct = ()=>(
+    const ProductInformation = ()=>(
         <div style={{ display:'flex',flexDirection:'column' }}>
             <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>   
             <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={5} />
             <span><span style={{ fontWeight:'bold' }}>Mã SP :</span>{dataProduct.id}</span>
             <span style={{ fontSize:16 }}>{dataProduct.description}</span>
+        </div>
+    )
+    const contentProduct = ()=>(
+        <div style={{ display:'flex',flexDirection:'column' }}>
+            {ProductInformation()}
             {line()}
-            <span style={{ fontSize:20 }}>Giá: {getPriceVND(dataProduct.price)+" đ"}</span>
+
+            {dataProduct.promotional===null ?
+                <span style={{ fontSize:20 }}>Giá: {getPriceVND(dataProduct.price)+" đ"}</span>
+                :
+                <div style={{ display:'flex',flexDirection:'column' }}>
+                    <span style={{ fontSize:18,textDecorationLine:'line-through' }}>Giá gốc: {getPriceVND(dataProduct.price)+" đ"}</span>
+                    <span style={{ fontSize:20,color:'red',fontWeight:'bold' }}>Giá: {getPriceVND(dataProduct.promotional)+" đ"}</span>
+                </div>
+            }
             {line()}
 
             <div style={{ display:'flex',flexDirection:'row',alignItems:'center',paddingTop:20,paddingBottom:20 }}>
                 <span style={{ fontSize:18 }}>Tùy chọn : </span>
                 <div style={{ padding:"0px 10px"}}> 
-                  <Select style={{ width: 120 }} placeholder="Chọn Size" onChange={(e)=>setsize(e)}>
+                  <Select style={{ width: 120 }} placeholder="Chọn Size, Màu" onChange={(e)=>setsize(e)}>
                         {datasize}
                   </Select>
                 </div>

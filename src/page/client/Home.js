@@ -6,10 +6,11 @@ import slider3 from '../../images/slider3.jpg';
 import '../../css/Home.css';
 import Product from '../../elements/product';
 import * as FetchAPI from '../../util/fetchApi';
+
 export default function Home(){
     const [itemProductNew, setitemProductNew] = useState([]);
     useEffect(()=>{
-        getProductNew()
+        getProductNew();
     },[])
     const getProductNew = async()=>{
         const res = await FetchAPI.getAPI("/product/getProduct");

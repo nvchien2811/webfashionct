@@ -25,6 +25,9 @@
         height:180px; 
         resize: cover;
     }
+    .topbar{
+        height:35px;
+    }
     .topbar>span{
         font-size: 12px;
         margin-left: -10%;

@@ -11,7 +11,7 @@ import {Switch,Route, Link,useHistory} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
-
+import Account  from './client/Account';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -20,6 +20,7 @@ export default function App() {
   const [menu, setmenu] = useState();
   const [top, settop] = useState(true);
   const [showContent, setshowContent] = useState(false);
+  const [showModalAccount, setshowModalAccount] = useState(false);
   const history = useHistory();
   useEffect(()=>{
     document.addEventListener('scroll', () => {
@@ -56,17 +57,20 @@ export default function App() {
       
     }
   }
- 
+
+  const handleCancel = () => {
+    setshowModalAccount(false);
+  };
   const Top = ()=>(
-      <Row className="top" >
+      <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
-            <img src={logo} width='120' height='100' alt="logo"/>
+            <img src={logo} width='120' height='120' alt="logo"/>
             <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
           <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
-            <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17 }} to={{ pathname:"/" }} >
-              <FaUser/><span style={{ paddingLeft:5 }}>Đăng nhập</span>
-            </Link>
+            <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>setshowModalAccount(true)}>
+              <FaUser /><span style={{ paddingLeft:5 }}>Tài khoản</span>
+            </div>
             <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} to={{ pathname:"/" }}>
               <FaShoppingCart/><span style={{ paddingLeft:5 }}>Giỏ hàng</span>
             </Link>
@@ -116,6 +120,7 @@ export default function App() {
     <div >
       {showContent && 
        <Layout className="layout">
+          <Account visible={showModalAccount} onCancel={handleCancel}/>
           <div className="topbar" >
               <span  style={{ color:'white',alignItems:'center' }}> <BiMap style={{fontSize:20,paddingTop:8}}/> 8 Đặng Văn Ngữ | <HistoryOutlined /> 08:00 - 17:00 | <PhoneOutlined /> 0705982473</span>
           </div>

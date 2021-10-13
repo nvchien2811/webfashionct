@@ -23,6 +23,9 @@
   text-align: center;
   font-size: 14px;
 }
+.btnLogin:hover{
+  cursor: pointer;
+}
 @media only screen and (max-width:750px){
   .search{
     padding-bottom: 20px;
