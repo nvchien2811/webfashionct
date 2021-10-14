@@ -1,17 +1,25 @@
 import React ,{useState} from 'react';
-import {Modal,Row,Col,Input,Button} from 'antd';
+import {Modal,Row,Col,Input,Button,Spin} from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 export default function Account(props) {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState();
     const [email, setemail] = useState();
+    const [spinning, setspinning] = useState(false);
+
+    const handleLogin = ()=>{
+        setspinning(true);
+        setTimeout(()=>{
+            setspinning(false)
+        },2000)
+    }
     const Login = ()=>(
         <div style={{ paddingBottom:40 }}>
             <p style={{ fontSize:18,fontWeight:'bold' }}>ĐĂNG NHẬP</p>
             <p style={{ fontSize:16,fontWeight:'bold' }}>Tên tài khoản hoặc email đăng nhập *</p>
             <div style={{ width:'80%' }}>
                 <Input
-                    placeholder="Nhập tài khoản"
+                    placeholder="Nhập tên tài khoản"
                     value={username}
                     onChange= {(e)=>setusername(e.target.value)}
                     maxLength={24}
@@ -30,7 +38,7 @@ export default function Account(props) {
             />
             </div>
             <div style={{ padding:"10px 0px" }}>
-                <Button type="primary" danger style={{ width:100,height:45,borderRadius:8 }}>
+                <Button type="primary" danger style={{ width:100,height:45,borderRadius:8 }} onClick={handleLogin}>
                     Đăng nhập
                 </Button>
             </div>
@@ -70,6 +78,7 @@ export default function Account(props) {
             footer={false}
             width={1000}
         >
+            <Spin spinning={spinning} delay={500}>
             <Row>
                 <Col md={12} xs={24}>
                     {Login()}
@@ -78,6 +87,7 @@ export default function Account(props) {
                     {SignUp()}
                 </Col>
             </Row>
+            </Spin>
         </Modal>
     )
 }

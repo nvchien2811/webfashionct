@@ -4,7 +4,8 @@ import * as MENU from '../../util/menuProduct';
 import {Link,useLocation} from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Product from '../../elements/product';
-import '../../css/Product.css'
+import '../../css/Product.css';
+import Spinner from '../../elements/spinner';
 export default function MenuProduct(){
     const [showContent, setshowContent] = useState(false);
     const [nameCategory, setnameCategory] = useState("");
@@ -14,6 +15,7 @@ export default function MenuProduct(){
     const [empty, setempty] = useState(false);
     const location = useLocation();
     useEffect(()=>{
+        setshowContent(false);
         const getMenu = async()=>{
             try {
                 const idProductType = window.location.hash.substring(1); 
@@ -65,7 +67,7 @@ export default function MenuProduct(){
     })
     return(
         <div style={{ padding:"50px 100px" }}>
-        {showContent &&
+        {showContent ?
         <div>
             <div>
                 {Direction()}
@@ -79,7 +81,9 @@ export default function MenuProduct(){
                     </Row>
                 </div>
             }
-          </div>  
+            </div> 
+          :
+            <Spinner spinning={!showContent}/>
         }
 
         </div>

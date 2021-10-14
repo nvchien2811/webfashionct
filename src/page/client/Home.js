@@ -43,11 +43,11 @@ export default function Home(){
            {slide()}
            <div className="contentHome" >
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM MỚI</span>
-              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]}  >
+              <Row  gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },12]}  >
                   {ItemProduct}
               </Row>
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM BÁN CHẠY</span>
-              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 50 },12]} >
+              <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },12]} >
                   {ItemProduct}
               </Row>
            </div>

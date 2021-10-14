@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button  } from 'antd';
+import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button,Spin  } from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {Link} from 'react-router-dom';
@@ -124,7 +124,7 @@ export default function ProductDetails(){
     )
     return(
         <div style={{ padding:"20px 10%" }}>
-            {showContent &&
+            {showContent ?
             <div>
             <div style={{ paddingBottom:30}}>
                 {Direction()}
@@ -140,6 +140,13 @@ export default function ProductDetails(){
                    <span style={{ fontSize:16,fontWeight:'bold' }}>SẢN PHẨM LIÊN QUAN</span>
                </Col>
             </Row>
+            </div>
+
+            :
+            <div style={{ width:'100%',height:500 }}>
+                <Spin spinning={!showContent} size="large">
+                    <div style={{ width:'100%',height:500 }}/>
+                </Spin>
             </div>
             }
         </div>

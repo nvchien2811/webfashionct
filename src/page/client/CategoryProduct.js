@@ -4,6 +4,7 @@ import * as FetchAPI from '../../util/fetchApi';
 import {useLocation,Link} from 'react-router-dom';
 import {Row,Col,Empty,Breadcrumb} from 'antd';
 import Product from '../../elements/product';
+import Spinner from '../../elements/spinner';
 export default function CategoryProduct(){
     const [dataProduct, setdataProduct] = useState([]);
     const [showContent, setshowContent] = useState(false);
@@ -11,7 +12,8 @@ export default function CategoryProduct(){
     const [empty, setempty] = useState(false);
     const location = useLocation();
     useEffect(()=>{
-        getCategory()
+        setshowContent(false);
+        getCategory();
     },[location])
     const getCategory = async()=>{
         const idCategory = window.location.hash.substring(1);
@@ -48,11 +50,13 @@ export default function CategoryProduct(){
     )
     return(
         <div style={{ padding:"50px 100px" }}>
-            <div>
-                {Direction()}
-            </div>
-            {showContent &&
+        
+            {showContent ?
+             
                 <div>
+                    <div>
+                        {Direction()}
+                    </div>
                 {empty ?
                     <Empty className="empty" description="Không có sản phẩm"  />
                     :
@@ -63,6 +67,8 @@ export default function CategoryProduct(){
                     </div>
                 }
                 </div>
+                :
+                <Spinner spinning={!showContent}/>
             }
         </div>
     )
