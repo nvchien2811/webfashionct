@@ -1,7 +1,4 @@
 var mysql = require('mysql');
-const dotenv = require('dotenv');
-
-dotenv.config({path: './.env'});
 
 var con = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -9,7 +6,6 @@ var con = mysql.createConnection({
     password: process.env.DATABASE_PASSWORD,
     database:process.env.DATABASE
 });
-
 // const sql = "SELECT * FROM users"
 // con.connect(function(err) {
 //     if (err) throw err;
