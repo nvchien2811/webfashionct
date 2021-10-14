@@ -4,6 +4,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 export default function Account(props) {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState();
+    const [email, setemail] = useState();
     const Login = ()=>(
         <div style={{ paddingBottom:40 }}>
             <p style={{ fontSize:18,fontWeight:'bold' }}>ĐĂNG NHẬP</p>
@@ -41,6 +42,23 @@ export default function Account(props) {
     const SignUp = ()=>(
         <div>
             <p style={{ fontSize:18,fontWeight:'bold' }}>ĐĂNG KÝ</p>
+            <p style={{ fontSize:16,fontWeight:'bold' }}>Địa chỉ email *</p>
+            <div style={{ width:'80%' }}>
+                <Input
+                    placeholder="Nhập email"
+                    value={email}
+                    onChange= {(e)=>setemail(e.target.value)}
+                    maxLength={24}
+                    style={{height:40}}
+                />
+            </div>
+            <p style={{ fontSize:16,padding:"10px 0px" }}>Dùng email để đăng ký với Fashion CT</p>
+            <p>Thông tin cá nhân của bạn sẽ được sử dụng để tăng trải nghiệm sử dụng website, quản lý truy cập vào tài khoản của bạn, và cho các mục đích cụ thể khác được mô tả trong chính sách riêng tư.</p>
+            <div style={{ padding:"10px 0px" }}>
+                <Button type="primary" danger style={{ width:100,height:45,borderRadius:8 }}>
+                    Tiếp tục
+                </Button>
+            </div>
         </div>
     )
     return(
