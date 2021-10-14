@@ -6,15 +6,20 @@ import slider3 from '../../images/slider3.jpg';
 import '../../css/Home.css';
 import Product from '../../elements/product';
 import * as FetchAPI from '../../util/fetchApi';
-
+import Spinner from '../../elements/spinner';
+import { useLocation } from 'react-router-dom';
 export default function Home(){
     const [itemProductNew, setitemProductNew] = useState([]);
+    const [showContent, setshowContent] = useState(false);
+    const location = useLocation();
     useEffect(()=>{
+        setshowContent(false);
         getProductNew();
-    },[])
+    },[location])
     const getProductNew = async()=>{
         const res = await FetchAPI.getAPI("/product/getProduct");
         setitemProductNew(res);
+        setshowContent(true);
     }
     const slide = ()=>(
         <Carousel autoplay >
@@ -40,6 +45,8 @@ export default function Home(){
     })
     return(
        <div >
+           {showContent ? 
+           <div>
            {slide()}
            <div className="contentHome" >
               <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>SẢN PHẨM MỚI</span>
@@ -51,6 +58,10 @@ export default function Home(){
                   {ItemProduct}
               </Row>
            </div>
+           </div>
+           :
+           <Spinner spinning={!showContent}/>
+            }
        </div>
     )
 }

@@ -4,7 +4,6 @@ import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {Link} from 'react-router-dom';
 import * as MENU from '../../util/menuProduct'
-
 const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
@@ -141,7 +140,6 @@ export default function ProductDetails(){
                </Col>
             </Row>
             </div>
-
             :
             <div style={{ width:'100%',height:500 }}>
                 <Spin spinning={!showContent} size="large">

@@ -7,12 +7,11 @@ import MenuProduct from './client/MenuProduct';
 import ProductDetails from './client/ProductDetails';
 import CategoryProduct from './client/CategoryProduct';
 import '../css/App.css';
-import {Switch,Route, Link,useHistory,useLocation} from "react-router-dom";
+import {Switch,Route, Link,useHistory} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
 import Account  from './client/Account'; 
-import Spinner from '../elements/spinner';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -23,18 +22,15 @@ export default function App() {
   const [showContent, setshowContent] = useState(false);
   const [showModalAccount, setshowModalAccount] = useState(false);
   const history = useHistory();
-  const location = useLocation();
-  useEffect(()=>{
   
-    if(location.pathname === "/home"|| location.pathname ==="/"){
-      document.addEventListener('scroll', () => {
-        const isTop = window.scrollY < 200;
-        settop(isTop);
-      });
-      getMenu();
-      setshowContent(false);  
-    }
-  },[location])
+  useEffect(()=>{
+    document.addEventListener('scroll', () => {
+      const isTop = window.scrollY < 200;
+      settop(isTop);
+    });
+    getMenu();
+    setshowContent(false);  
+  },[])
   const getMenu = async()=>{
     try {
       let item = [];
@@ -124,7 +120,7 @@ export default function App() {
   )
   return (
     <div >
-      {showContent ? 
+      {showContent &&
        <Layout className="layout">
           <Account visible={showModalAccount} onCancel={handleCancel}/>
           <div className="topbar" >
@@ -140,8 +136,7 @@ export default function App() {
             </div>
           </BackTop>
         </Layout>
-        :
-        <Spinner spinning={!showContent}/>
+        
       }
      
     </div>
