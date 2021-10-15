@@ -12,8 +12,9 @@ import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
 import Account  from './client/Account'; 
-// import { useSelector,useDispatch } from 'react-redux';
-import {updateUser} from '../redux/reducer/user.reducer'
+import { useDispatch } from 'react-redux';
+import { getUser} from '../util/getUser';
+
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -23,17 +24,38 @@ export default function App() {
   const [top, settop] = useState(true);
   const [showContent, setshowContent] = useState(false);
   const [showModalAccount, setshowModalAccount] = useState(false);
+  const [statusUser, setstatusUser] = useState(false);
   const history = useHistory();
-  // const user = useSelector(state=>state.userReducer.currentUser);
+  // const datauser = useSelector(state=>state.userReducer.currentUser);
+  const dispatch = useDispatch();
+
   useEffect(()=>{
     document.addEventListener('scroll', () => {
       const isTop = window.scrollY < 200;
       settop(isTop);
     });
     getMenu();
+    checkUser();
     setshowContent(false); 
   },[])
-  
+  const checkUser = async()=>{
+    const token = localStorage.getItem("token");
+    if(token===undefined||token===null){
+      setstatusUser(false)
+    }
+    else{
+      const data = {"token":token};
+      const res = await FetchAPI.postDataAPI("/user/getUser",data);
+
+      if(res!==undefined){
+        setstatusUser(true)
+        getUser(token,dispatch);
+      }else{
+        setstatusUser(false)
+      }
+    }
+  }
+
   const getMenu = async()=>{
     try {
       let item = [];
@@ -66,6 +88,7 @@ export default function App() {
   const handleCancel = () => {
     setshowModalAccount(false);
   };
+
   const Top = ()=>(
       <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
@@ -73,9 +96,16 @@ export default function App() {
             <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
           <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
+            {!statusUser ?
             <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>setshowModalAccount(true)}>
-              <FaUser /><span style={{ paddingLeft:5 }}>Tài khoản</span>
+              <FaUser /><span style={{ paddingLeft:5 }}>Đăng nhập</span>
             </div>
+            :
+            <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>{localStorage.removeItem("token");checkUser()}}>
+              <FaUser /><span style={{ paddingLeft:5 }}>Tài khoản </span>
+            </div>
+            }
+            
             <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} to={{ pathname:"/" }}>
               <FaShoppingCart/><span style={{ paddingLeft:5 }}>Giỏ hàng</span>
             </Link>
@@ -125,7 +155,7 @@ export default function App() {
     <div >
       {showContent &&
        <Layout className="layout">
-          <Account visible={showModalAccount} onCancel={handleCancel}/>
+          <Account visible={showModalAccount} onCancel={handleCancel} refeshAccount={checkUser}/>
           <div className="topbar" >
               <span  style={{ color:'white',alignItems:'center' }}> <BiMap style={{fontSize:20,paddingTop:8}}/> 8 Đặng Văn Ngữ | <HistoryOutlined /> 08:00 - 17:00 | <PhoneOutlined /> 0705982473</span>
           </div>
