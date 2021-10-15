@@ -37,7 +37,7 @@ export default function App() {
     getMenu();
     checkUser();
     setshowContent(false); 
-    console.log("abc")
+    console.log("abcddd")
   },[])
   const checkUser = async()=>{
     const token = localStorage.getItem("token");
