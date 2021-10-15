@@ -12,6 +12,8 @@ import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
 import Account  from './client/Account'; 
+// import { useSelector,useDispatch } from 'react-redux';
+import {updateUser} from '../redux/reducer/user.reducer'
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -22,15 +24,16 @@ export default function App() {
   const [showContent, setshowContent] = useState(false);
   const [showModalAccount, setshowModalAccount] = useState(false);
   const history = useHistory();
-  
+  // const user = useSelector(state=>state.userReducer.currentUser);
   useEffect(()=>{
     document.addEventListener('scroll', () => {
       const isTop = window.scrollY < 200;
       settop(isTop);
     });
     getMenu();
-    setshowContent(false);  
+    setshowContent(false); 
   },[])
+  
   const getMenu = async()=>{
     try {
       let item = [];
