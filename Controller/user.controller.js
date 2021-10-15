@@ -1,5 +1,7 @@
 var db = require('../db');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const uuid = require('uuid');
 
 module.exports.getUser = (req,res)=>{
     try {
@@ -24,24 +26,63 @@ module.exports.getUser = (req,res)=>{
     }
    
 }
+module.exports.register = (req,res)=>{
+    try {
+        const id = uuid.v1();
+        const {email,password,username,name} = req.body;
+        const ruler = 0;
+      
+        const sql = 'SELECT * FROM user WHERE email = ? ';
+        db.query(sql,[email],async(err,rows,fields)=>{
+            //Check email exist ?
+            if(rows.length > 0 ){
+                return res.status(201).json({
+                    msg: "The E-mail already in use",
+                });
+            }
+            //create password with code bcrypt
+            const hashPass = await bcrypt.hash(password, 12);
+            const sqlRegister = 'INSERT INTO `user`(`id`,`username`,`email`,`password`,`name`,`ruler`) VALUES(?,?,?,?,?,?)';
+            db.query(sqlRegister,[id,username,email,hashPass,name,ruler],(err,rows,fields)=>{
+                if (err) {
+                    return res.json({msg:err});
+                }
+                return res.status(201).json({
+                    msg: "The user has been successfully inserted.",
+                });
+            })
+        })
+    }catch (error) {
 
+    } 
+}
 module.exports.login = (req,res)=>{
     const {username,password} = req.body;
-    const sql = 'SELECT * FROM user WHERE username = ? AND password = ?';
-    db.query(sql,[username, password],(err,rows,fields)=>{
+    const sql = 'SELECT * FROM user WHERE username = ? ';
+
+    db.query(sql,[username],async(err,rows,fields)=>{
         if (err) {
             return res.json({msg:err});
         }
-        if(rows.length <=0 ){
+        //Check account exist
+        if(rows.length ===0 ){
             return res.status(422).json({
-                msg: "Error",
+                msg: "Invalid account",
             });
         }else{
-            const theToken = jwt.sign({id:rows[0].id},'the-super-strong-secrect',{ expiresIn: '1h' });
-            return res.json({
-                msg:"Success",
-                token:theToken
-            });
+            //Confirm password
+            const passMatch = await bcrypt.compare(password,rows[0].password);
+            if(!passMatch){
+                return res.status(422).json({
+                    msg: "Incorrect password",
+                });
+            }else{
+                const theToken = jwt.sign({id:rows[0].id},'the-super-strong-secrect',{ expiresIn: '1h' });
+                return res.json({
+                    msg:"Success",
+                    token:theToken
+                });
+            }
         }
     })
 }

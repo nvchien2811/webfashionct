@@ -1,17 +1,35 @@
 import React ,{useState} from 'react';
 import {Modal,Row,Col,Input,Button,Spin} from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import * as FetchAPI from '../../util/fetchApi';
 export default function Account(props) {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState();
     const [email, setemail] = useState();
     const [spinning, setspinning] = useState(false);
 
-    const handleLogin = ()=>{
+    const handleLoginValidation = ()=>{
         setspinning(true);
-        setTimeout(()=>{
-            setspinning(false)
-        },2000)
+        //Validation
+        handleLogin();
+    }
+    const handleLogin = async() =>{
+        const data = {"username":username,"password":password};
+        console.log(username + " and "+ password)
+        const res = await FetchAPI.postDataAPI("/user/login",data);
+        console.log(res);
+        if(res.msg==="Error"){
+            console.log("Thất bại")
+        }else if(res.msg==="Success"){
+            localStorage.setItem("token",res.token);
+            getUser(res.token)
+        }
+        setspinning(false);
+    }
+    const getUser = async(token)=>{
+        const data = {"token":token};
+        const res = await FetchAPI.postDataAPI("/user/getUser",data);
+        console.log(res)
     }
     const Login = ()=>(
         <div style={{ paddingBottom:40 }}>
@@ -38,7 +56,7 @@ export default function Account(props) {
             />
             </div>
             <div style={{ padding:"10px 0px" }}>
-                <Button type="primary" danger style={{ width:100,height:45,borderRadius:8 }} onClick={handleLogin}>
+                <Button type="primary" danger style={{ width:100,height:45,borderRadius:8 }} onClick={handleLoginValidation}>
                     Đăng nhập
                 </Button>
             </div>
@@ -78,7 +96,7 @@ export default function Account(props) {
             footer={false}
             width={1000}
         >
-            <Spin spinning={spinning} delay={500}>
+            <Spin spinning={spinning} >
             <Row>
                 <Col md={12} xs={24}>
                     {Login()}
