@@ -37,7 +37,8 @@ export default function App() {
     getMenu();
     checkUser();
     setshowContent(false); 
-  
+
+    console.log("them cai nz")
   },[])
   const checkUser = async()=>{
     const token = localStorage.getItem("token");
