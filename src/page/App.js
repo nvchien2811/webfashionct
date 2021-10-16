@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from 'react';
-import { Layout, Menu,Input,Row,Col,BackTop } from 'antd';
+import { Layout, Menu,Input,Row,Col,BackTop, Dropdown } from 'antd';
 import * as FetchAPI from '../util/fetchApi';
 import logo from '../images/Fashion-removebg-preview.png';
 import Home from './client/Home';
@@ -14,7 +14,7 @@ import {BiMap} from 'react-icons/bi';
 import Account  from './client/Account'; 
 import { useDispatch } from 'react-redux';
 import { getUser} from '../util/getUser';
-
+import InfoAccount from '../elements/menuAccount';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -37,8 +37,6 @@ export default function App() {
     getMenu();
     checkUser();
     setshowContent(false); 
-
-    console.log("them cai nz")
   },[])
   const checkUser = async()=>{
     const token = localStorage.getItem("token");
@@ -103,9 +101,11 @@ export default function App() {
               <FaUser /><span style={{ paddingLeft:5 }}>Đăng nhập</span>
             </div>
             :
-            <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>{localStorage.removeItem("token");checkUser()}}>
+            <Dropdown overlay={MenuAccount} placement="bottomLeft" arrow>
+            <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} >
               <FaUser /><span style={{ paddingLeft:5 }}>Tài khoản </span>
             </div>
+            </Dropdown>
             }
             
             <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} to={{ pathname:"/" }}>
@@ -131,6 +131,9 @@ export default function App() {
         <Menu.Item key="7">Liên hệ</Menu.Item>
       </Menu>
   </Header>
+  )
+  const MenuAccount =(
+    <InfoAccount refreshAccount={checkUser}/> 
   )
   const Body = ()=>(
     <Content className="site-layout" >

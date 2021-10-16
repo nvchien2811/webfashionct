@@ -48,7 +48,7 @@ module.exports.register = (req,res)=>{
                     return res.json({msg:err});
                 }
                 return res.status(201).json({
-                    msg: "The user has been successfully inserted.",
+                    success: "The user has been successfully inserted.",
                 });
             })
         })
@@ -99,6 +99,22 @@ module.exports.checkEmail = (req,res)=>{
         if(rows.length > 0 ){
             return res.status(201).json({
                 msg: "The E-mail already in use",
+            });
+        }
+        else{
+            return res.json({success: "Continue register"})
+        }
+    }
+    )
+}
+module.exports.checkUsername = (req,res)=>{
+    const {username} = req.body;
+    const sql = 'SELECT * FROM user WHERE username = ? ';
+    db.query(sql,[username],async(err,rows,fields)=>{
+        //Check email exist ?
+        if(rows.length > 0 ){
+            return res.status(201).json({
+                msg: "The Username already in use",
             });
         }
         else{

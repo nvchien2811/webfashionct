@@ -45,7 +45,7 @@ export default function ProductDetails(){
         const res = await FetchAPI.postDataAPI('/product/getProductInventory',data);
         res.map((item)=>(
             i.push(
-                <Option value={item.size}>{item.size +"- "}<span style={{ color:'gray' }}>{item.quanity}</span></Option>
+                <Option value={item.size}>{item.size +" - "}<span style={{ color:'gray' }}>{item.quanity}</span></Option>
             )
         ))
         setdatasize(i);
@@ -57,7 +57,7 @@ export default function ProductDetails(){
         <div style={{ display:'flex',flexDirection:'column' }}>
             <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>   
             <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={5} />
-            <span><span style={{ fontWeight:'bold' }}>Mã SP :</span>{dataProduct.id}</span>
+            <span><span style={{ fontWeight:'bold' }}>Mã SP : </span>{dataProduct.id}</span>
             <span style={{ fontSize:16 }}>{dataProduct.description}</span>
         </div>
     )

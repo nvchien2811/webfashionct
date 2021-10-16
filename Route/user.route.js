@@ -7,5 +7,5 @@ router.post("/login",controller.login)
 router.post("/register",controller.register);
 
 router.post("/checkEmail",controller.checkEmail);
-
+router.post("/checkUsername",controller.checkUsername);
 module.exports = router;

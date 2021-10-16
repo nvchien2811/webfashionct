@@ -4,11 +4,14 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import * as FetchAPI from '../../util/fetchApi';
 import {getUser} from '../../util/getUser'
 import { useDispatch } from 'react-redux';
+import Register from './Register';
+
 export default function Account(props) {
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
     const [spinning, setspinning] = useState(false);
     const [emailRegister, setemailRegister] = useState("");
+    const [continueRegister, setcontinueRegister] = useState(false);
     const dispatch = useDispatch();
     const handleLoginValidation = ()=>{
         setspinning(true);
@@ -43,7 +46,7 @@ export default function Account(props) {
         }
     }
     const handleRegister = async()=>{
-        console.log("okok")
+        setcontinueRegister(true)
     }
     const Login = ()=>(
         <Form style={{ paddingBottom:40 }} onFinish={handleLoginValidation} scrollToFirstError>
@@ -98,6 +101,7 @@ export default function Account(props) {
             <p style={{ fontSize:16,fontWeight:'bold' }}>Địa chỉ email *</p>
             <Form.Item 
                 style={{ width:'80%' }} 
+                hasFeedback
                 rules={[
                     { type: 'email',message:"Vui lòng nhập đúng Email"},
                     {required:true,message:"Vui lòng điền Email !"},
@@ -126,12 +130,13 @@ export default function Account(props) {
         <Modal 
             title="Tài khoản" 
             visible={props.visible} 
-            onCancel={props.onCancel}
+            onCancel={()=>{props.onCancel();setcontinueRegister(false)}}
             cancelText="Thoát"
             footer={false}
             width={1000}
         >
             <Spin spinning={spinning} >
+            {!continueRegister ?
             <Row>
                 <Col md={12} xs={24}>
                     {Login()}
@@ -140,6 +145,16 @@ export default function Account(props) {
                     {SignUp()}
                 </Col>
             </Row>
+            :
+            <Register 
+                email={emailRegister} 
+                back={()=>setcontinueRegister(false)}
+                cancel={()=>{props.onCancel();setcontinueRegister(false)}}
+                loading={(e)=>setspinning(e)}
+                refeshAccount={props.refeshAccount}
+            />
+            }
+           
             </Spin>
         </Modal>
     )
