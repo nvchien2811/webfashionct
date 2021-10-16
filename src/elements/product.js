@@ -1,10 +1,11 @@
 import React from 'react';
-import { Image,Card  } from 'antd';
+import { Image,Card,Badge  } from 'antd';
 import {getPriceVND} from '../contain/getPriceVND';
 import {Link} from 'react-router-dom';
 const { Meta } = Card;
 export default function product(props){
     const {image,name,price,id,promotional} = props.item;
+    const s = Math.round((price - promotional)/price*100);
     const path={
         pathname:`/product/id#${id}`
     }
@@ -27,7 +28,19 @@ export default function product(props){
             <Card
                 className="itemProduct"
                 hoverable
-                cover={<Image alt="example" src={image} />}
+                cover={
+                <div>
+                    {s === 100 ? 
+                    <Image alt="example" src={image} />
+                    :
+                    <Badge.Ribbon text={s+"%"} color="red">
+                        <Image alt="example" src={image} />
+                    </Badge.Ribbon>
+                    }
+                </div>
+               
+            
+                }
             >
                 <Link to={path}>
                     <Meta title={name} description={hanldeShowPrice()} />
