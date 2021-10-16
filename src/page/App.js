@@ -6,13 +6,14 @@ import Home from './client/Home';
 import MenuProduct from './client/MenuProduct';
 import ProductDetails from './client/ProductDetails';
 import CategoryProduct from './client/CategoryProduct';
+import Admin from './admin/Admin';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
 import Account  from './client/Account'; 
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { getUser} from '../util/getUser';
 import InfoAccount from '../elements/menuAccount';
 const { Header, Footer,Content} = Layout;
@@ -26,7 +27,7 @@ export default function App() {
   const [showModalAccount, setshowModalAccount] = useState(false);
   const [statusUser, setstatusUser] = useState(false);
   const history = useHistory();
-  // const datauser = useSelector(state=>state.userReducer.currentUser);
+  const datauser = useSelector(state=>state.userReducer.currentUser);
   const dispatch = useDispatch();
 
   useEffect(()=>{
@@ -132,8 +133,13 @@ export default function App() {
       </Menu>
   </Header>
   )
+ 
   const MenuAccount =(
-    <InfoAccount refreshAccount={checkUser}/> 
+    <InfoAccount 
+      refreshAccount={checkUser} 
+      data={datauser}
+     
+    /> 
   )
   const Body = ()=>(
     <Content className="site-layout" >
@@ -150,6 +156,9 @@ export default function App() {
           <Route path="/product">
             <ProductDetails/>
           </Route>
+          <Route path="/admin">
+            <Admin/>
+          </Route>
           <Route path="/">
             <Home />
           </Route>
@@ -160,14 +169,16 @@ export default function App() {
     <div >
       {showContent &&
        <Layout className="layout">
+        <div className="header-nav">
           <Account visible={showModalAccount} onCancel={handleCancel} refeshAccount={checkUser}/>
           <div className="topbar" >
               <span  style={{ color:'white',alignItems:'center' }}> <BiMap style={{fontSize:20,paddingTop:8}}/> 8 Đặng Văn Ngữ | <HistoryOutlined /> 08:00 - 17:00 | <PhoneOutlined /> 0705982473</span>
           </div>
           {Top()}
           {Navigation()}
+        </div>
           {Body()}
-          <Footer style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
+          <Footer className="footer" style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
           <BackTop>
             <div className="back-top">
               <ArrowUpOutlined />
