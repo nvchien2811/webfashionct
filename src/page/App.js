@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from 'react';
-import { Layout, Menu,Input,Row,Col,BackTop, Dropdown } from 'antd';
+import { Layout, Menu,Input,Row,Col,BackTop, Dropdown,message } from 'antd';
 import * as FetchAPI from '../util/fetchApi';
 import logo from '../images/Fashion-removebg-preview.png';
 import Home from './client/Home';
@@ -45,17 +45,19 @@ export default function App() {
       setstatusUser(false)
     }
     else{
-      const data = {"token":token};
-      const res = await FetchAPI.postDataAPI("/user/getUser",data);
-
-      if(res!==undefined){
-        setstatusUser(true)
-        getUser(token,dispatch);
+      setstatusUser(true);
+      const status = await getUser(token,dispatch);
+      if(status===false){
+        message.warning("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại !");
+        setstatusUser(false);
       }else{
-        setstatusUser(false)
+        setstatusUser(true);
       }
     }
   }
+  const handleCancel = () => {
+    setshowModalAccount(false);
+  };
 
   const getMenu = async()=>{
     try {
@@ -86,10 +88,6 @@ export default function App() {
     }
   }
 
-  const handleCancel = () => {
-    setshowModalAccount(false);
-  };
-
   const Top = ()=>(
       <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
@@ -109,7 +107,7 @@ export default function App() {
             </Dropdown>
             }
             
-            <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} to={{ pathname:"/" }}>
+            <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>console.log(datauser)} to={{ pathname:"/" }}>
               <FaShoppingCart/><span style={{ paddingLeft:5 }}>Giỏ hàng</span>
             </Link>
           </Col>
@@ -138,7 +136,6 @@ export default function App() {
     <InfoAccount 
       refreshAccount={checkUser} 
       data={datauser}
-     
     /> 
   )
   const Body = ()=>(
@@ -185,9 +182,7 @@ export default function App() {
             </div>
           </BackTop>
         </Layout>
-        
       }
-     
     </div>
   );
 }

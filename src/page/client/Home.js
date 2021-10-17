@@ -13,6 +13,7 @@ export default function Home(){
     const [showContent, setshowContent] = useState(false);
     const location = useLocation();
     useEffect(()=>{
+        window.scroll(0,0);
         setshowContent(false);
         getProductNew();
     },[location])
@@ -36,7 +37,7 @@ export default function Home(){
     )
     const ItemProduct = itemProductNew.map((item)=>{
         return(
-            <Col xl={6} md={8} xs={12} style={{display:'flex', justifyContent:'center' }} >
+            <Col style={{display:'flex', justifyContent:'center' }} xl={6} md={8} xs={12}>
                 <Product
                     item={item}
                 />

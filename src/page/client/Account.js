@@ -1,5 +1,5 @@
 import React ,{useState} from 'react';
-import {Modal,Row,Col,Input,Button,Spin,Form} from 'antd';
+import {Modal,Row,Col,Input,Button,Spin,Form,message} from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import * as FetchAPI from '../../util/fetchApi';
 import {getUser} from '../../util/getUser'
@@ -22,11 +22,15 @@ export default function Account(props) {
         const data = {"username":username,"password":password};
         const res = await FetchAPI.postDataAPI("/user/login",data);
         console.log(res);
-        if(res.msg==="Error"){
-            console.log("Thất bại")
+      
+        if(res.msg==="Invalid account"){
+            message.error("Tên tài khoản không tồn tại")
+        }else if(res.msg ==="Incorrect password"){
+            message.error("Mật khẩu không đúng")
         }else if(res.msg==="Success"){
             localStorage.setItem("token",res.token);
-            finish(res.token)
+            finish(res.token);
+            message.success("Đăng nhập thành công !")
         }
         setspinning(false);
     }

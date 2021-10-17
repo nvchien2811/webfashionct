@@ -12,15 +12,21 @@ module.exports.getUser = (req,res)=>{
             });
         }
         const theToken = token;
-        const decoded = jwt.verify(theToken, process.env.SECRECT);
-        const sql = 'SELECT id,username,name,email,avartar,ruler FROM user WHERE id = ? ';
-        db.query(sql,[decoded.id],(err,rows,fields)=>{
-            if (err) {
-                return res.json({msg:err});
+        jwt.verify(theToken, process.env.SECRECT,(err,decoded)=>{
+            if(err){
+                return res.json({msg:err})
             }else{
-                return res.json(rows);
+                const sql = 'SELECT id,username,name,email,avartar,ruler FROM user WHERE id = ? ';
+                db.query(sql,[decoded.id],(err,rows,fields)=>{
+                    if (err) {
+                        return res.json({msg:err});
+                    }else{
+                        return res.json(rows);
+                    }
+                })
             }
-        })
+        });
+      
     } catch (error) {
         return res.status(500).json({ msg: error.message });
     }
