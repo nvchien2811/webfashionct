@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from 'react';
-import { Layout, Menu,Input,Row,Col,BackTop, Dropdown,message } from 'antd';
+import { Layout, Menu,Input,Row,Col,BackTop, Dropdown,message,Badge } from 'antd';
 import * as FetchAPI from '../util/fetchApi';
 import logo from '../images/Fashion-removebg-preview.png';
 import Home from './client/Home';
@@ -16,6 +16,8 @@ import Account  from './client/Account';
 import { useDispatch,useSelector } from 'react-redux';
 import { getUser} from '../util/getUser';
 import InfoAccount from '../elements/menuAccount';
+import DropDownCart from '../elements/dropDownCart';
+import { updateCartCurrent } from '../contain/updateQuanityCart';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -28,6 +30,8 @@ export default function App() {
   const [statusUser, setstatusUser] = useState(false);
   const history = useHistory();
   const datauser = useSelector(state=>state.userReducer.currentUser);
+  const quanityCart = useSelector(state=>state.productReducer.quanityCart);
+  const dataCart = useSelector(state=>state.productReducer.cart);
   const dispatch = useDispatch();
 
   useEffect(()=>{
@@ -38,7 +42,13 @@ export default function App() {
     getMenu();
     checkUser();
     setshowContent(false); 
+    updateQuanityCart();
+    
   },[])
+  const updateQuanityCart = ()=>{
+    updateCartCurrent(dispatch);
+  }
+ 
   const checkUser = async()=>{
     const token = localStorage.getItem("token");
     if(token===undefined||token===null){
@@ -96,20 +106,37 @@ export default function App() {
           </Col>
           <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
             {!statusUser ?
-            <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>setshowModalAccount(true)}>
+            <div 
+              className="btnLogin" 
+              style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
+              onClick={()=>setshowModalAccount(true)}
+            >
               <FaUser /><span style={{ paddingLeft:5 }}>Đăng nhập</span>
             </div>
             :
             <Dropdown overlay={MenuAccount} placement="bottomLeft" arrow>
-            <div className="btnLogin" style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} >
+            <div 
+              className="btnLogin" 
+              style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
+            >
               <FaUser /><span style={{ paddingLeft:5 }}>Tài khoản </span>
             </div>
             </Dropdown>
             }
-            
-            <Link style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} onClick={()=>console.log(datauser)} to={{ pathname:"/" }}>
-              <FaShoppingCart/><span style={{ paddingLeft:5 }}>Giỏ hàng</span>
+            <Dropdown overlay={Cart} arrow>
+            <Link 
+              style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
+              onClick={()=>console.log(datauser)} 
+              to={{ pathname:"/" }}
+            >
+                <FaShoppingCart/>
+                <Badge count={quanityCart} offset={[5,-10]}>
+                <span style={{ paddingLeft:5,fontSize:17,color:'gray' }}>
+                  Giỏ hàng
+                </span>
+                </Badge>
             </Link>
+            </Dropdown>
           </Col>
           <Col className="search"  style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
             <Search placeholder="Nhập tên sản phẩm" enterButton style={{width:'70%'}}/>
@@ -131,7 +158,12 @@ export default function App() {
       </Menu>
   </Header>
   )
- 
+  const Cart = (
+    <DropDownCart
+      data={dataCart}
+      update={()=>updateQuanityCart()}
+    />
+  )
   const MenuAccount =(
     <InfoAccount 
       refreshAccount={checkUser} 

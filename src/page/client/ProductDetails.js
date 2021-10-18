@@ -1,10 +1,12 @@
 import React,{useState,useEffect} from 'react';
-import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button,Spin,message,List} from 'antd';
+import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button,Spin,message,List,notification} from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {Link,useLocation} from 'react-router-dom';
 import * as MENU from '../../util/menuProduct';
 import Product from '../../elements/product';
+import { useDispatch } from 'react-redux';
+import { updateCartCurrent } from '../../contain/updateQuanityCart';
 const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
@@ -18,6 +20,7 @@ export default function ProductDetails(){
     const [outOfStock, setoutOfStock] = useState(false);
     const [dataRelate, setdataRelate] = useState([]);
     const [imageDecription, setimageDecription] = useState();
+    const dispatch = useDispatch();
     const location = useLocation();
     useEffect(() => {    
         const getDetailProduct = async()=>{
@@ -69,13 +72,61 @@ export default function ProductDetails(){
             if(option==null){
                 message.warning('Hãy chọn kích cỡ, màu sắc để đặt hàng');
                 setbuttonLoading(false);
-            }else if(option[1]<quanity){
-                message.warning('Mẫu này số lượng chỉ còn '+option[1]+" sản phẩm, quý khách vui lòng thông cảm !");
+            }else if(quanity ===null){
+                message.warning('Vui lòng chọn số lượng !');
+                setbuttonLoading(false)
+            }
+            else if(option[1]<quanity){
+                message.warning('Mẫu này số lượng chỉ còn '+option[1]+' sản phẩm, quý khách vui lòng thông cảm !');
                 setbuttonLoading(false);
             }else{
-                message.success("Được đặt hàng nhé");
-                setbuttonLoading(false);
+                handleOrder();
             }
+        },1000)
+    }
+    const btn = (
+        <Button type="primary">
+            Đi ngay
+        </Button>
+    )
+    const handleOrder = ()=>{
+        const dataOut = localStorage.getItem("cart");
+        let objDataOut = JSON.parse(dataOut);
+        if(objDataOut===null||dataOut===undefined){
+            const data = [{"id":dataProduct.id,"quanity":quanity,"option":option[0]}];
+            objDataOut = data
+        }
+        else{
+            //Check product and option in cart
+            let police = objDataOut.some(x => x.id===dataProduct.id && x.option===option[0]);
+            if(police){
+                //find postition
+                let index = objDataOut.findIndex(x=> x.id===dataProduct.id && x.option===option[0]);
+                //setNewQuanity
+                let newQuanity = objDataOut[index].quanity+quanity;
+                if(newQuanity>option[1]){
+                    message.warning('Sản phẩm chỉ còn '+objDataOut[index].quanity+", vui lòng chọn kiểm tra lại");
+                    setbuttonLoading(false);
+                    return;
+                }else{
+                    //setNewQuanity
+                    objDataOut[index].quanity = newQuanity;
+                }
+            }else{
+                const data = {"id":dataProduct.id,"quanity":quanity,"option":option[0]};
+                objDataOut.push(data);
+            }
+        }
+        localStorage.setItem("cart",JSON.stringify(objDataOut));
+        setTimeout(()=>{
+            setbuttonLoading(false);
+            updateCartCurrent(dispatch);
+            notification["success"]({
+                message: 'Đặt hàng thành công',
+                description:
+                  'Bạn có muốn chuyển đến giỏ hàng ngay bây giờ.',
+                btn
+            });
         },1000)
     }
     const getOption = async(id)=>{

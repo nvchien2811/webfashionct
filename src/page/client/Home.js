@@ -9,7 +9,7 @@ import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import { useLocation } from 'react-router-dom';
 export default function Home(){
-    const [itemProductNew, setitemProductNew] = useState([]);
+    const [itemProductNew, setitemProductNew] = useState([{}]);
     const [showContent, setshowContent] = useState(false);
     const location = useLocation();
     useEffect(()=>{
