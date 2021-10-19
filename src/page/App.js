@@ -7,16 +7,17 @@ import MenuProduct from './client/MenuProduct';
 import ProductDetails from './client/ProductDetails';
 import CategoryProduct from './client/CategoryProduct';
 import Admin from './admin/Admin';
+import Account  from './client/Account'; 
+import Cart from './client/Cart';
+import InfoAccount from '../elements/menuAccount';
+import DropDownCart from '../elements/dropDownCart';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
-import Account  from './client/Account'; 
 import { useDispatch,useSelector } from 'react-redux';
 import { getUser} from '../util/getUser';
-import InfoAccount from '../elements/menuAccount';
-import DropDownCart from '../elements/dropDownCart';
 import { updateCartCurrent } from '../contain/updateQuanityCart';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
@@ -40,7 +41,6 @@ export default function App() {
       settop(isTop);
     });
     getMenu();
-    checkUser();
     setshowContent(false); 
     updateQuanityCart();
     
@@ -92,6 +92,7 @@ export default function App() {
       )
       )
       setmenu(item);
+      checkUser();
       setshowContent(true);
     } catch (error) {
       
@@ -123,20 +124,22 @@ export default function App() {
             </div>
             </Dropdown>
             }
-            <Dropdown overlay={Cart} arrow>
+            <div style={{ display:'flex',flexDirection:'row',alignItems:'center' }}>
             <Link 
               style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
               onClick={()=>console.log(datauser)} 
-              to={{ pathname:"/" }}
+              to={{ pathname:"/cart" }}
             >
                 <FaShoppingCart/>
-                <Badge count={quanityCart} offset={[5,-10]}>
-                <span style={{ paddingLeft:5,fontSize:17,color:'gray' }}>
+            </Link>
+            <Dropdown overlay={Cartdrop} placement="bottomCenter" arrow>
+                <Badge count={quanityCart} offset={[5,-10]} >
+                <span style={{ paddingLeft:5,fontSize:17,color:'gray',cursor:"pointer" }}>
                   Giỏ hàng
                 </span>
                 </Badge>
-            </Link>
             </Dropdown>
+          </div>
           </Col>
           <Col className="search"  style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
             <Search placeholder="Nhập tên sản phẩm" enterButton style={{width:'70%'}}/>
@@ -158,7 +161,7 @@ export default function App() {
       </Menu>
   </Header>
   )
-  const Cart = (
+  const Cartdrop = (
     <DropDownCart
       data={dataCart}
       update={()=>updateQuanityCart()}
@@ -184,6 +187,9 @@ export default function App() {
           </Route>
           <Route path="/product">
             <ProductDetails/>
+          </Route>
+          <Route path="/cart">
+            <Cart/>
           </Route>
           <Route path="/admin">
             <Admin/>

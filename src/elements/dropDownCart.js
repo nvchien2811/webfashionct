@@ -2,6 +2,7 @@ import React from 'react';
 import {List,Row,Col,Image,Button} from 'antd';
 import {getPriceVND} from '../contain/getPriceVND';
 import {DeleteOutlined} from '@ant-design/icons';
+import {Link} from 'react-router-dom';
 export default function dropDownCart(props){
     let {data} = props;
     let total = 0;
@@ -88,12 +89,14 @@ export default function dropDownCart(props){
                 <div 
                     style={{ fontWeight:'bold',justifyContent:'center',width:'100%',display:'flex',padding:"10px 0px"}}
                 >
-                    <span style={{ color:'gray' }}>TẠM TÍNH :  </span>
+                    <span style={{ color:'gray' }}>TẠM TÍNH : </span>
                     <span >{getPriceVND(total)+" đ"}</span>
                 </div>
                 <div>
                     <Button type="primary" style={{ width:'100%',height:40 }}>
+                        <Link to="/cart">
                         Xem giỏ hàng
+                        </Link>
                     </Button>
                     <Button type="primary" style={{ width:'100%',margin:"10px 0px",height:40 }} danger>
                         Thanh toán

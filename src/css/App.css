@@ -34,6 +34,9 @@
   box-shadow: 2px 2px 50px #00000026;
   z-index: 100;
 } */
+.wrapperCart{
+  padding: 10px 20px;
+}
 @media only screen and (max-width:750px){
   .search{
     padding-bottom: 20px;
@@ -41,5 +44,7 @@
   .logo>span{
     display:none;
   }
- 
+  .wrapperCart{
+    padding: 10px 8px;
+  }
 }

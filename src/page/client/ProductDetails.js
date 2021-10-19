@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button,Spin,message,List,notification} from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
-import {Link,useLocation} from 'react-router-dom';
+import {Link,useLocation,useHistory} from 'react-router-dom';
 import * as MENU from '../../util/menuProduct';
 import Product from '../../elements/product';
 import { useDispatch } from 'react-redux';
@@ -21,11 +21,13 @@ export default function ProductDetails(){
     const [dataRelate, setdataRelate] = useState([]);
     const [imageDecription, setimageDecription] = useState();
     const dispatch = useDispatch();
+    const history = useHistory();
     const location = useLocation();
     useEffect(() => {    
         const getDetailProduct = async()=>{
             try {
                 setshowContent(false);
+                setquanity(1);
                 let idProduct = window.location.hash.substring(1);
                 getOption(idProduct);
                 const data = {
@@ -85,7 +87,7 @@ export default function ProductDetails(){
         },1000)
     }
     const btn = (
-        <Button type="primary">
+        <Button type="primary" onClick={()=>{history.push('/cart');notification.close("notifysuccess")}}>
             Đi ngay
         </Button>
     )
@@ -125,7 +127,8 @@ export default function ProductDetails(){
                 message: 'Đặt hàng thành công',
                 description:
                   'Bạn có muốn chuyển đến giỏ hàng ngay bây giờ.',
-                btn
+                btn,
+                key: "notifysuccess"
             });
         },1000)
     }

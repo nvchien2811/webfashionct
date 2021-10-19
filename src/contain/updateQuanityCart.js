@@ -2,6 +2,7 @@ import {updateQuanityProduct,updateCart} from '../redux/reducer/product.reducer'
 import * as FetchAPI from '../util/fetchApi';
 export const updateCartCurrent = async(dispatch)=>{
     const data = localStorage.getItem("cart")
+    // localStorage.removeItem("cart");
     console.log(data)
     if(data===null||data===undefined){
         dispatch(updateQuanityProduct(0))
