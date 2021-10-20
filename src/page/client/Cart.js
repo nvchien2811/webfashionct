@@ -5,12 +5,13 @@ import {getPriceVND} from '../../contain/getPriceVND';
 import * as FetchAPI from '../../util/fetchApi';
 import {updateCartCurrent} from '../../contain/updateQuanityCart';
 import {DeleteOutlined,ArrowLeftOutlined,GiftOutlined} from '@ant-design/icons';
-import {Link} from 'react-router-dom';
+import {Link,useHistory} from 'react-router-dom';
 export default function Cart (){
     const dataCart = useSelector(state=>state.productReducer.cart);
     const dispatch = useDispatch();
     const [totalTmp, settotalTmp] = useState(0);
-
+    const [promoprice, setpromoprice] = useState(0);
+    const history = useHistory();
     useEffect(()=>{
         if(dataCart.length!==undefined){
             let total = 0;
@@ -62,6 +63,9 @@ export default function Cart (){
             updateCartCurrent(dispatch);
         }
         
+    }
+    const handlePayment = ()=>{
+        history.push("/payment");
     }
     const columns  = [
         {
@@ -136,10 +140,10 @@ export default function Cart (){
            </div>
            <div style={{ paddingTop:10,fontSize:16,justifyContent:'space-between',display:'flex' }}>
                <span>Tổng</span>
-               <span style={{ paddingRight:20,fontWeight:'bold' }}>{getPriceVND(totalTmp) +" đ"}</span>
+               <span style={{ paddingRight:20,fontWeight:'bold' }}>{getPriceVND(totalTmp-promoprice) +" đ"}</span>
            </div>
            <div style={{ paddingTop:20,justifyContent:'center',display:'flex' }}>
-           <Button type="primary" danger style={{ width:'80%',height:40 }}>
+           <Button type="primary" danger style={{ width:'80%',height:40 }} onClick={handlePayment}>
                TIẾN HÀNH THANH TOÁN
            </Button>
            </div>

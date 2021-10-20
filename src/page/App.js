@@ -9,6 +9,7 @@ import CategoryProduct from './client/CategoryProduct';
 import Admin from './admin/Admin';
 import Account  from './client/Account'; 
 import Cart from './client/Cart';
+import Payment from './client/Payment';
 import InfoAccount from '../elements/menuAccount';
 import DropDownCart from '../elements/dropDownCart';
 import '../css/App.css';
@@ -19,6 +20,7 @@ import {BiMap} from 'react-icons/bi';
 import { useDispatch,useSelector } from 'react-redux';
 import { getUser} from '../util/getUser';
 import { updateCartCurrent } from '../contain/updateQuanityCart';
+import { updateUser } from '../redux/reducer/user.reducer';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -43,7 +45,7 @@ export default function App() {
     getMenu();
     setshowContent(false); 
     updateQuanityCart();
-    
+    checkUser();
   },[])
   const updateQuanityCart = ()=>{
     updateCartCurrent(dispatch);
@@ -53,6 +55,7 @@ export default function App() {
     const token = localStorage.getItem("token");
     if(token===undefined||token===null){
       setstatusUser(false)
+      dispatch(updateUser({}));
     }
     else{
       setstatusUser(true);
@@ -92,7 +95,6 @@ export default function App() {
       )
       )
       setmenu(item);
-      checkUser();
       setshowContent(true);
     } catch (error) {
       
@@ -190,6 +192,9 @@ export default function App() {
           </Route>
           <Route path="/cart">
             <Cart/>
+          </Route>
+          <Route path="/payment">
+            <Payment />
           </Route>
           <Route path="/admin">
             <Admin/>

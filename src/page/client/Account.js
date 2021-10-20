@@ -12,6 +12,7 @@ export default function Account(props) {
     const [spinning, setspinning] = useState(false);
     const [emailRegister, setemailRegister] = useState("");
     const [continueRegister, setcontinueRegister] = useState(false);
+    const [formLogin] = Form.useForm();
     const dispatch = useDispatch();
     const handleLoginValidation = ()=>{
         setspinning(true);
@@ -30,7 +31,10 @@ export default function Account(props) {
         }else if(res.msg==="Success"){
             localStorage.setItem("token",res.token);
             finish(res.token);
-            message.success("Đăng nhập thành công !")
+            message.success("Đăng nhập thành công !");
+            formLogin.setFieldsValue({username:"",password:""})
+            setusername("");
+            setpassword("");
         }
         setspinning(false);
     }
@@ -53,7 +57,12 @@ export default function Account(props) {
         setcontinueRegister(true)
     }
     const Login = ()=>(
-        <Form style={{ paddingBottom:40 }} onFinish={handleLoginValidation} scrollToFirstError>
+        <Form 
+            style={{ paddingBottom:40 }} 
+            onFinish={handleLoginValidation} 
+            form={formLogin}
+            scrollToFirstError
+        >
             <p style={{ fontSize:18,fontWeight:'bold' }}>ĐĂNG NHẬP</p>
             <p style={{ fontSize:16,fontWeight:'bold' }}>Tên tài khoản hoặc email đăng nhập *</p>
             <Form.Item

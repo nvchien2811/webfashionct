@@ -107,7 +107,7 @@ export default function ProductDetails(){
                 //setNewQuanity
                 let newQuanity = objDataOut[index].quanity+quanity;
                 if(newQuanity>option[1]){
-                    message.warning('Sản phẩm chỉ còn '+objDataOut[index].quanity+", vui lòng chọn kiểm tra lại");
+                    message.warning('Sản phẩm chỉ còn '+option[1]+", vui lòng chọn kiểm tra lại");
                     setbuttonLoading(false);
                     return;
                 }else{
