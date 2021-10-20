@@ -115,7 +115,7 @@ export default function Payment (props){
     const InformationPayment = ()=>(
        <div style={{ padding:20 }}>
            <div style={{ display:'flex',flexDirection:'column' }}>
-           <span >Bạn có mã khuyển mãi? <Link to="/cart">Quay lại</Link> giỏ hàng để nhập nó </span>
+           <span >Bạn có mã khuyển mãi? <Link to="/cart">Quay lại</Link> giỏ hàng để nhận được khuyển mãi ! </span>
            </div>
            <h2>THÔNG TIN THANH TOÁN</h2>
             <Form.Item
@@ -229,7 +229,7 @@ export default function Payment (props){
                 onChange= {(e)=>setmethodPayment(e.target.value)}
                 horizontal
             >
-            <Space direction="vertical">
+            <Space direction="verticSpaceal">
                 <Radio value={1}><b>Chuyển khoản ngân hàng</b> <br/>
                     {methodPayment===1 ? <span>{textMethodBank}</span>:null}
                 </Radio>

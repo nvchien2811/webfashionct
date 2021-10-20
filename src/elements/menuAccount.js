@@ -1,6 +1,6 @@
 
 import {Menu,message} from 'antd';
-
+import {Link} from 'react-router-dom';
 export default function menuAccount (props){
     const key = 'updatable';
     const {name} = props.data;
@@ -18,7 +18,9 @@ export default function menuAccount (props){
                 Bảng điều khiển
             </Menu.Item>
             <Menu.Item key="bill" >
+                <Link to="/billfollow">
                 Đơn hàng
+                </Link>
             </Menu.Item>
             <Menu.Item key="profile" >
                 {"Thông tin tài khoản ("+name+")" }

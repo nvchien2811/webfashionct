@@ -10,7 +10,6 @@ export default function dropDownCart(props){
         const dataOut = localStorage.getItem("cart");
         let objDataOut = JSON.parse(dataOut);
         if(objDataOut.length===1){
-            console.log("hihihi")
             localStorage.removeItem("cart");
             props.update();
         }else{
@@ -99,7 +98,9 @@ export default function dropDownCart(props){
                         </Link>
                     </Button>
                     <Button type="primary" style={{ width:'100%',margin:"10px 0px",height:40 }} danger>
+                        <Link to="/payment">
                         Thanh toán
+                        </Link>
                     </Button>
                 </div>
             </div>

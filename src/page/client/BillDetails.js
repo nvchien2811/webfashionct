@@ -1,0 +1,161 @@
+import React ,{useEffect,useState}from 'react'; 
+import { PageHeader,Table,Row,Col,Space,Card ,Button} from 'antd';
+import { useHistory } from 'react-router';
+import * as FetchAPI from '../../util/fetchApi';
+import {getPriceVND} from '../../contain/getPriceVND';
+import Spinner from '../../elements/spinner';
+import { useSelector } from 'react-redux';
+export default function BillDetails(){
+    const history = useHistory();
+    const [dataProduct, setdataProduct] = useState();
+    const [dataBill, setdataBill] = useState();
+    const [totalTmp, settotalTmp] = useState(0);
+    const [showContent, setshowContent] = useState(false);
+    const currentUser = useSelector(state=>state.userReducer.currentUser);
+    const [statusUser, setstatusUser] = useState(false);
+    useEffect(()=>{
+        setstatusUser(false);
+        setshowContent(false)
+        getProduct();
+        getInforPayment();
+    },[currentUser])
+    const getProduct = async()=>{
+        const idBill =  window.location.hash.substring(1);
+        const data = {"idOrder":idBill}
+        const product = await FetchAPI.postDataAPI('/order/getProductByIdBill',data);
+        if(product!==undefined){
+            let total = 0;
+            product.map((e,index)=>{
+                total+= e.price*e.quanity;
+                if(index===product.length-1){
+                    settotalTmp(total);
+                }
+            })
+        }
+        setdataProduct(product);
+    }
+    const getInforPayment = async()=>{
+        const idBill =  window.location.hash.substring(1);
+        const data = {"idOrder":idBill}
+        const bill = await FetchAPI.postDataAPI('/order/getBillById',data);
+        if(currentUser.id===undefined){
+            setstatusUser(false)
+        }else{
+            if(currentUser.id===bill[0].idUser){
+                setstatusUser(true)
+            }
+        }
+        setdataBill(bill[0])
+        setshowContent(true)
+    }
+    const columns  = [
+        {
+            title:"Sản phẩm",
+            key:'product',
+            render : record=>{
+                return(
+                    <div>
+                        <span>{record.name_product+" ( "+record.size +" )"}</span>
+                        <span style={{ paddingLeft:20,fontWeight:'bold' }}>{"X" +record.quanity}</span>
+                    </div>
+                )
+            }
+        },
+        {
+            title:"Tổng",
+            key:'total_price',
+            render: record=>{
+                return <span>{getPriceVND(record.price*record.quanity) +" đ"}</span>
+            }
+        }
+    ]
+    const ViewProduct = ()=>(
+        <Table 
+            columns={columns}
+            dataSource={dataProduct}
+            pagination={false} 
+            size="small"
+            summary={()=>(
+                <Table.Summary>
+                    <Table.Summary.Row>
+                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}>{getPriceVND(totalTmp)+" đ"}</Table.Summary.Cell>
+                    </Table.Summary.Row>
+                </Table.Summary>
+        )}
+        />      
+    )
+    const getTextStatus = (a)=>{
+        if(a===0){
+            return <b>Đang xử lý</b>
+        }else if(a===1){
+            return <b>Đang giao hàng</b>
+        }else{
+            return <b>Đã hoàn thành</b>
+        }
+    }
+    return(
+        <div style={{ minHeight:450 }}>
+            {showContent ?
+            <div>
+            {statusUser ?
+            <div>
+                
+            <PageHeader
+                className="site-page-header"
+                onBack={() => history.goBack()}
+                title="Chi tiết đơn hàng"
+                subTitle={"Mã đơn hàng: #"+dataBill.id}
+            />
+            <Row>
+            <Col lg={14} xs={24} style={{ padding:"20px 40px" }} >
+                {ViewProduct()}
+                <Card title="Địa chỉ thanh toán" style={{ marginTop:30 }}>
+                <div style={{ fontSize:16 }}>
+                <Space direction="vertical" size={20}>
+                    <span><b>Tên: </b>{dataBill.name}</span>
+                    <span><b>Địa chỉ: </b>{dataBill.address}</span>
+                    <span><b>Email: </b>{dataBill.email}</span>
+                    <span><b>Số điện thoại: </b>{dataBill.phone} </span>
+                </Space>
+                </div>
+                </Card>
+            </Col>
+            <Col lg={10} xs={24} style={{ justifyContent:'center',display:'flex' }}>
+                <Card title="Cảm ơn bạn. Đơn hàng đã được nhận." style={{ marginTop:20,width:'80%' }}>
+                <ul>
+                    <Space size={10} direction="vertical">
+                        <li>Mã đơn hàng : <b>{"#"+dataBill.id}</b></li>
+                        <li>Ngày đặt: <b>{new Date(dataBill.create_at).toString()}</b></li>
+                        <li>Email : <b>{dataBill.email}</b></li>
+                        <li>Tổng cộng : <b>{getPriceVND(totalTmp)+" đ"}</b></li>
+                        <li>Thời gian cập nhật hóa đơn: <b>{new Date(dataBill.update_at).toString()}</b></li>
+                        <li>Phương thức thanh toán: 
+                            <b>{dataBill.methodPayment===1 ? "Chuyển khoản ngân hàng":"Trả tiền mặt"}</b>
+                        </li>
+                        <li>
+                            Tình trạng : {getTextStatus(dataBill.status)}
+                        </li>
+                        <div>
+                            <Button type="primary" danger disabled={dataBill.status!==0}>
+                                Hủy đơn
+                            </Button>
+                        </div>
+                    </Space>
+                </ul>
+                </Card>
+            </Col>
+            </Row> 
+            </div>
+            :
+            <div style={{ padding:"20px 40px" }}>
+                <span style={{ fontWeight:'bold' }}>Bạn không có quyền truy cập hóa đơn này...</span>
+            </div>
+            }
+            </div>
+            :
+            <Spinner spinning={!showContent}/>
+            }
+        </div>
+    )
+}

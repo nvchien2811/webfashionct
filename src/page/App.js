@@ -10,7 +10,9 @@ import Admin from './admin/Admin';
 import Account  from './client/Account'; 
 import Cart from './client/Cart';
 import Payment from './client/Payment';
+import BillFollow from './client/BillFollow';
 import InfoAccount from '../elements/menuAccount';
+import BillDetails from './client/BillDetails';
 import DropDownCart from '../elements/dropDownCart';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory} from "react-router-dom";
@@ -195,6 +197,12 @@ export default function App() {
           </Route>
           <Route path="/payment">
             <Payment />
+          </Route>
+          <Route path="/billfollow">
+            <BillFollow />
+          </Route>
+          <Route path="/billdetails">
+            <BillDetails/>
           </Route>
           <Route path="/admin">
             <Admin/>

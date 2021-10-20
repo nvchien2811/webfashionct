@@ -51,8 +51,8 @@ module.exports.addBill = (req,res)=>{
                 }
                 const size = item.option;
                 const quanity = item.quanity;
-                const data = [code_order,idProduct,quanity,price,size];
-                const sql_Order_Details = "INSERT INTO `order_details` (`idOrder`,`idProduct`,`quanity`,`price`,`size`) VALUES (?,?,?,?,?)";
+                const data = [code_order,idProduct,item[0].name,quanity,price,size];
+                const sql_Order_Details = "INSERT INTO `order_details` (`idOrder`,`idProduct`,`name_product`,`quanity`,`price`,`size`) VALUES (?,?,?,?,?,?)";
                 db.query(sql_Order_Details,data,(err)=>{
                     if(err){
                         return res.json({msg:err});
@@ -71,6 +71,39 @@ module.exports.addBill = (req,res)=>{
                     }
                 })
             })  
+        }
+    })
+}
+module.exports.getBillByIdUser = (req,res)=>{
+    const {idUser} = req.body;
+    const sql = "SELECT * FROM `order` WHERE idUser = ?";
+    db.query(sql,[idUser],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json(rows)
+        }
+    })
+}
+module.exports.getBillById = (req,res)=>{
+    const {idOrder} = req.body;
+    const sql = "SELECT * FROM `order` WHERE code_order = ?";
+    db.query(sql,[idOrder],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json(rows)
+        }
+    })
+}
+module.exports.getProductByIdBill = (req,res)=>{
+    const {idOrder} = req.body;
+    const sql = "SELECT * FROM `order_details` WHERE idOrder = ?";
+    db.query(sql,[idOrder],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json(rows)
         }
     })
 }
