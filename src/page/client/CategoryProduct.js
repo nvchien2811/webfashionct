@@ -1,7 +1,7 @@
 import React ,{useEffect,useState} from 'react';
 import * as MENU from '../../util/menuProduct';
 import * as FetchAPI from '../../util/fetchApi';
-import {useLocation,Link} from 'react-router-dom';
+import {useLocation,Link,useParams} from 'react-router-dom';
 import {Row,Col,Empty,Breadcrumb} from 'antd';
 import Product from '../../elements/product';
 import Spinner from '../../elements/spinner';
@@ -10,14 +10,15 @@ export default function CategoryProduct(){
     const [showContent, setshowContent] = useState(false);
     const [nameCategory, setnameCategory] = useState("");
     const [empty, setempty] = useState(false);
+    const {id} = useParams();
     const location = useLocation();
     useEffect(()=>{
         setshowContent(false);
         getCategory();
     },[location])
     const getCategory = async()=>{
-        const idCategory = window.location.hash.substring(1);
-        const category = await MENU.getCategoryById({"id":idCategory});
+        // const idCategory = window.location.hash.substring(1);
+        const category = await MENU.getCategoryById({"id":id});
         setnameCategory(category.name);
         const data = {"id":category.id}
         const product = await FetchAPI.postDataAPI('/product/getProductByCategory',data);

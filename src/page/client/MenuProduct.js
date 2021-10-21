@@ -1,7 +1,7 @@
 import React ,{useEffect,useState} from 'react';
 import {Breadcrumb,Col,Row,Empty} from 'antd';
 import * as MENU from '../../util/menuProduct';
-import {Link,useLocation} from 'react-router-dom';
+import {Link,useLocation,useParams} from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Product from '../../elements/product';
 import '../../css/Product.css';
@@ -13,12 +13,12 @@ export default function MenuProduct(){
     const [nameProductType, setnameProductType] = useState("");
     const [dataProduct, setdataProduct] = useState([]);
     const [empty, setempty] = useState(false);
+    const {idProductType} = useParams();
     const location = useLocation();
     useEffect(()=>{
         setshowContent(false);
         const getMenu = async()=>{
             try {
-                const idProductType = window.location.hash.substring(1); 
                 const product_type = await MENU.getPrductTypeById({"id":idProductType});
                 setnameProductType(product_type.name)
                 setidCategory(product_type.idCategory)

@@ -81,7 +81,7 @@ export default function BillFollow (){
             render:(record)=>{
                return (
                <Button>
-                   <Link to={`/billdetails/#${record.code_order}`}>
+                   <Link to={`/billdetails/${record.code_order}`}>
                         Chi tiết
                    </Link>
                 </Button>

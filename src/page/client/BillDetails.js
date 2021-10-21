@@ -1,10 +1,10 @@
 import React ,{useEffect,useState}from 'react'; 
 import { PageHeader,Table,Row,Col,Space,Card ,Button} from 'antd';
-import { useHistory } from 'react-router';
 import * as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import Spinner from '../../elements/spinner';
 import { useSelector } from 'react-redux';
+import { useParams,useHistory } from 'react-router-dom';
 export default function BillDetails(){
     const history = useHistory();
     const [dataProduct, setdataProduct] = useState();
@@ -15,14 +15,16 @@ export default function BillDetails(){
     const [dataSale, setdataSale] = useState();
     const currentUser = useSelector(state=>state.userReducer.currentUser);
     const [statusUser, setstatusUser] = useState(false);
+    const {idBill} = useParams();
+
     useEffect(()=>{
+        console.log(idBill)
         setstatusUser(false);
         setshowContent(false)
         getProduct();
         getInforPayment();
     },[currentUser])
     const getProduct = async()=>{
-        const idBill =  window.location.hash.substring(1);
         const data = {"idOrder":idBill}
         const product = await FetchAPI.postDataAPI('/order/getProductByIdBill',data);
         if(product!==undefined){
@@ -37,7 +39,6 @@ export default function BillDetails(){
         setdataProduct(product);
     }
     const getInforPayment = async()=>{
-        const idBill =  window.location.hash.substring(1);
         const data = {"idOrder":idBill}
         const bill = await FetchAPI.postDataAPI('/order/getBillById',data);
         if(currentUser.id===undefined){

@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import {Image,Row,Col,Breadcrumb,Rate,InputNumber,Select ,Button,Spin,message,List,notification} from 'antd';
 import *as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
-import {Link,useLocation,useHistory} from 'react-router-dom';
+import {Link,useLocation,useHistory,useParams} from 'react-router-dom';
 import * as MENU from '../../util/menuProduct';
 import Product from '../../elements/product';
 import { useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ export default function ProductDetails(){
     const [outOfStock, setoutOfStock] = useState(false);
     const [dataRelate, setdataRelate] = useState([]);
     const [imageDecription, setimageDecription] = useState();
+    const {idProduct} = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -28,7 +29,6 @@ export default function ProductDetails(){
             try {
                 setshowContent(false);
                 setquanity(1);
-                let idProduct = window.location.hash.substring(1);
                 getOption(idProduct);
                 const data = {
                     "id":idProduct

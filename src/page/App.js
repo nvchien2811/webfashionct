@@ -15,7 +15,7 @@ import InfoAccount from '../elements/menuAccount';
 import BillDetails from './client/BillDetails';
 import DropDownCart from '../elements/dropDownCart';
 import '../css/App.css';
-import {Switch,Route, Link,useHistory} from "react-router-dom";
+import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
 import {BiMap} from 'react-icons/bi';
@@ -81,11 +81,11 @@ export default function App() {
       const res2 = await FetchAPI.getAPI("/product/getProductType");
       res.map((category)=>(
         item.push(
-          <SubMenu key={category.slug} title={category.name} onTitleClick={()=>history.push(`/category/id#${category.id}`)}>
+          <SubMenu key={category.slug} title={category.name} onTitleClick={()=>history.push(`/category/${category.id}`)}>
               {res2.map((item)=>{
                   if(item.idCategory===category.id){
                     const localmenu = {
-                      pathname:`/menuproduct/id#${item.id}`
+                      pathname:`/menuproduct/${item.id}`
                     }
                     return(
                       <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
@@ -183,13 +183,13 @@ export default function App() {
           <Route path="/home">
             <Home />
           </Route>
-          <Route path="/menuproduct">
+          <Route path="/menuproduct/:idProductType">
             <MenuProduct/>
           </Route>
-          <Route path="/category">
+          <Route path="/category/:id">
             <CategoryProduct/>
           </Route>
-          <Route path="/product">
+          <Route path="/product/:idProduct">
             <ProductDetails/>
           </Route>
           <Route path="/cart">
@@ -201,12 +201,13 @@ export default function App() {
           <Route path="/billfollow">
             <BillFollow />
           </Route>
-          <Route path="/billdetails">
+          <Route path="/billdetails/:idBill">
             <BillDetails/>
           </Route>
           <Route path="/admin">
             <Admin/>
           </Route>
+          <Redirect to="/home" />
           <Route path="/">
             <Home />
           </Route>

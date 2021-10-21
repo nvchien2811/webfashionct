@@ -7,7 +7,7 @@ export default function product(props){
     const {image,name,price,id,promotional} = props.item;
     const s = Math.round((price - promotional)/price*100);
     const path={
-        pathname:`/product/id#${id}`
+        pathname:`/product/${id}`
     }
     const hanldeShowPrice = ()=>{
         if(promotional===null){
