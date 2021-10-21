@@ -27,14 +27,14 @@ module.exports.getProductByCart = (req,res)=>{
 }
 
 module.exports.addBill = (req,res)=>{
-    let {name,address,email,phone,total_price,message,dataProduct,methodPayment,user} =req.body;
+    let {name,address,email,phone,total_price,message,dataProduct,methodPayment,user,idSale} =req.body;
     if(user===""){
         user=null;
     }
     const code_order = "order_"+uuid.v4()
     const status = 0;
-    const values = [code_order,user,name,address,email,phone,total_price,message,status,methodPayment];
-    const sql_Order = "INSERT INTO `order` (`code_order`,`idUser`, `name`,`address`,`email`,`phone`,`total_price`,`message`,`status`,`method_payment`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    const values = [code_order,user,name,address,email,phone,total_price,message,status,methodPayment,idSale];
+    const sql_Order = "INSERT INTO `order` (`code_order`,`idUser`, `name`,`address`,`email`,`phone`,`total_price`,`message`,`status`,`method_payment`,`idSale`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     db.query(sql_Order,values,(err,rows,fields)=>{
         if(err){
             return res.json({msg:err});
@@ -57,21 +57,38 @@ module.exports.addBill = (req,res)=>{
                     if(err){
                         return res.json({msg:err});
                     }
-                    const sql_get_Inventory = "SELECT sold FROM inventory WHERE idProduct = ? AND size = ? ";
-                    db.query(sql_get_Inventory,[idProduct,size],(err,rows)=>{
-                        if(err){
-                            return res.json({msg:err});
-                        }
-                        const new_sold = rows[0].sold+quanity;
-                        const sql_add_sold = "UPDATE inventory SET sold = ? WHERE idProduct = ? AND size = ?"
-                        db.query(sql_add_sold,[new_sold,idProduct,size])
-                    })
+                    hanldeEditQuanityInventory(idProduct,size,quanity);
+                    if(idSale!==null){
+                        handleEditSale(idSale)
+                    }
                     if(index==dataProduct.length-1){
                         return res.json({msg:"success"})
                     }
                 })
             })  
         }
+    })
+}
+const hanldeEditQuanityInventory =(idProduct,size,quanity)=>{
+    const sql_get_Inventory = "SELECT sold FROM inventory WHERE idProduct = ? AND size = ? ";
+    db.query(sql_get_Inventory,[idProduct,size],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }
+        const new_sold = rows[0].sold+quanity;
+        const sql_add_sold = "UPDATE inventory SET sold = ? WHERE idProduct = ? AND size = ?"
+        db.query(sql_add_sold,[new_sold,idProduct,size])
+    })
+}
+const handleEditSale = (idSale)=>{
+    const sql_get_Quanity = "SELECT used FROM sale WHERE id = ? ";
+    db.query(sql_get_Quanity,[idSale],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }
+        const new_used = rows[0].used+1;
+        const sql_add_used = "UPDATE sale SET used = ? WHERE id = ? "
+        db.query(sql_add_used,[new_used,idSale])
     })
 }
 module.exports.getBillByIdUser = (req,res)=>{

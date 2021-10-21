@@ -11,6 +11,8 @@ export default function BillDetails(){
     const [dataBill, setdataBill] = useState();
     const [totalTmp, settotalTmp] = useState(0);
     const [showContent, setshowContent] = useState(false);
+    const [promotionprice, setpromotionprice] = useState(0);
+    const [dataSale, setdataSale] = useState();
     const currentUser = useSelector(state=>state.userReducer.currentUser);
     const [statusUser, setstatusUser] = useState(false);
     useEffect(()=>{
@@ -46,7 +48,17 @@ export default function BillDetails(){
             }
         }
         setdataBill(bill[0])
+        if(bill[0].idSale!==null){
+            getSale(bill[0].idSale);
+        }
         setshowContent(true)
+    }
+    const getSale = async(idSale)=>{
+        const res = await FetchAPI.postDataAPI("/order/getSaleById",{"idSale":idSale})
+        if(res!==undefined){
+            setdataSale(res[0])
+            setpromotionprice(res[0].cost_sale)
+        }
     }
     const columns  = [
         {
@@ -78,8 +90,18 @@ export default function BillDetails(){
             summary={()=>(
                 <Table.Summary>
                     <Table.Summary.Row>
-                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
+                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tạm tính</span></Table.Summary.Cell>
                         <Table.Summary.Cell index={1}>{getPriceVND(totalTmp)+" đ"}</Table.Summary.Cell>
+                    </Table.Summary.Row>
+                    {dataSale !== undefined &&
+                        <Table.Summary.Row>
+                            <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Mã khuyến mãi</span></Table.Summary.Cell>
+                            <Table.Summary.Cell index={1}>{"-"+getPriceVND(promotionprice)+" đ"}</Table.Summary.Cell>
+                        </Table.Summary.Row>
+                    }
+                    <Table.Summary.Row>
+                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promotionprice)+" đ"}</Table.Summary.Cell>
                     </Table.Summary.Row>
                 </Table.Summary>
         )}

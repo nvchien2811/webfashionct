@@ -11,6 +11,8 @@ export default function Cart (){
     const dispatch = useDispatch();
     const [totalTmp, settotalTmp] = useState(0);
     const [promoprice, setpromoprice] = useState(0);
+    const [dataSale, setdataSale] = useState();
+    const [codeSale, setcodeSale] = useState("");
     const history = useHistory();
     useEffect(()=>{
         if(dataCart.length!==undefined){
@@ -65,7 +67,47 @@ export default function Cart (){
         
     }
     const handlePayment = ()=>{
-        history.push("/payment");
+        history.push({
+            pathname:'/payment',
+            dataSale:dataSale
+        });
+    }
+    const handleValidationCodeSale = async()=>{
+        if(codeSale===""){
+            message.warning("Bạn chưa nhập mã ưu đãi !")
+        }else{
+            const res = await FetchAPI.postDataAPI("/order/getSaleByCode",{"code":codeSale.toUpperCase()})
+            if(res.msg){
+                if(res.msg==="Sale not exist"){
+                    message.warning("Mã này không tồn tại!")
+                }
+            }else if(res!==undefined){
+                handleCodeSale(res[0])
+            }
+        }
+    }
+    const handleCodeSale = (data)=>{
+        const currentTime = Date.now();
+        const timeStart = new Date(data.date_start);
+        const timeExpired = new Date(data.expired);
+        if(currentTime<timeStart){
+            message.warning("Thời gian sự kiện chưa bắt đầu !")
+        }else if(currentTime>timeExpired){
+            message.warning("Sự kiện đã kết thúc !")
+        }else if(data.quanity-data.used===0){
+            message.warning("Số lượng mã này đã hết !")
+        }
+        else{
+            setdataSale(data);
+            setpromoprice(data.cost_sale);
+            setcodeSale("");
+            message.success(
+                "Bạn đã áp dụng mã "+data.code_sale+ 
+                " của sự kiện "+data.name_event_sale+
+                " được giảm giá "+getPriceVND(data.cost_sale)+" đ"
+            )
+        }
+      
     }
     const columns  = [
         {
@@ -142,6 +184,14 @@ export default function Cart (){
                <span>Tổng</span>
                <span style={{ paddingRight:20,fontWeight:'bold' }}>{getPriceVND(totalTmp-promoprice) +" đ"}</span>
            </div>
+           {dataSale!==undefined &&
+            <div style={{ paddingTop:10,display:'flex',justifyContent:'space-between' }}>
+                <div>
+                <span>Mã giảm giá : {dataSale.code_sale}</span>
+                </div>
+                <span style={{ paddingRight:20 }}><b>{getPriceVND(dataSale.cost_sale) +" đ"}</b></span>
+            </div>
+           }
            <div style={{ paddingTop:20,justifyContent:'center',display:'flex' }}>
            <Button type="primary" danger style={{ width:'80%',height:40 }} onClick={handlePayment}>
                TIẾN HÀNH THANH TOÁN
@@ -155,8 +205,11 @@ export default function Cart (){
                 <Input 
                     placeholder="Mã ưu đãi"
                     style={{width:'80%',height:40}}
+                    value={codeSale}
+                    defaultValue={codeSale}
+                    onChange= {(e)=>setcodeSale(e.target.value)}
                 />
-                <Button style={{ width:'80%',height:40,marginTop:10 }}>
+                <Button style={{ width:'80%',height:40,marginTop:10 }} onClick={handleValidationCodeSale}>
                     ÁP DỤNG
                 </Button>
                 </div>

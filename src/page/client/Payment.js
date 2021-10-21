@@ -2,7 +2,7 @@ import React ,{useEffect,useState}from 'react';
 import {Row,Col,Form,Input,Button,Table,Radio,Space,Result } from "antd";
 import { useSelector,useDispatch } from 'react-redux';
 import {getPriceVND} from '../../contain/getPriceVND';
-import {Link} from 'react-router-dom';
+import {Link,useLocation} from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import {updateCartCurrent} from '../../contain/updateQuanityCart';
 export default function Payment (props){
@@ -16,15 +16,21 @@ export default function Payment (props){
     const [promoprice, setpromoprice] = useState(0);
     const dataCart = useSelector(state=>state.productReducer.cart);
     const datauser = useSelector(state=>state.userReducer.currentUser);
+    const [dataSale, setdataSale] = useState();
     const dispatch = useDispatch();
     const [showUser, setshowUser] = useState(false);
     const [methodPayment, setmethodPayment] = useState(1);
     const [form] = Form.useForm();
     const [paymentSucess, setpaymentSucess] = useState(false);
     const textMethodBank = "Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ đươc giao sau khi tiền đã chuyển."
+    const location = useLocation();
     useEffect(()=>{
         setpaymentSucess(false)
         setshowUser(false)
+        if(location.dataSale!==undefined){
+            setdataSale(location.dataSale)
+            setpromoprice(location.dataSale.cost_sale)
+        }
         if(dataCart.length!==undefined){
             let total = 0;
             dataCart.map((e,index)=>{
@@ -63,17 +69,23 @@ export default function Payment (props){
         }
     }
     const handleOrder = async()=>{
-        console.log(idUser)
+        let idSale = null;
+        let total = totalTmp;
+        if(dataSale!== undefined){
+            idSale = dataSale.id
+            total = total-dataSale.cost_sale
+        }
         const data = {
             "name": name,
             "address": address,
             "email" : email,
             "phone" : phone,
-            "total_price":totalTmp,
+            "total_price":total,
             "message":message,
             "dataProduct":dataCart,
             "methodPayment":methodPayment,
             "user": idUser,
+            "idSale":idSale,
         }
         const res = await FetchAPI.postDataAPI("/order/addBill",data);
         if(res.msg){
@@ -115,7 +127,9 @@ export default function Payment (props){
     const InformationPayment = ()=>(
        <div style={{ padding:20 }}>
            <div style={{ display:'flex',flexDirection:'column' }}>
-           <span >Bạn có mã khuyển mãi? <Link to="/cart">Quay lại</Link> giỏ hàng để nhận được khuyển mãi ! </span>
+            {dataSale===undefined &&
+                <span >Bạn có mã khuyển mãi? <Link to="/cart">Quay lại</Link> giỏ hàng để nhận được khuyển mãi ! </span>
+            }
            </div>
            <h2>THÔNG TIN THANH TOÁN</h2>
             <Form.Item
@@ -217,8 +231,18 @@ export default function Payment (props){
                 summary={()=>(
                     <Table.Summary>
                         <Table.Summary.Row>
-                            <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
+                            <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tạm tính</span></Table.Summary.Cell>
                             <Table.Summary.Cell index={1}>{getPriceVND(totalTmp)+" đ"}</Table.Summary.Cell>
+                        </Table.Summary.Row>
+                        {dataSale !== undefined &&
+                        <Table.Summary.Row>
+                            <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Mã khuyến mãi</span></Table.Summary.Cell>
+                            <Table.Summary.Cell index={1}>{"-"+getPriceVND(promoprice)+" đ"}</Table.Summary.Cell>
+                        </Table.Summary.Row>
+                        }
+                        <Table.Summary.Row>
+                            <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
+                            <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promoprice)+" đ"}</Table.Summary.Cell>
                         </Table.Summary.Row>
                     </Table.Summary>
             )}/>
@@ -229,7 +253,7 @@ export default function Payment (props){
                 onChange= {(e)=>setmethodPayment(e.target.value)}
                 horizontal
             >
-            <Space direction="verticSpaceal">
+            <Space direction="vertical">
                 <Radio value={1}><b>Chuyển khoản ngân hàng</b> <br/>
                     {methodPayment===1 ? <span>{textMethodBank}</span>:null}
                 </Radio>

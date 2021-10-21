@@ -91,17 +91,23 @@ export default function BillFollow (){
     ]
     const TabContent = ()=>{
         let dataTmp = [];
-        if(keyTab==="1"){
-            dataTmp = fullData;
-        }
-        if(keyTab==="2"){
-            dataTmp = fullData.filter(e=>e.status==0)
-        }
-        if(keyTab==="3"){
-            dataTmp = fullData.filter(e=>e.status==1) 
-        }
-        if(keyTab==="4"){
-            dataTmp = fullData.filter(e=>e.status==2) 
+        if(fullData!==undefined){
+            if(keyTab==="1"){
+                dataTmp = fullData.filter(e=>e.status!==4);
+            }
+            if(keyTab==="2"){
+                dataTmp = fullData.filter(e=>e.status==0)
+            }
+            if(keyTab==="3"){
+                dataTmp = fullData.filter(e=>e.status==1) 
+            }
+            if(keyTab==="4"){
+                dataTmp = fullData.filter(e=>e.status==2) 
+            }
+            //sort by date soon as soon
+            dataTmp.sort(function(a,b){
+                return new Date(b.create_at) - new Date(a.create_at);
+            });
         }
         return(
             <div className="wrapperTableBill">
