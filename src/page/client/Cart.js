@@ -26,6 +26,7 @@ export default function Cart (){
                 if(index===dataCart.length-1){
                     settotalTmp(total)
                 }
+                return false;
             })
         }   
     },[dataCart])
@@ -47,6 +48,7 @@ export default function Cart (){
                 }else{
                     objDataOut[postition].quanity = e;
                 }
+    
             }
         })
         localStorage.setItem("cart",JSON.stringify(objDataOut));
@@ -189,7 +191,7 @@ export default function Cart (){
                 <div>
                 <span>Mã giảm giá : {dataSale.code_sale}</span>
                 </div>
-                <span style={{ paddingRight:20 }}><b>{getPriceVND(dataSale.cost_sale) +" đ"}</b></span>
+                <span style={{ paddingRight:20 }}><b>{"-"+getPriceVND(dataSale.cost_sale) +" đ"}</b></span>
             </div>
            }
            <div style={{ paddingTop:20,justifyContent:'center',display:'flex' }}>

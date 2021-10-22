@@ -42,6 +42,7 @@ export default function Payment (props){
                 if(index===dataCart.length-1){
                     settotalTmp(total)
                 }
+                return false
             })
         }  
         getUser(); 
@@ -329,7 +330,11 @@ export default function Payment (props){
                     Tiếp tục đặt sản phẩm
                     </Link>
                 </Button>,
-                <Button >Theo dõi đơn hàng</Button>,
+                <Button >
+                    <Link to="/billfollow">
+                    Theo dõi đơn hàng
+                    </Link>
+                </Button>,
             ]}
           />
             :

@@ -139,7 +139,15 @@ export default function ProductDetails(){
         if(res.length===0){
             setoutOfStock(true);
         }else{
-            setoutOfStock(false);
+            let totalquanity = 0;
+            res.map((e)=>[
+                totalquanity+=(e.quanity-e.sold)
+            ])
+            if(totalquanity===0){
+                setoutOfStock(true)
+            }else{
+                setoutOfStock(false);
+            }
         }
         res.map((item)=>(
             i.push(
@@ -152,7 +160,7 @@ export default function ProductDetails(){
     }
     const ItemProductRelate = dataRelate.map((item)=>{
         return(
-            <Col style={{display:'flex', justifyContent:'center' }} style={{ width:350,padding:"10px 10px" }}>
+            <Col style={{display:'flex', justifyContent:'center',width:350,padding:"10px 10px" }}>
                 <Product
                     item={item}
                 />

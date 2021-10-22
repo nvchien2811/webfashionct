@@ -34,6 +34,7 @@ export default function BillDetails(){
                 if(index===product.length-1){
                     settotalTmp(total);
                 }
+                return false;
             })
         }
         setdataProduct(product);
@@ -104,6 +105,14 @@ export default function BillDetails(){
                         <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
                         <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promotionprice)+" đ"}</Table.Summary.Cell>
                     </Table.Summary.Row>
+                    {dataBill.status===2 &&
+                    <Table.Summary.Row>
+                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Đánh giá sản phẩm</span></Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}>
+                            <Button>Đánh giá ngay</Button>
+                        </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                    }
                 </Table.Summary>
         )}
         />      

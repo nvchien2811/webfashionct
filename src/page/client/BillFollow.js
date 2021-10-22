@@ -111,7 +111,11 @@ export default function BillFollow (){
         }
         return(
             <div className="wrapperTableBill">
-                <Table columns={columns} dataSource={dataTmp} size="small"/>
+                <Table 
+                    columns={columns} 
+                    dataSource={dataTmp} 
+                    size="small"
+                    locale={{ emptyText:"Bạn chưa có đơn hàng nào" }}/>
             </div>
         )
     }

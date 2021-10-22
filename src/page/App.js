@@ -52,7 +52,7 @@ export default function App() {
   const updateQuanityCart = ()=>{
     updateCartCurrent(dispatch);
   }
- 
+
   const checkUser = async()=>{
     const token = localStorage.getItem("token");
     if(token===undefined||token===null){
@@ -90,7 +90,8 @@ export default function App() {
                     return(
                       <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
                     )
-                  }   
+                  }
+                  return false;   
               })}
           </SubMenu>
         )
