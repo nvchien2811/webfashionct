@@ -12,4 +12,6 @@ router.post('/getProductByType',controller.getProductByType);
 router.post('/getProductByCategory',controller.getProductByCategory);
 router.post('/getProductInventory',controller.getProductInventory);
 
+router.get('/getProductNew/:page',controller.getProductNew);
+router.get('/getProductDeal/:page',controller.getProductDeal);
 module.exports = router;

@@ -96,13 +96,13 @@ export default function BillFollow (){
                 dataTmp = fullData.filter(e=>e.status!==4);
             }
             if(keyTab==="2"){
-                dataTmp = fullData.filter(e=>e.status==0)
+                dataTmp = fullData.filter(e=>e.status===0)
             }
             if(keyTab==="3"){
-                dataTmp = fullData.filter(e=>e.status==1) 
+                dataTmp = fullData.filter(e=>e.status===1) 
             }
             if(keyTab==="4"){
-                dataTmp = fullData.filter(e=>e.status==2) 
+                dataTmp = fullData.filter(e=>e.status===2) 
             }
             //sort by date soon as soon
             dataTmp.sort(function(a,b){
