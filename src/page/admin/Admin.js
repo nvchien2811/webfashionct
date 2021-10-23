@@ -1,12 +1,15 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useLayoutEffect} from 'react';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {Layout,Menu,Image,message} from 'antd';
 import logo from '../../images/lo-go.png';
 import '../../css/Admin.css'; 
-import {Switch,Route, Link,useHistory,BrowserRouter as Router} from "react-router-dom";
+import {Switch,Route, Link,useHistory} from "react-router-dom";
 import HomeAdmin from './HomeAdmin';
 import Invoices from './Invoices';
+import Inventory from './Inventory';
+import AccountManger from './AccountManger';
+import SaleManager from './SaleManager';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 import {
@@ -24,12 +27,21 @@ export default function Admin(){
     const history = useHistory();
     const [showContent, setshowContent] = useState(false);
     const [collapsed, setcollapsed] = useState(false);
+    const [widthColl, setwidthColl] = useState(80);
     const key = "logout";
-    useEffect(()=>{
-        if(window.innerWidth<700){
-            setcollapsed(true);
+
+    useLayoutEffect(() => {
+        function updateSize() {
+            if(window.innerWidth<700){
+                setcollapsed(true);
+                setwidthColl(0);
+            }else{
+                setwidthColl(80);
+            }
         }
-    },[])
+        window.addEventListener('resize', updateSize);
+        updateSize();
+    }, []);
     useEffect(()=>{
         document.getElementsByClassName("header-nav")[0].style.display = 'none';
         document.getElementsByClassName("footer")[0].style.display = 'none';
@@ -85,13 +97,19 @@ export default function Admin(){
                 </Link>
             </Menu.Item>
             <Menu.Item key="5" icon={<ShopOutlined />}>
-                Quản lý kho hàng
+                <Link to="/admin/inventory">
+                    Quản lý kho hàng
+                </Link>    
             </Menu.Item>
             <Menu.Item key="6" icon={<UserOutlined />}>
-                Quản lý tài khoản
+                <Link to="/admin/account">
+                    Quản lý tài khoản
+                </Link>    
             </Menu.Item>
             <Menu.Item key="7" icon={<GiftOutlined />}>
-                Sự kiện ưu đãi
+                <Link to="/admin/sale">
+                    Sự kiện ưu đãi
+                </Link>    
             </Menu.Item>
             <Menu.Item icon={<PoweroffOutlined />} onClick={handleLogout}>
                 Đăng xuất
@@ -106,6 +124,15 @@ export default function Admin(){
             <Route path="/admin/invoices">
                 <Invoices />
             </Route>
+            <Route path="/admin/inventory">
+                <Inventory />
+            </Route>
+            <Route path="/admin/account">
+                <AccountManger />
+            </Route>
+            <Route path="/admin/sale">
+                <SaleManager />
+            </Route>
             <Route path="/admin">
                 <HomeAdmin />
             </Route>
@@ -116,7 +143,7 @@ export default function Admin(){
         <div>
         {showContent ?
             <Layout style={{ minHeight:window.innerHeight }}>
-            <Sider trigger={null} collapsible collapsed={collapsed}>
+            <Sider trigger={null} collapsible collapsed={collapsed} collapsedWidth={widthColl}>
                 <div className="logo" style={{ alignItems:'center',display:'flex',paddingTop:20,flexDirection:'column' }}>
                     <Image src={logo} width={80} preview={false}/>   
                     <span style={{ color:'gray',fontWeight:'bold' }}>Fashion CT</span> 
@@ -130,6 +157,7 @@ export default function Admin(){
                : 
                <MenuFoldOutlined onClick={()=>setcollapsed(!collapsed)}/>
                }
+               <span style={{ paddingLeft:20 }}>Fashion CT</span>
                </Header>
                <Content  
                     className="site-layout-background"
