@@ -72,7 +72,7 @@ export default function dropDownCart(props){
             }else{
                 total += item[0].promotional*item.quanity;
             } 
-            return false;
+            return false; 
         })
         return(
             <div  

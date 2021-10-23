@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from 'react';
-import { Carousel,Col,Row,Button } from 'antd';
+import { Carousel,Col,Row,Button  } from 'antd';
 import slider1 from '../../images/slider1.jpg';
 import slider2 from '../../images/slider2.jpg';
 import slider3 from '../../images/slider3.jpg';
@@ -89,7 +89,7 @@ export default function Home(){
            {slide()}
            <div className="contentHome"  >
                 <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>
-                    SẢN PHẨM MỚI
+                    SẢN PHẨM MỚI 
                 </span>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProduct}

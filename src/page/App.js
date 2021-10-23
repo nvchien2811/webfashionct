@@ -6,6 +6,7 @@ import Home from './client/Home';
 import MenuProduct from './client/MenuProduct';
 import ProductDetails from './client/ProductDetails';
 import CategoryProduct from './client/CategoryProduct';
+import LoginAdmin from './admin/LoginAdmin';
 import Admin from './admin/Admin';
 import Account  from './client/Account'; 
 import Cart from './client/Cart';
@@ -204,6 +205,9 @@ export default function App() {
           </Route>
           <Route path="/billdetails/:idBill">
             <BillDetails/>
+          </Route>
+          <Route path="/loginadmin">
+            <LoginAdmin/>
           </Route>
           <Route path="/admin">
             <Admin/>
