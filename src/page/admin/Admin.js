@@ -10,6 +10,7 @@ import Invoices from './Invoices';
 import Inventory from './Inventory';
 import AccountManger from './AccountManger';
 import SaleManager from './SaleManager';
+import BillDetails from './BillDetails';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 import {
@@ -132,6 +133,9 @@ export default function Admin(){
             </Route>
             <Route path="/admin/sale">
                 <SaleManager />
+            </Route>
+            <Route path="/admin/billdetails/:idBill">
+                <BillDetails/>
             </Route>
             <Route path="/admin">
                 <HomeAdmin />

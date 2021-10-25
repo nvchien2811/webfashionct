@@ -3,7 +3,7 @@ import {Table,Select,Button,message} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {DeleteOutlined} from '@ant-design/icons';
-
+import {Link} from 'react-router-dom';
 const { Option } = Select;
 export default function Invoices(){
     const [fulldataBill, setfulldataBill] = useState();
@@ -57,7 +57,9 @@ export default function Invoices(){
             title:"Mã hóa đơn",
             key:'code',
             render: record=>(
-                <span style={{ fontWeight:'bold' }}>{"#"+record.id}</span>         
+                <span style={record.idUser===null?{color:'red',fontWeight:'bold' }:{ fontWeight:'bold' }}>
+                    {"#"+record.id}
+                </span>         
             )
         },
         {
@@ -83,7 +85,7 @@ export default function Invoices(){
         {
             title:"Tổng tiền",
             key:'total',
-            render: record=><span>{getPriceVND(record.total_price)+" đ"}</span>
+            render: record=><span style={{ fontWeight:'bold' }}>{getPriceVND(record.total_price)+" đ"}</span>
         },
         {
             title:"Tình trạng",
@@ -94,6 +96,7 @@ export default function Invoices(){
                         defaultValue={record.status}  
                         style={{ width: 120 }} 
                         onChange={(value)=>hanldeUpdateStatus(value,record.code_order,record.id)}
+                        disabled={record.status===3}
                     >
                         <Option value={0}>
                             <span style={{ color:'red' }}>Đang xử lý</span>
@@ -104,7 +107,7 @@ export default function Invoices(){
                         <Option value={2}>
                             <span style={{ color:'green' }}>Hoàn thành</span>
                         </Option>
-                        <Option value={3}>
+                        <Option value={3} disabled>
                             <span style={{ color:'gray' }}>Đã hủy</span>
                         </Option>
                     </Select>
@@ -114,9 +117,13 @@ export default function Invoices(){
         {
             title:"Tùy chỉnh",
             key:'option',
-            render:()=>(
+            render:record=>(
                 <div style={{ display:'flex',flexDirection:'row',alignItems:'center' }}>
-                    <Button>Chi tiết</Button>
+                    <Button>
+                        <Link to={`/admin/billdetails/${record.code_order}`}>
+                            Chi tiết
+                        </Link>
+                    </Button>
                     <DeleteOutlined style={{marginLeft:15,fontSize:20,cursor:"pointer" }} />
                 </div>
             )
