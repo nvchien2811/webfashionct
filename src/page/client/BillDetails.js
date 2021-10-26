@@ -169,7 +169,7 @@ export default function BillDetails(){
                             Tình trạng : {getTextStatus(dataBill.status)}
                         </li>
                         <div>
-                            <Button type="primary" danger disabled={dataBill.status!==0}>
+                            <Button type="primary" danger disabled={dataBill.status!==0} >
                                 Hủy đơn
                             </Button>
                         </div>

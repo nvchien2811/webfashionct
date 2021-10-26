@@ -1,5 +1,11 @@
 var db = require('../db');
 
+module.exports.getFullProduct = (req,res)=>{
+    const sql = "SELECT * FROM product"
+    db.query(sql, (err,result)=>{
+       return res.send(result);
+    })
+}
 module.exports.getProductType = (req,res)=>{
     const sql = "SELECT * FROM product_type"
     db.query(sql, (err,result)=>{

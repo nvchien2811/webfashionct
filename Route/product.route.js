@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var controller = require('../Controller/product.controller');
 
+router.get('/getFullProduct',controller.getFullProduct);
 router.get('/getProductType',controller.getProductType);
 router.get('/getCategory',controller.getCategory);
 router.get('/getProduct',controller.getProduct);

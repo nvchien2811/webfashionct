@@ -11,6 +11,7 @@ import Inventory from './Inventory';
 import AccountManger from './AccountManger';
 import SaleManager from './SaleManager';
 import BillDetails from './BillDetails';
+import AddInventory from './AddInventory';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 import {
@@ -136,6 +137,9 @@ export default function Admin(){
             </Route>
             <Route path="/admin/billdetails/:idBill">
                 <BillDetails/>
+            </Route>
+            <Route path="/admin/addInventory">
+                <AddInventory />
             </Route>
             <Route path="/admin">
                 <HomeAdmin />

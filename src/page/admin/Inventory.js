@@ -3,13 +3,13 @@ import {InputNumber,Table,Image,message,Button} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {DeleteOutlined,PlusCircleOutlined} from '@ant-design/icons';
-
+import {Link} from 'react-router-dom';
 export default function Inventory(){
     const [dataInventory, setdataInventory] = useState();
     const [showContent, setshowContent] = useState(false);
     const [loadingTable, setloadingTable] = useState(false);
     const [overflowX, setoverflowX] = useState(false);
-    const [showDrawer, setshowDrawer] = useState(false);
+
     useLayoutEffect(() => {
         function updateSize() {
             if(window.innerWidth<700){
@@ -34,6 +34,9 @@ export default function Inventory(){
                 res[index].nameProduct = data[0].name;
                 res[index].imageProduct = data[0].image;
                 if(index===res.length-1){
+                    res.sort(function(a,b){
+                        return new Date(b.update_at) - new Date(a.update_at);
+                    });
                     setdataInventory(res);
                     setshowContent(true);
                     setloadingTable(false);
@@ -97,6 +100,11 @@ export default function Inventory(){
             render: record=><span>{record.quanity-record.sold}</span>
         },
         {
+            title:"Cập nhật lần cuối",
+            key:'lastUpdate',
+            render: record=><span>{new Date(record.update_at).toString()}</span>
+        },
+        {
             title:"Tùy chỉnh",
             key:'option',
             render:record=><DeleteOutlined style={{marginLeft:15,fontSize:20,cursor:"pointer" }} />
@@ -106,8 +114,10 @@ export default function Inventory(){
     <div>
         {showContent ?
         <div>
-        <Button type="primary" style={{ marginBottom:20 }} danger onClick={()=>setshowDrawer(!showDrawer)}>
-            Nhập kho <PlusCircleOutlined />
+        <Button type="primary" style={{ marginBottom:20 }} danger >
+            <Link to="/admin/addInventory" >
+                Nhập kho <PlusCircleOutlined />
+            </Link>    
         </Button>
         <Table 
             pagination={{ defaultPageSize: 5 }}
@@ -116,7 +126,7 @@ export default function Inventory(){
             style={overflowX?{overflowX:'scroll'}:null} 
             loading={loadingTable}
         />
-        
+
         </div>
         
         :

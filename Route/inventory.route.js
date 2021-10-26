@@ -6,5 +6,5 @@ var controller = require('../Controller/admin/inventory.controller');
 
 router.get("/getFullInventory",controller.getFullInventory);
 router.post("/updateQuanityInventory",controller.updateQuanityInventory);
-
+router.post("/addInventory",controller.addInventory);
 module.exports = router;
