@@ -1,7 +1,7 @@
 var db = require('../../db');
 
 module.exports.getFullInventory = (req,res)=>{
-    const sql = "SELECT * FROM `inventory`"
+    const sql = "SELECT inventory.*, product.name,product.image FROM `inventory` INNER JOIN `product` ON inventory.idProduct=product.id"
     db.query(sql,(err,result)=>{
         if(err){
             return res.json({msg:err});
@@ -43,6 +43,18 @@ module.exports.addInventory = (req,res)=>{
                     return res.json({msg:"Success"})
                 }
             })
+        }
+    })
+}
+
+module.exports.deleteItemInventory = (req,res)=>{
+    const {id} = req.body;
+    const sql = "DELETE FROM `inventory` WHERE id = ?";
+    db.query(sql,[id],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json({msg:"Success"})
         }
     })
 }

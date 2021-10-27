@@ -93,7 +93,7 @@ export default function Invoices(){
             render: record=>{
                 return(
                     <Select 
-                        defaultValue={record.status}  
+                        value={record.status}  
                         style={{ width: 120 }} 
                         onChange={(value)=>hanldeUpdateStatus(value,record.code_order,record.id)}
                         disabled={record.status===3}

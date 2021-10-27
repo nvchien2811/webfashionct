@@ -1,5 +1,5 @@
 import React ,{useEffect,useState,useLayoutEffect} from 'react';
-import {InputNumber,Table,Image,message,Button} from 'antd';
+import {InputNumber,Table,Image,message,Button,Modal} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {DeleteOutlined,PlusCircleOutlined} from '@ant-design/icons';
@@ -8,8 +8,9 @@ export default function Inventory(){
     const [dataInventory, setdataInventory] = useState();
     const [showContent, setshowContent] = useState(false);
     const [loadingTable, setloadingTable] = useState(false);
+    const [showModalDeleteBill, setshowModalDeleteBill] = useState(false);
     const [overflowX, setoverflowX] = useState(false);
-
+    const [dataItemTmp, setdataItemTmp] = useState();
     useLayoutEffect(() => {
         function updateSize() {
             if(window.innerWidth<700){
@@ -27,23 +28,15 @@ export default function Inventory(){
         getFullInventory();
     },[])
     const getFullInventory = async()=>{
+        setshowContent(false);
         const res = await FetchAPI.getAPI("/inventory/getFullInventory");
-        if(res!==undefined){
-            res.map(async(item,index)=>{
-                const data = await FetchAPI.postDataAPI("/product/getProductDetails",{"id":item.idProduct})
-                res[index].nameProduct = data[0].name;
-                res[index].imageProduct = data[0].image;
-                if(index===res.length-1){
-                    res.sort(function(a,b){
-                        return new Date(b.update_at) - new Date(a.update_at);
-                    });
-                    setdataInventory(res);
-                    setshowContent(true);
-                    setloadingTable(false);
-                }
-            })
-        }
+        res.sort(function(a,b){
+            return new Date(b.update_at) - new Date(a.update_at);
+        });
+        setdataInventory(res);
         setshowContent(true);
+        setloadingTable(false);
+    
     }
     const updateQuanity = async(quanity,idProduct,size,name)=>{
         setloadingTable(true);
@@ -63,14 +56,29 @@ export default function Inventory(){
             }
         }
     }
+    const handleDeleteItem = async() =>{
+        setloadingTable(true);
+        const res = await FetchAPI.postDataAPI("/inventory/deleteItemInventory",{"id":dataItemTmp.id})
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success(`Xóa sản phẩm ${dataItemTmp.nameProduct} loại ${dataItemTmp.size} thành công !`);
+                getFullInventory();
+                setshowModalDeleteBill(false);
+                setloadingTable(false);
+            }else{
+                setloadingTable(false);
+                message.error("Có lỗi rồi !!!")
+            }
+        }
+    }
     const columns  = [
         {
             title:"Sản phẩm",
             key:'product',
             render: record =>(
                 <div style={{ display:'flex',alignItems:'center'}}>
-                    <Image src={record.imageProduct} width={65} preview={false} /> 
-                    <span style={{ fontWeight:'bold',marginLeft:20 }}>{record.nameProduct}</span>
+                    <Image src={record.image} width={65} preview={false} /> 
+                    <span style={{ fontWeight:'bold',marginLeft:20 }}>{record.name}</span>
                 </div>
             )
         },
@@ -85,8 +93,8 @@ export default function Inventory(){
             render: record=>(
                 <InputNumber 
                     min={0} 
-                    defaultValue={record.quanity}
-                    onChange= {(value)=>updateQuanity(value,record.idProduct,record.size,record.nameProduct)}
+                    value={record.quanity}
+                    onChange= {(value)=>updateQuanity(value,record.idProduct,record.size,record.name)}
                 />)
         },
         {
@@ -107,7 +115,11 @@ export default function Inventory(){
         {
             title:"Tùy chỉnh",
             key:'option',
-            render:record=><DeleteOutlined style={{marginLeft:15,fontSize:20,cursor:"pointer" }} />
+            render:record=>
+            <DeleteOutlined 
+                style={{marginLeft:15,fontSize:20,cursor:"pointer" }} 
+                onClick={()=>{setshowModalDeleteBill(true);setdataItemTmp(record)}}
+            />
         }
     ]
     return(
@@ -126,7 +138,18 @@ export default function Inventory(){
             style={overflowX?{overflowX:'scroll'}:null} 
             loading={loadingTable}
         />
-
+        {showModalDeleteBill &&
+            <Modal
+                title={`Bạn chắc chắn muốn xóa ${dataItemTmp.nameProduct} loại ${dataItemTmp.size}`}
+                visible={showModalDeleteBill}
+                onOk={handleDeleteItem}
+                onCancel={()=>setshowModalDeleteBill(false)}
+                cancelText="Thoát"
+                okText="Chắc chắn"
+            >
+                <p>Bạn chắc chắn với quyết định của mình ! Tất cả dữ liệu về món hàng này sẽ bị xóa vĩnh viễn.</p>
+            </Modal>
+        }
         </div>
         
         :

@@ -38,7 +38,7 @@ export default function BillFollow (){
             key:'id',
             render: record=>{
                 return (
-                    <span>{"#"+record.id}</span>
+                    <span style={{ fontWeight:'bold' }}>{"#"+record.id}</span>
                 )
             }
         },

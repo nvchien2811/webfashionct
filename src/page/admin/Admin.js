@@ -4,7 +4,7 @@ import Spinner from '../../elements/spinner';
 import {Layout,Menu,Image,message} from 'antd';
 import logo from '../../images/lo-go.png';
 import '../../css/Admin.css'; 
-import {Switch,Route, Link,useHistory} from "react-router-dom";
+import {Switch,Route, NavLink,useHistory,useLocation} from "react-router-dom";
 import HomeAdmin from './HomeAdmin';
 import Invoices from './Invoices';
 import Inventory from './Inventory';
@@ -30,6 +30,7 @@ export default function Admin(){
     const [showContent, setshowContent] = useState(false);
     const [collapsed, setcollapsed] = useState(false);
     const [widthColl, setwidthColl] = useState(80);
+    const location = useLocation();
     const key = "logout";
 
     useLayoutEffect(() => {
@@ -69,6 +70,9 @@ export default function Admin(){
         }
         if(res[0].ruler===1){
             setshowContent(true);
+            if(location.pathname==="/admin"){
+                history.push('/admin/home')
+            }
         }else{
             localStorage.removeItem("token_admin");
             history.push('/loginadmin');
@@ -82,36 +86,50 @@ export default function Admin(){
             history.push('/loginadmin');
         },1000)
     }
+    const currentMenuKeyInventory = (key)=>{
+        console.log(location.pathname.search(key));
+        if (location.pathname.search(key) >= 0) {
+          return location.pathname;
+        }else{
+          return "/admin/addInventory"
+        }
+    }
     const NavMenu = ()=>(
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} style={{ paddingTop:20 }}>
-            <Menu.Item key="1" icon={<BarChartOutlined />}>
-                <Link to="/admin/home">
+        <Menu 
+            theme="dark" 
+            mode="inline" 
+            defaultSelectedKeys={['/admin/home']} 
+            style={{ paddingTop:20 }} 
+            selectedKeys={[location.pathname]}
+        >
+            <Menu.Item key="/admin/home" icon={<BarChartOutlined />}>
+                <NavLink to="/admin/home">
                     Tổng quan
-                </Link>
+                </NavLink>
             </Menu.Item>
             <SubMenu key="sub1" icon={<DropboxOutlined />} title="Sản phẩm">
                 <Menu.Item key="2">Thêm sản phẩm</Menu.Item>
                 <Menu.Item key="3">Quản lý sản phẩm</Menu.Item>
             </SubMenu>
-            <Menu.Item key="4" icon={<ContainerOutlined />}>
-                <Link to="/admin/invoices">
+            <Menu.Item key="/admin/invoices" icon={<ContainerOutlined />}>
+                <NavLink to="/admin/invoices">
                     Hóa đơn
-                </Link>
+                </NavLink>
             </Menu.Item>
-            <Menu.Item key="5" icon={<ShopOutlined />}>
-                <Link to="/admin/inventory">
+            <Menu.Item key={currentMenuKeyInventory("/admin/inventory")} icon={<ShopOutlined />}>
+                <NavLink to="/admin/inventory">
                     Quản lý kho hàng
-                </Link>    
+                </NavLink>    
             </Menu.Item>
-            <Menu.Item key="6" icon={<UserOutlined />}>
-                <Link to="/admin/account">
+            <Menu.Item key="/admin/account" icon={<UserOutlined />}>
+                <NavLink to="/admin/account">
                     Quản lý tài khoản
-                </Link>    
+                </NavLink>    
             </Menu.Item>
-            <Menu.Item key="7" icon={<GiftOutlined />}>
-                <Link to="/admin/sale">
+            <Menu.Item key="/admin/sale" icon={<GiftOutlined />}>
+                <NavLink to="/admin/sale">
                     Sự kiện ưu đãi
-                </Link>    
+                </NavLink>    
             </Menu.Item>
             <Menu.Item icon={<PoweroffOutlined />} onClick={handleLogout}>
                 Đăng xuất
