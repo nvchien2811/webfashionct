@@ -1,16 +1,18 @@
-import React ,{useEffect,useState,useLayoutEffect} from 'react';
+import React ,{useEffect,useState,useLayoutEffect,useRef} from 'react';
 import {InputNumber,Table,Image,message,Button,Modal} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {DeleteOutlined,PlusCircleOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom';
+import {getColumnSearchProps} from '../../elements/SearchFilter';
 export default function Inventory(){
     const [dataInventory, setdataInventory] = useState();
     const [showContent, setshowContent] = useState(false);
     const [loadingTable, setloadingTable] = useState(false);
     const [showModalDeleteInventory, setshowModalDeleteInventory] = useState(false);
-    const [overflowX, setoverflowX] = useState(false);
     const [dataItemTmp, setdataItemTmp] = useState();
+    const searchInput = useRef();
+    const [overflowX, setoverflowX] = useState(false);
     useLayoutEffect(() => {
         function updateSize() {
             if(window.innerWidth<700){
@@ -75,6 +77,7 @@ export default function Inventory(){
         {
             title:"Sản phẩm",
             key:'product',
+            ...getColumnSearchProps('name',searchInput),
             render: record =>(
                 <div style={{ display:'flex',alignItems:'center'}}>
                     <Image src={record.image} width={65} preview={false} /> 
@@ -90,6 +93,7 @@ export default function Inventory(){
         {
             title:"Số lượng",
             key:'quanity',
+            sorter: (a, b) =>a.quanity-b.quanity,
             render: record=>(
                 <InputNumber 
                     min={0} 
@@ -110,6 +114,7 @@ export default function Inventory(){
         {
             title:"Cập nhật lần cuối",
             key:'lastUpdate',
+            sorter: (a, b) => new Date(a.update_at) - new Date(b.update_at),
             render: record=><span>{new Date(record.update_at).toString()}</span>
         },
         {
@@ -132,6 +137,7 @@ export default function Inventory(){
             </Link>    
         </Button>
         <Table 
+            showSorterTooltip={{ title: 'Nhấn để sắp xếp' }}
             pagination={{ defaultPageSize: 5 }}
             columns={columns} 
             dataSource={dataInventory}

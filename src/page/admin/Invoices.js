@@ -1,9 +1,10 @@
-import React,{useEffect,useState,useLayoutEffect} from 'react';
+import React,{useEffect,useState,useLayoutEffect,useRef} from 'react';
 import {Table,Select,Button,message,Modal} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {DeleteOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom';
+import {getColumnSearchProps} from '../../elements/SearchFilter';
 const { Option } = Select;
 export default function Invoices(){
     const [fulldataBill, setfulldataBill] = useState();
@@ -11,6 +12,7 @@ export default function Invoices(){
     const [showModalDeleteBill, setshowModalDeleteBill] = useState(false);
     const [dataItemTmp, setdataItemTmp] = useState();
     const [overflowX, setoverflowX] = useState(false);
+    const searchInput = useRef();
     useLayoutEffect(() => {
         function updateSize() {
             if(window.innerWidth<700){
@@ -78,6 +80,11 @@ export default function Invoices(){
         {
             title:"Mã hóa đơn",
             key:'code',
+            filters: [
+                { text: 'Đơn có tài khoản', value: "string" },
+                { text: 'Đơn không tài khoản', value: "object" },
+            ],
+            onFilter: (value, record) => typeof(record.idUser)===value,
             render: record=>(
                 <span style={record.idUser===null?{color:'red',fontWeight:'bold' }:{ fontWeight:'bold' }}>
                     {"#"+record.id}
@@ -86,8 +93,8 @@ export default function Invoices(){
         },
         {
             title:"Tên khách hàng",
-            key:'username',
-            render:record=><span>{record.name}</span>
+            key:'name',
+            ...getColumnSearchProps('name',searchInput)
         },
         {
             title:"Địa chỉ",
@@ -97,7 +104,7 @@ export default function Invoices(){
         {
             title:"Email",
             key:'email',
-            render:record=><span>{record.email}</span>
+            ...getColumnSearchProps('email',searchInput),
         },
         {
             title:"Điện thoại",
@@ -107,11 +114,19 @@ export default function Invoices(){
         {
             title:"Tổng tiền",
             key:'total',
+            sorter: (a, b) => a.total_price - b.total_price,
             render: record=><span style={{ fontWeight:'bold' }}>{getPriceVND(record.total_price)+" đ"}</span>
         },
         {
             title:"Tình trạng",
             key:'status',
+            filters: [
+                { text: 'Đang xử lý', value: 0 },
+                { text: 'Đang giao hàng', value: 1 },
+                { text: 'Đã hoàn thành', value: 2 },
+                { text: 'Đã hủy', value: 3 },
+            ],
+            onFilter: (value, record) => record.status===value,
             render: record=>{
                 return(
                     <Select 
@@ -158,7 +173,10 @@ export default function Invoices(){
     ]
     return(
     <div>
+        <p>Bạn cần xóa những đơn hàng khác đã hủy để đưa sản phẩm vào lại kho hàng.</p>
+
         <Table 
+            showSorterTooltip={{ title: 'Nhấn để sắp xếp' }}
             columns={columns} 
             dataSource={fulldataBill} 
             size="small" 

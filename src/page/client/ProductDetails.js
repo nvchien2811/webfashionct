@@ -7,6 +7,7 @@ import * as MENU from '../../util/menuProduct';
 import Product from '../../elements/product';
 import { useDispatch } from 'react-redux';
 import { updateCartCurrent } from '../../contain/updateQuanityCart';
+import PreviewImmage from '../../elements/PreviewImmage';
 const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
@@ -160,8 +161,9 @@ export default function ProductDetails(){
     }
     const ItemProductRelate = dataRelate.map((item)=>{
         return(
-            <Col style={{display:'flex', justifyContent:'center',width:350,padding:"10px 10px" }}>
+            <Col style={{display:'flex', justifyContent:'center',padding:"10px 10px" }}>
                 <Product
+                    width={200}
                     item={item}
                 />
             </Col>
@@ -255,7 +257,7 @@ export default function ProductDetails(){
     )
     const itemImageDecription = (item)=>(
         <div style={{ padding:10 }}>
-        <Image src={item}/>
+        <Image src={item} preview={{mask:(<PreviewImmage small={true}/>)}}/>
         </div>
     )
     return(
@@ -271,15 +273,17 @@ export default function ProductDetails(){
                     style={{ display:'flex',paddingRight:20,alignItems:'center',flexDirection:'column' }}
                 >
                     <div>
-                        <Image src={dataProduct.image} width={350}/>    
+                        <Image src={dataProduct.image} width={350} preview={{mask:(<PreviewImmage />)}}/>    
                     </div>
                     <div>
-                        <List
-                            grid={{ gutter: 16, column: 4 }}
-                            dataSource={imageDecription}
-                            locale={{ emptyText:'Không có ảnh miêu tả' }}
-                            renderItem={itemImageDecription}
-                        />
+                        <Image.PreviewGroup>
+                            <List
+                                grid={{ gutter: 16, column: 4 }}
+                                dataSource={imageDecription}
+                                locale={{ emptyText:'Không có ảnh miêu tả' }}
+                                renderItem={itemImageDecription}
+                            />
+                        </Image.PreviewGroup>
                     </div>
                </Col>
                <Col xl={12} sm={24}>

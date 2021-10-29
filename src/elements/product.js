@@ -2,6 +2,7 @@ import React from 'react';
 import { Image,Card,Badge  } from 'antd';
 import {getPriceVND} from '../contain/getPriceVND';
 import {Link} from 'react-router-dom';
+import PreviewImmage from './PreviewImmage';
 const { Meta } = Card;
 export default function product(props){
     const {image,name,price,id,promotional} = props.item;
@@ -28,13 +29,14 @@ export default function product(props){
             <Card
                 className="itemProduct"
                 hoverable
+                style={props.width!==undefined?{width:props.width}:null}
                 cover={
                 <div>
                     {s === 100 ? 
-                    <Image alt="example" src={image} />
+                    <Image alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
                     :
                     <Badge.Ribbon text={s+"%"} color="red">
-                        <Image alt="example" src={image} />
+                        <Image alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
                     </Badge.Ribbon>
                     }
                 </div>
