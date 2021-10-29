@@ -14,5 +14,6 @@ router.post("/getSaleByCode",controllerSale.getSaleByCode);
 router.post("/getSaleById",controllerSale.getSaleById);
 
 router.get("/getFullBill",controllerAdmin.getFullBill);
-router.post("/updateStatusBill",controllerAdmin.updateStatusBill)
+router.post("/updateStatusBill",controllerAdmin.updateStatusBill);
+router.post("/deleteBill",controllerAdmin.deleteBill);
 module.exports = router;

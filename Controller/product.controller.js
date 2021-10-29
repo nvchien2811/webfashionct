@@ -6,6 +6,12 @@ module.exports.getFullProduct = (req,res)=>{
        return res.send(result);
     })
 }
+module.exports.getFullProductAdmin = (req,res)=>{
+    const sql = "SELECT product.*,category.name AS nameCategory,product_type.name AS nameProductType FROM `product` INNER JOIN `category` ON product.idCategory=category.id INNER JOIN `product_type` ON product.idProductType=product_type.id ORDER BY product.create_at"
+    db.query(sql, (err,result)=>{
+       return res.send(result);
+    })
+}
 module.exports.getProductType = (req,res)=>{
     const sql = "SELECT * FROM product_type"
     db.query(sql, (err,result)=>{

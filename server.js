@@ -11,6 +11,9 @@ app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
 
+// get image in file upload
+app.use('/upload', express.static('upload'));
+
 app.use("/product",require("./Route/product.route"));
 app.use("/user",require("./Route/user.route"));
 app.use("/order",require("./Route/order.route"));

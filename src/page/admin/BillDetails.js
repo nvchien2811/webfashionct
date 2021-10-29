@@ -1,5 +1,5 @@
 import React ,{useEffect,useState} from'react';
-import { PageHeader,Table,Row,Col,Space,Card ,Button,message,Select} from 'antd';
+import { PageHeader,Table,Row,Col,Space,Card ,Button,message,Select,Modal} from 'antd';
 import { useHistory,useParams,useLocation } from 'react-router-dom';
 import {getPriceVND} from '../../contain/getPriceVND';
 import * as FetchAPI from '../../util/fetchApi';
@@ -14,6 +14,7 @@ export default function BillDetails(){
     const [totalTmp, settotalTmp] = useState(0);
     const [promotionprice, setpromotionprice] = useState(0);
     const [showContent, setshowContent] = useState(false);
+    const [showModalDeleteBill, setshowModalDeleteBill] = useState(false);
     const {idBill} = useParams();
     const history = useHistory();
     const location = useLocation();
@@ -93,6 +94,21 @@ export default function BillDetails(){
         pri.document.close();
         pri.focus();
         pri.print();
+    }
+    const handleDeleteItem = async()=>{
+        setshowContent(false);
+        setshowModalDeleteBill(false);
+        const data = {"code_order":dataBill.code_order};
+        const res = await FetchAPI.postDataAPI("/order/deleteBill",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success(`Bạn đã xóa hóa đơn #${dataBill.id} thành công !`);
+                history.push('/admin/invoices')
+            }else{
+                message.error("Có lỗi rồi !!");
+                setshowContent(true)
+            }
+        }
     }
     const columns  = [
         {
@@ -210,7 +226,7 @@ export default function BillDetails(){
                                 Tình trạng : {getStatus(dataBill.status)}
                             </li>
                             <div>
-                                <Button type="primary" danger >
+                                <Button type="primary" danger onClick={()=>setshowModalDeleteBill(true)}>
                                     Xóa đơn
                                 </Button>
                                 <Button type="primary" danger style={{ marginLeft:30 }} onClick={handlePrintInvoices}>
@@ -222,6 +238,19 @@ export default function BillDetails(){
                     </Card>
                 </Col>
             </Row> 
+            {showModalDeleteBill &&
+                <Modal
+                    title={`Bạn chắc chắn muốn xóa hóa đơn #${dataBill.id}`}
+                    visible={showModalDeleteBill}
+                    onOk={handleDeleteItem}
+                    onCancel={()=>setshowModalDeleteBill(false)}
+                    cancelText="Thoát"
+                    okText="Chắc chắn"
+                >
+                    <p>Bạn chắc chắn với quyết định của mình ! Tất cả dữ liệu về hóa đơn này sẽ bị xóa.</p>
+                    <p>Và các sản phẩm trong hóa đơn này sẽ được đưa lại vào kho hàng !</p>
+                </Modal>
+            }
             <iframe 
                 id="ifmcontentstoprint" 
                 style={{

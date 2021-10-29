@@ -1,5 +1,5 @@
 import React,{useEffect,useState,useLayoutEffect} from 'react';
-import {Table,Select,Button,message} from 'antd';
+import {Table,Select,Button,message,Modal} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {DeleteOutlined} from '@ant-design/icons';
@@ -8,6 +8,8 @@ const { Option } = Select;
 export default function Invoices(){
     const [fulldataBill, setfulldataBill] = useState();
     const [loadingTable, setloadingTable] = useState(false);
+    const [showModalDeleteBill, setshowModalDeleteBill] = useState(false);
+    const [dataItemTmp, setdataItemTmp] = useState();
     const [overflowX, setoverflowX] = useState(false);
     useLayoutEffect(() => {
         function updateSize() {
@@ -41,14 +43,34 @@ export default function Invoices(){
         if(res.msg){
             if(res.msg==="Success"){
                 setTimeout(()=>{
+                    getFullBill();
                     message.success("Cập nhật hóa đơn #"+id+" thành công !");
-                    setloadingTable(false);
                 },500)
             }else{
                 setTimeout(()=>{
                     message.error("Có lỗi rồi !!");
                     setloadingTable(false);
                 },500)
+            }
+        }
+    }
+    const handleDeleteItem = async()=>{
+        setloadingTable(true);
+        setshowModalDeleteBill(false);
+        const data = {"code_order":dataItemTmp.code_order};
+        const res = await FetchAPI.postDataAPI("/order/deleteBill",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success(`Bạn đã xóa hóa đơn #${dataItemTmp.id} thành công !`);
+                getFullBill();
+                setTimeout(()=>{
+                    setloadingTable(false);
+                },200)
+            }else{
+                message.error("Có lỗi rồi !!");
+                setTimeout(()=>{
+                    setloadingTable(false);
+                },200)
             }
         }
     }
@@ -96,7 +118,6 @@ export default function Invoices(){
                         value={record.status}  
                         style={{ width: 120 }} 
                         onChange={(value)=>hanldeUpdateStatus(value,record.code_order,record.id)}
-                        disabled={record.status===3}
                     >
                         <Option value={0}>
                             <span style={{ color:'red' }}>Đang xử lý</span>
@@ -124,7 +145,12 @@ export default function Invoices(){
                             Chi tiết
                         </Link>
                     </Button>
-                    <DeleteOutlined style={{marginLeft:15,fontSize:20,cursor:"pointer" }} />
+                    <DeleteOutlined 
+                        style={{marginLeft:15,fontSize:20,cursor:"pointer" }} 
+                        onClick={()=>{
+                            setshowModalDeleteBill(true);
+                            setdataItemTmp(record);
+                        }}/>
                 </div>
             )
         }
@@ -138,6 +164,19 @@ export default function Invoices(){
             size="small" 
             style={overflowX?{overflowX:'scroll'}:null} 
             loading={loadingTable} />
+         {showModalDeleteBill &&
+            <Modal
+                title={`Bạn chắc chắn muốn xóa hóa đơn #${dataItemTmp.id}`}
+                visible={showModalDeleteBill}
+                onOk={handleDeleteItem}
+                onCancel={()=>setshowModalDeleteBill(false)}
+                cancelText="Thoát"
+                okText="Chắc chắn"
+            >
+                <p>Bạn chắc chắn với quyết định của mình ! Tất cả dữ liệu về hóa đơn này sẽ bị xóa.</p>
+                <p>Và các sản phẩm trong hóa đơn này sẽ được đưa lại vào kho hàng !</p>
+            </Modal>
+        }
     </div>
     )
 }

@@ -8,7 +8,7 @@ export default function Inventory(){
     const [dataInventory, setdataInventory] = useState();
     const [showContent, setshowContent] = useState(false);
     const [loadingTable, setloadingTable] = useState(false);
-    const [showModalDeleteBill, setshowModalDeleteBill] = useState(false);
+    const [showModalDeleteInventory, setshowModalDeleteInventory] = useState(false);
     const [overflowX, setoverflowX] = useState(false);
     const [dataItemTmp, setdataItemTmp] = useState();
     useLayoutEffect(() => {
@@ -63,7 +63,7 @@ export default function Inventory(){
             if(res.msg==="Success"){
                 message.success(`Xóa sản phẩm ${dataItemTmp.nameProduct} loại ${dataItemTmp.size} thành công !`);
                 getFullInventory();
-                setshowModalDeleteBill(false);
+                setshowModalDeleteInventory(false);
                 setloadingTable(false);
             }else{
                 setloadingTable(false);
@@ -118,7 +118,7 @@ export default function Inventory(){
             render:record=>
             <DeleteOutlined 
                 style={{marginLeft:15,fontSize:20,cursor:"pointer" }} 
-                onClick={()=>{setshowModalDeleteBill(true);setdataItemTmp(record)}}
+                onClick={()=>{setshowModalDeleteInventory(true);setdataItemTmp(record)}}
             />
         }
     ]
@@ -138,12 +138,12 @@ export default function Inventory(){
             style={overflowX?{overflowX:'scroll'}:null} 
             loading={loadingTable}
         />
-        {showModalDeleteBill &&
+        {showModalDeleteInventory &&
             <Modal
                 title={`Bạn chắc chắn muốn xóa ${dataItemTmp.nameProduct} loại ${dataItemTmp.size}`}
-                visible={showModalDeleteBill}
+                visible={showModalDeleteInventory}
                 onOk={handleDeleteItem}
-                onCancel={()=>setshowModalDeleteBill(false)}
+                onCancel={()=>setshowModalDeleteInventory(false)}
                 cancelText="Thoát"
                 okText="Chắc chắn"
             >

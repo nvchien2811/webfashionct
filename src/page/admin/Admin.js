@@ -12,6 +12,7 @@ import AccountManger from './AccountManger';
 import SaleManager from './SaleManager';
 import BillDetails from './BillDetails';
 import AddInventory from './AddInventory';
+import ManageProduct from './ManageProduct';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 import {
@@ -109,7 +110,11 @@ export default function Admin(){
             </Menu.Item>
             <SubMenu key="sub1" icon={<DropboxOutlined />} title="Sản phẩm">
                 <Menu.Item key="2">Thêm sản phẩm</Menu.Item>
-                <Menu.Item key="3">Quản lý sản phẩm</Menu.Item>
+                <Menu.Item key="/admin/manageProduct">
+                    <NavLink to="/admin/manageProduct">
+                        Quản lý sản phẩm
+                    </NavLink>
+                </Menu.Item>
             </SubMenu>
             <Menu.Item key="/admin/invoices" icon={<ContainerOutlined />}>
                 <NavLink to="/admin/invoices">
@@ -158,6 +163,9 @@ export default function Admin(){
             </Route>
             <Route path="/admin/addInventory">
                 <AddInventory />
+            </Route>
+            <Route path="/admin/manageProduct">
+                <ManageProduct />
             </Route>
             <Route path="/admin">
                 <HomeAdmin />
