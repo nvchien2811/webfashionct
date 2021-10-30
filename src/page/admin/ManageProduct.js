@@ -2,10 +2,12 @@ import React,{useEffect,useState,useRef,useLayoutEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
-import {Image,Table,Button,Drawer} from 'antd';
+import {Image,Table,Button,Drawer,Form,Input,Select,Row,Col} from 'antd';
 import {EditOutlined,DeleteOutlined,} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
+
+const {Option} = Select;
 export default function ManageProduct(){
     const location = useLocation();
     const [showContent, setshowContent] = useState(false);
@@ -15,6 +17,10 @@ export default function ManageProduct(){
     const [filterCategory, setfilterCategory] = useState();
     const [filterProductType, setfilterProductType] = useState();
     const searchInput = useRef();
+    const [formEdit] = Form.useForm();
+    const [optionCategory, setoptionCategory] = useState();
+    const [optionFullProductType, setoptionFullProductType] = useState();
+    const [optionProductType, setoptionProductType] = useState();
     const [overflowX, setoverflowX] = useState(false);
 
     useLayoutEffect(() => {
@@ -33,6 +39,41 @@ export default function ManageProduct(){
         setshowContent(false);
         getFullProduct();
     },[location])
+
+    useEffect(async()=>{
+        let arrTmpCateGory = [];
+        let arrTmpProductType = [];
+        const category = await FetchAPI.getAPI('/product/getCategory');
+        const productType = await FetchAPI.getAPI('/product/getProductType');
+        category.map((item,index)=>{
+            arrTmpCateGory.push(
+                <Option value={item.id}>{item.name}</Option>
+            )
+            if(index===category.length-1){
+                setoptionCategory(arrTmpCateGory)
+            }
+        });
+        productType.map((item,index)=>{
+            arrTmpProductType.push(
+                <Option value={[item.name,item.id,item.idCategory]}>{item.name}</Option>
+            )
+            if(index===productType.length-1){
+                setoptionFullProductType(arrTmpProductType)
+            }
+        })
+    },[])
+    useLayoutEffect(() => {
+        if(itemProductTmp!==undefined)
+            filterOption(itemProductTmp.idCategory,true);
+    },[drawerEdit])
+    const filterOption = (value,init)=>{
+        let arrTmp = optionFullProductType;
+        arrTmp = arrTmp.filter(e=>e.props.value[2]===value);
+        setoptionProductType(arrTmp)
+        if(!init){
+            formEdit.setFieldsValue({nameProductType:null})
+        }  
+    }
     const getFullProduct = async()=>{
         let arrTmpCateGory = [];
         let arrTmpProductType = [];
@@ -47,7 +88,6 @@ export default function ManageProduct(){
                 arrTmpProductType.push({text:item.nameProductType,value:item.idProductType})
             }
             if(index===product.length-1){
-                console.log(arrTmpCateGory)
                 setfilterCategory(arrTmpCateGory)
                 setfilterProductType(arrTmpProductType)
             }
@@ -112,7 +152,9 @@ export default function ManageProduct(){
                             style={{ borderRadius:10 }}
                             onClick={()=>{
                                 setdrawerEdit(true);
-                                setitemProductTmp(record)
+                                setitemProductTmp(record);
+                                formEdit.setFieldsValue(record);
+                                console.log(record)
                             }}
                         >
                             <EditOutlined />
@@ -125,33 +167,119 @@ export default function ManageProduct(){
             }
         }
     ]
+   
     const DrawerEditProduct = ()=>(
+    
         <Drawer
             title="Chỉnh sửa sản phẩm" 
             placement="right" 
+            width={overflowX ?"100%":520}
+            getContainer={false}
             onClose={()=>setdrawerEdit(false)} 
             visible={drawerEdit}
         >
             {itemProductTmp !==undefined &&
-             <p>{itemProductTmp.name}</p>
+            <Form 
+                form={formEdit}
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 14 }}
+            >
+                <Form.Item
+                    label="Tên sản phẩm"
+                    name="name"
+                    rules={[{ required: true, message: 'Tên sản phẩm không để trống!' }]}
+                >
+                    <Input 
+                        placeholder="Tên sản phẩm"
+                        value={itemProductTmp.name}
+                        onChange= {(e)=>{itemProductTmp.name=e.target.value;console.log(itemProductTmp)}}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Danh mục sản phẩm"
+                    name="idCategory"
+                    rules={[{ required: true, message: 'Danh mục sản phẩm không để trống!' }]}
+                >
+                    <Select
+                        onChange= {(e)=>{
+                            itemProductTmp.idCategory=e;
+                            filterOption(e);
+                        }
+                        } 
+                    >
+                        {optionCategory}
+                    </Select>
+                </Form.Item>
+                <Form.Item  
+                    label="Loại sản phẩm"
+                    name="nameProductType"
+                    rules={[{ required: true, message: 'Loại sản phẩm không để trống!' }]}
+                >
+                    <Select
+                        placeholder="Loại sản phẩm"
+                        onChange= {(e)=>itemProductTmp.idProductType=e[1]} 
+                    >
+                        {optionProductType}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Giá sản phẩm"
+                    name="price"
+                    rules={[{ required: true, message: 'Giá sản phẩm không để trống!' }]}
+                >
+                    <Input
+                        placeholder="Giá sản phẩm"
+                        onChange={(e)=>itemProductTmp.price=e.target.value}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Giá khuyến mãi"
+                    name="promotional"
+                >
+                    <Input 
+                        placeholder="Giá khuyến mãi"
+                        onChange= {(e)=>itemProductTmp.promotional=e.target.value}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Ảnh sản phẩm"
+                    name="image"
+                    rules={[{ required: true, message: 'Phải có ảnh gán cho sản phẩm!' }]}
+                >
+                    <Image src={itemProductTmp.image} width={100} preview={false}/>
+                </Form.Item>
+                <Form.Item
+                    label="Mô tả sản phẩm"
+                    name="description"
+                >
+                    <Input.TextArea
+                        placeholder="Mô tả trống"
+                        style={{ height:100 }}
+                    />
+                </Form.Item>
+                <Form.Item style={{ paddingTop:20 }}>
+                    <Button type="primary" htmlType="submit" danger >
+                        Cập nhật
+                    </Button>
+            </Form.Item>
+            </Form>
             }
            
         </Drawer>
+       
     )
     return(
         <div>
         {showContent ? 
             <div>
                 <Table 
-                    
                     showSorterTooltip={{ title: 'Nhấn để sắp xếp' }}
                     dataSource={dataProduct} 
                     columns={columns}
                     pagination={{ defaultPageSize:5 }}
                     style={overflowX?{overflowX:'scroll'}:null} 
                 />
-                {DrawerEditProduct()}
-               
+                 {DrawerEditProduct()}
             </div>
 
             :

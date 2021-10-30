@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useLayoutEffect} from 'react';
 import {Row,Col,Table,InputNumber,message,Image,Button,Input} from 'antd';
 import { useSelector,useDispatch } from 'react-redux';
 import {getPriceVND} from '../../contain/getPriceVND';
@@ -14,6 +14,19 @@ export default function Cart (){
     const [dataSale, setdataSale] = useState();
     const [codeSale, setcodeSale] = useState("");
     const history = useHistory();
+    const [overflowX, setoverflowX] = useState(false);
+
+    useLayoutEffect(() => {
+        function updateSize() {
+            if(window.innerWidth<700){
+                setoverflowX(true);
+            }else{
+                setoverflowX(false);
+            }
+        }
+        window.addEventListener('resize', updateSize);
+        updateSize();
+    }, []);
     useEffect(()=>{
         if(dataCart.length!==undefined){
             let total = 0;
@@ -224,6 +237,7 @@ export default function Cart (){
             dataSource={dataCart} 
             columns={columns} 
             size="small" 
+            style={overflowX?{overflowX:'scroll'}:null} 
             pagination={{ defaultPageSize: 3 }}
         />
         <Button type="primary" danger style={{ height:40,marginBottom:20 }}>
