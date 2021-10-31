@@ -2,7 +2,7 @@ import React,{useEffect,useState,useRef,useLayoutEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
-import {Image,Table,Button,Drawer,Form,Input,Select,Row,Col} from 'antd';
+import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber} from 'antd';
 import {EditOutlined,DeleteOutlined,} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
@@ -227,20 +227,26 @@ export default function ManageProduct(){
                     name="price"
                     rules={[{ required: true, message: 'Giá sản phẩm không để trống!' }]}
                 >
-                    <Input
+                    <InputNumber
                         placeholder="Giá sản phẩm"
+                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        min={0}
                         value= {itemProductTmp.price}
-                        onChange={(e)=>itemProductTmp.price=e.target.value}
+                        onChange={(e)=>itemProductTmp.price=e}
                     />
                 </Form.Item>
                 <Form.Item
                     label="Giá khuyến mãi"
                     name="promotional"
                 >
-                    <Input 
+                    <InputNumber
                         placeholder="Giá khuyến mãi"
+                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        min={0}
                         value={itemProductTmp.promotional}
-                        onChange= {(e)=>itemProductTmp.promotional=e.target.value}
+                        onChange= {(e)=>itemProductTmp.promotional=e}
                     />
                 </Form.Item>
                 <Form.Item
@@ -259,7 +265,7 @@ export default function ManageProduct(){
                         style={{ height:100 }}
                     />
                 </Form.Item>
-                <Form.Item style={{ paddingTop:20 }}>
+                <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>
                     <Button type="primary" htmlType="submit" danger >
                         Cập nhật
                     </Button>

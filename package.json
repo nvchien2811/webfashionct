@@ -4,12 +4,15 @@
   "private": true,
   "dependencies": {
     "@ant-design/charts": "^1.2.14",
+    "@ckeditor/ckeditor5-build-classic": "^31.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.3",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.16.13",
     "antd-img-crop": "^3.16.0",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "concurrently": "^6.3.0",
@@ -33,6 +36,7 @@
     "react-scripts": "4.0.3",
     "react-wow": "^1.0.0",
     "redux": "^4.1.1",
+    "slugify": "^1.6.1",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },

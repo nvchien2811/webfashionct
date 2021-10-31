@@ -1,7 +1,10 @@
 import React,{useState,useEffect} from 'react';
-import {Form,Input,Select,InputNumber,Upload,Button } from 'antd';
+import {Form,Input,Select,InputNumber,Upload,Button,PageHeader,message } from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import ImgCrop from 'antd-img-crop';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDecriprption';
 const {Option} = Select;
 export default function AddProduct(){
     const [name, setname] = useState();
@@ -11,9 +14,11 @@ export default function AddProduct(){
     const [promotional, setpromotional] = useState();
     const [image, setimage] = useState([]);
     const [imageDecription, setimageDecription] = useState([]);
+    const [decription, setdecription] = useState(null);
     const [optionFullProductType, setoptionFullProductType] = useState();
     const [optionProductType, setoptionProductType] = useState();
     const [optionCategory, setoptionCategory] = useState();
+    const [loadingBtn, setloadingBtn] = useState(false);
     const [formadd] = Form.useForm();
 
     useEffect(async()=>{
@@ -39,9 +44,51 @@ export default function AddProduct(){
         })
     },[])
     const handleAddProdcuct = async()=>{
-        console.log(image[0].response.msg.filename)
-        console.log(imageDecription[0].response.msg.filename)
-        console.log(imageDecription[1].response.msg.filename)
+        setloadingBtn(true);
+        let imageUrl = null;
+        let url1 = null;
+        let url2 = null;
+        let url3 = null;
+        let url4 = null;
+        if(image.length!==0){
+            imageUrl = "/Upload/ImageProduct/"+image[0].response.msg.filename;
+        }
+        if(imageDecription.length!==0){
+            url1="/Upload/ImageProduct/"+imageDecription[0].response.msg.filename
+            if(imageDecription.length>=2){
+                url2="/Upload/ImageProduct/"+imageDecription[1].response.msg.filename
+            }
+            if(imageDecription.length>=3){
+                url3="/Upload/ImageProduct/"+imageDecription[2].response.msg.filename
+            }
+            if(imageDecription===4){
+                url4="/Upload/ImageProduct/"+imageDecription[3].response.msg.filename
+            }
+        }
+        const data = {
+            "name":name,
+            "price":price,
+            "promotional":promotional,
+            "image":imageUrl,
+            "idCategory":idcategory,
+            "idProductType":idproduct_type[1],
+            "imageDecription1":url1,
+            "imageDecription2":url2,
+            "imageDecription3":url3,
+            "imageDecription4":url4,
+            "decription":decription
+        }
+        console.log(data)
+        const res = await FetchAPI.postDataAPI("/product/addProduct",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Thêm sản phẩm thành công");
+                setloadingBtn(false);
+            }else{
+                message.error("Có lỗi rồi !!");
+                setloadingBtn(false);
+            }
+        }
     }
     const onPreviewImage = async file => {
         let src = file.url;
@@ -82,9 +129,13 @@ export default function AddProduct(){
       
     return(
         <div>
+            <PageHeader
+                title="Thêm sản phẩm Fashion CT" 
+                className="site-page-header"
+            />
             <Form 
                 form={formadd}
-                labelCol={{ span:4}}
+                labelCol={{ span:4,md:6,sm:8}}
                 wrapperCol={{ span:15 }}
                 onFinish={handleAddProdcuct}
             >
@@ -135,6 +186,8 @@ export default function AddProduct(){
                 >
                     <InputNumber 
                         placeholder="Giá sản phẩm"
+                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
                         min={0}
                         style={{ width:200 }}
                         value={price}
@@ -147,6 +200,8 @@ export default function AddProduct(){
                 >
                     <InputNumber
                         placeholder="Giá khuyến mãi"
+                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
                         min={0}
                         style={{ width:200 }}
                         value={promotional}
@@ -160,7 +215,11 @@ export default function AddProduct(){
                     getValueFromEvent={getFile}
                     // rules={[{ required: true, message: 'Vui lòng chọn ảnh sản phẩm'}]}
                 >
-                <ImgCrop rotate>
+                <ImgCrop 
+                    rotate
+                    grid
+                    aspect={1.5/2.2}
+                >
                     <Upload
                         action="/uploads/uploadImageProduct"
                         listType="picture-card"
@@ -177,7 +236,11 @@ export default function AddProduct(){
                     label="Ảnh mô tả chi tiết"
                     name="imageDecription"
                 >
-                <ImgCrop rotate>
+                <ImgCrop 
+                    rotate
+                    aspect={1.5/2.2}
+                    grid
+                >
                     <Upload
                         action="/uploads/uploadImageProduct"
                         listType="picture-card"
@@ -190,9 +253,31 @@ export default function AddProduct(){
                     </Upload>  
                     </ImgCrop>
                 </Form.Item>
-                <Form.Item style={{ paddingTop:20 }}>
-                    <Button type="primary" htmlType="submit" danger >
-                        Thêm
+                <Form.Item
+                    label="Mô tả sản phẩm"
+                    name="decription"
+                >
+                     <CKEditor
+                            editor={ ClassicEditor }
+                            data={decription}
+                        
+                            config={{extraPlugins:[MyCustomUploadAdapterPlugin]}} //use this to upload image.
+
+                            onChange={ ( event, editor ) => {
+                                const data = editor.getData();
+                                setdecription(data);
+                            } }
+                    />
+                </Form.Item>
+                <Form.Item style={{ paddingTop:20 }} wrapperCol={{ span: 12, offset: 12 }}>
+                    <Button 
+                        type="primary" 
+                        htmlType="submit" 
+                        style={{ height:50,borderRadius:10 }} 
+                        danger 
+                        loading={loadingBtn}
+                    >
+                        Thêm sản phẩm
                     </Button>
                 </Form.Item>
             </Form>
