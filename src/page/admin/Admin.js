@@ -13,6 +13,7 @@ import SaleManager from './SaleManager';
 import BillDetails from './BillDetails';
 import AddInventory from './AddInventory';
 import ManageProduct from './ManageProduct';
+import AddProduct from './AddProduct';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 import {
@@ -109,7 +110,11 @@ export default function Admin(){
                 </NavLink>
             </Menu.Item>
             <SubMenu key="sub1" icon={<DropboxOutlined />} title="Sản phẩm">
-                <Menu.Item key="2">Thêm sản phẩm</Menu.Item>
+                <Menu.Item key="/admin/addproduct">
+                    <NavLink to="/admin/addproduct">
+                        Thêm sản phẩm
+                    </NavLink>
+                </Menu.Item>
                 <Menu.Item key="/admin/manageProduct">
                     <NavLink to="/admin/manageProduct">
                         Quản lý sản phẩm
@@ -166,6 +171,9 @@ export default function Admin(){
             </Route>
             <Route path="/admin/manageProduct">
                 <ManageProduct />
+            </Route>
+            <Route path="/admin/addproduct">
+                <AddProduct/>
             </Route>
             <Route path="/admin">
                 <HomeAdmin />

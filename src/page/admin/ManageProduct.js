@@ -229,6 +229,7 @@ export default function ManageProduct(){
                 >
                     <Input
                         placeholder="Giá sản phẩm"
+                        value= {itemProductTmp.price}
                         onChange={(e)=>itemProductTmp.price=e.target.value}
                     />
                 </Form.Item>
@@ -238,6 +239,7 @@ export default function ManageProduct(){
                 >
                     <Input 
                         placeholder="Giá khuyến mãi"
+                        value={itemProductTmp.promotional}
                         onChange= {(e)=>itemProductTmp.promotional=e.target.value}
                     />
                 </Form.Item>
@@ -261,7 +263,7 @@ export default function ManageProduct(){
                     <Button type="primary" htmlType="submit" danger >
                         Cập nhật
                     </Button>
-            </Form.Item>
+                </Form.Item>
             </Form>
             }
            
