@@ -2,13 +2,15 @@ import React,{useEffect,useState,useRef,useLayoutEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
-import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber} from 'antd';
+import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber,Upload} from 'antd';
 import {EditOutlined,DeleteOutlined,} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDecriprption';
+import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDescriprption';
+import {UploadOutlined} from '@ant-design/icons';
+import ImgCrop from 'antd-img-crop';
 
 const {Option} = Select;
 export default function ManageProduct(){
@@ -24,6 +26,8 @@ export default function ManageProduct(){
     const [optionCategory, setoptionCategory] = useState();
     const [optionFullProductType, setoptionFullProductType] = useState();
     const [optionProductType, setoptionProductType] = useState();
+    const [loadingBtn, setloadingBtn] = useState(false);
+    const [imageListUp, setimageListUp] = useState([]);
     const [overflowX, setoverflowX] = useState(false);
 
     useLayoutEffect(() => {
@@ -98,7 +102,29 @@ export default function ManageProduct(){
         setshowContent(true);
         setdataProduct(product)
     }
-
+    const handleEditProduct = async()=>{
+        console.log(itemProductTmp)
+        const data = {"data":itemProductTmp};
+        const res = await FetchAPI.postDataAPI("/product/editProduct",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Cập nhật sản phẩm thành công !")
+            }else{
+                message.error("Có lỗi rồi !!")
+            }
+        }
+    }
+    const onChangeImage = ({ fileList: newFileList }) => {
+        console.log(newFileList);
+        if(newFileList.length===0){
+            itemProductTmp.image=null;
+        }else{
+            if(newFileList[0].response){
+                itemProductTmp.image="/Upload/ImageProduct/"+newFileList[0].response.msg.filename
+            }
+        }
+        setimageListUp(newFileList);
+    };
     const columns  = [
         {
             title:"Mã sản phẩm",
@@ -157,7 +183,7 @@ export default function ManageProduct(){
                                 setdrawerEdit(true);
                                 setitemProductTmp(record);
                                 formEdit.setFieldsValue(record);
-                                console.log(record)
+                                setimageListUp([{url:record.image}])
                             }}
                         >
                             <EditOutlined />
@@ -172,7 +198,6 @@ export default function ManageProduct(){
     ]
    
     const DrawerEditProduct = ()=>(
-    
         <Drawer
             title="Chỉnh sửa sản phẩm" 
             placement="right" 
@@ -186,6 +211,7 @@ export default function ManageProduct(){
                 form={formEdit}
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 14 }}
+                onFinish={handleEditProduct}
             >
                 <Form.Item
                     label="Tên sản phẩm"
@@ -257,7 +283,27 @@ export default function ManageProduct(){
                     name="image"
                     rules={[{ required: true, message: 'Phải có ảnh gán cho sản phẩm!' }]}
                 >
-                    <Image src={itemProductTmp.image} width={100} preview={false}/>
+                    {/* <Image src={itemProductTmp.image} width={100} preview={false}/> */}
+                    <ImgCrop 
+                        rotate
+                        grid
+                        aspect={1.5/2.2}
+                    >
+                        <Upload
+                            action="/uploads/uploadImageProduct"
+                            listType="picture-card"
+                            name="image"
+                            fileList={imageListUp}
+                            onChange={onChangeImage}
+                        >
+                            {imageListUp.length<1 &&
+                                <div>
+                                    <UploadOutlined />
+                                    <span>   Tải ảnh lên</span> 
+                                </div>
+                            }                            
+                        </Upload>  
+                    </ImgCrop>
                 </Form.Item>
                 <Form.Item
                     label="Mô tả sản phẩm"
@@ -274,7 +320,7 @@ export default function ManageProduct(){
                     />
                 </Form.Item>
                 <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>
-                    <Button type="primary" htmlType="submit" danger >
+                    <Button type="primary" htmlType="submit" danger loading={loadingBtn}>
                         Cập nhật
                     </Button>
                 </Form.Item>

@@ -2,9 +2,10 @@ import React,{useState,useEffect} from 'react';
 import {Form,Input,Select,InputNumber,Upload,Button,PageHeader,message } from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import ImgCrop from 'antd-img-crop';
+import {UploadOutlined} from '@ant-design/icons'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDecriprption';
+import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDescriprption';
 const {Option} = Select;
 export default function AddProduct(){
     const [name, setname] = useState();
@@ -83,6 +84,8 @@ export default function AddProduct(){
         if(res.msg){
             if(res.msg==="Success"){
                 message.success("Thêm sản phẩm thành công");
+                formadd.setFieldsValue(null);
+                window.location.reload();
                 setloadingBtn(false);
             }else{
                 message.error("Có lỗi rồi !!");
@@ -228,9 +231,14 @@ export default function AddProduct(){
                         onChange={onChangeImage}
                         onPreview={onPreviewImage}
                     >
-                        {image.length===0 && '+ Tải ảnh lên'}
+                        {image.length===0 && 
+                        <div>
+                            <UploadOutlined />
+                            <span>   Tải ảnh lên</span> 
+                        </div>
+                        }
                     </Upload>  
-                    </ImgCrop>
+                </ImgCrop>
                 </Form.Item>
                 <Form.Item
                     label="Ảnh mô tả chi tiết"
@@ -249,7 +257,12 @@ export default function AddProduct(){
                         onChange={onChangeImageDecription}
                         onPreview={onPreviewImage}
                     >
-                        {imageDecription.length<4 && '+ Tải ảnh lên'}
+                        {imageDecription.length<4 && 
+                        <div>
+                            <UploadOutlined />
+                            <span>   Tải ảnh lên</span> 
+                        </div>
+                        }
                     </Upload>  
                     </ImgCrop>
                 </Form.Item>

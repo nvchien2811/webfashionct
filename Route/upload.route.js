@@ -7,7 +7,7 @@ router.post('/uploadImageProduct',controller.imageUploadProduct.single('image'),
     res.status(400).json({ error: error.message })
 })
 // For Single image upload
-router.post('/uploadImageProductDecription',controller.imageUploadProductDecription.single('image'), controller.uploadImage,(error, req, res, next) => {
+router.post('/uploadImageProductDescription',controller.imageUploadProductDescription.single('image'), controller.uploadImage,(error, req, res, next) => {
     res.status(400).json({ error: error.message })
 })
 module.exports = router;

@@ -14,3 +14,9 @@ module.exports.addProduct = (req,res)=>{
         }
     })
 }
+
+module.exports.editProduct = (req,res)=>{
+    const {name,price,promotional,image,idCategory,idProductType,imageDecription1,imageDecription2,imageDecription3,imageDecription4,description} = req.body.data;
+
+    console.log(image)
+}

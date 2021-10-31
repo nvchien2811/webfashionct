@@ -1,6 +1,6 @@
 import axios from 'axios';
 // Custom Upload Adapter
-export class uploadImageDecriprption {
+export class uploadImageDescriprption {
     constructor(loader) {
       this.loader = loader
     }
@@ -12,7 +12,7 @@ export class uploadImageDecriprption {
         return axios({
           data,
           method: "POST",
-          url: "/uploads/uploadImageProductDecription",
+          url: "/uploads/uploadImageProductDescription",
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -24,7 +24,7 @@ export class uploadImageDecriprption {
             )
           },
         })
-          .then((response) => ({ default: "/Upload/ImageDecription/"+response.data.msg.filename }))
+          .then((response) => ({ default: "/Upload/ImageDescription/"+response.data.msg.filename }))
           .catch(err=>console.log(err));
       })
     }
@@ -36,6 +36,6 @@ export class uploadImageDecriprption {
   export default function MyCustomUploadAdapterPlugin( editor ) {
     editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
         // Configure the URL to the upload script in your back-end here!
-        return new uploadImageDecriprption( loader );
+        return new uploadImageDescriprption( loader );
     };
 }

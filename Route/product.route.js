@@ -20,4 +20,5 @@ router.get('/getProductDeal/:page',controller.getProductDeal);
 
 
 router.post('/addProduct',controllerAdmin.addProduct);
+router.post('/editProduct',controllerAdmin.editProduct);
 module.exports = router;

@@ -14,11 +14,11 @@ const imageStorageProduct = multer.diskStorage({
             // path.extname get the uploaded file extension
     }
 });
-const imageStorageProductDecription = multer.diskStorage({
+const imageStorageProductDescription = multer.diskStorage({
   // Destination to store image     
   destination: (req, file, cb)=>{ // it is destination not desitnation :)
       console.log("storage");
-      cb(null, './Upload/ImageDecription');
+      cb(null, './Upload/ImageDescription');
     }, 
     filename: (req, file, cb) => {
         cb(null, file.originalname + '_' + Date.now() 
@@ -40,8 +40,8 @@ module.exports.imageUploadProduct = multer({
      cb(undefined, true)
   }
 }) 
-module.exports.imageUploadProductDecription = multer({
-  storage: imageStorageProductDecription,
+module.exports.imageUploadProductDescription = multer({
+  storage: imageStorageProductDescription,
   limits: {
     fileSize: 10000000 // 1000000 Bytes = 1 MB
   },
