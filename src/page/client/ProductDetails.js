@@ -8,6 +8,7 @@ import Product from '../../elements/product';
 import { useDispatch } from 'react-redux';
 import { updateCartCurrent } from '../../contain/updateQuanityCart';
 import PreviewImmage from '../../elements/PreviewImmage';
+import ReactHtmlParser from 'react-html-parser';
 const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
@@ -177,7 +178,6 @@ export default function ProductDetails(){
             <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>   
             <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={5} disabled/>
             <span><span style={{ fontWeight:'bold' }}>Mã SP : </span>{dataProduct.id}</span>
-            <span style={{ fontSize:16 }}>{dataProduct.description}</span>
         </div>
     )
     const contentProduct = ()=>(
@@ -235,10 +235,12 @@ export default function ProductDetails(){
                     :
                         <span style={{ fontWeight:'bold' }}>MUA HÀNG</span>
                     }
-                    
                 </Button>
+                <div style={{ paddingTop:50 }}> 
+                    <span style={{ fontSize:16}}>{ReactHtmlParser(dataProduct.description)}</span>
+                </div>
             </div>
-
+           
         </div> 
     )
     const Direction = ()=>(

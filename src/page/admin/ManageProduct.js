@@ -6,6 +6,9 @@ import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber} from 'antd';
 import {EditOutlined,DeleteOutlined,} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDecriprption';
 
 const {Option} = Select;
 export default function ManageProduct(){
@@ -260,9 +263,14 @@ export default function ManageProduct(){
                     label="Mô tả sản phẩm"
                     name="description"
                 >
-                    <Input.TextArea
-                        placeholder="Mô tả trống"
-                        style={{ height:100 }}
+                    <CKEditor
+                            editor={ ClassicEditor }
+                            data={itemProductTmp.description}
+                            config={{extraPlugins:[MyCustomUploadAdapterPlugin]}} //use this to upload image.
+                            onChange={ ( event, editor ) => {
+                                const data = editor.getData();
+                                itemProductTmp.description = data
+                            } }
                     />
                 </Form.Item>
                 <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>

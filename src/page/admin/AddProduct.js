@@ -14,7 +14,7 @@ export default function AddProduct(){
     const [promotional, setpromotional] = useState();
     const [image, setimage] = useState([]);
     const [imageDecription, setimageDecription] = useState([]);
-    const [decription, setdecription] = useState(null);
+    const [description, setdescription] = useState(null);
     const [optionFullProductType, setoptionFullProductType] = useState();
     const [optionProductType, setoptionProductType] = useState();
     const [optionCategory, setoptionCategory] = useState();
@@ -76,7 +76,7 @@ export default function AddProduct(){
             "imageDecription2":url2,
             "imageDecription3":url3,
             "imageDecription4":url4,
-            "decription":decription
+            "description":description
         }
         console.log(data)
         const res = await FetchAPI.postDataAPI("/product/addProduct",data);
@@ -259,13 +259,13 @@ export default function AddProduct(){
                 >
                      <CKEditor
                             editor={ ClassicEditor }
-                            data={decription}
+                            data={description}
                         
                             config={{extraPlugins:[MyCustomUploadAdapterPlugin]}} //use this to upload image.
 
                             onChange={ ( event, editor ) => {
                                 const data = editor.getData();
-                                setdecription(data);
+                                setdescription(data);
                             } }
                     />
                 </Form.Item>
