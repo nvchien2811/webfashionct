@@ -6,24 +6,15 @@ import {DeleteOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
 const { Option } = Select;
+import { useSelector } from 'react-redux';
 export default function Invoices(){
     const [fulldataBill, setfulldataBill] = useState();
     const [loadingTable, setloadingTable] = useState(false);
     const [showModalDeleteBill, setshowModalDeleteBill] = useState(false);
     const [dataItemTmp, setdataItemTmp] = useState();
-    const [overflowX, setoverflowX] = useState(false);
+    const overflowX = useSelector(state=>state.layoutReducer.overflowX);
     const searchInput = useRef();
-    useLayoutEffect(() => {
-        function updateSize() {
-            if(window.innerWidth<700){
-                setoverflowX(true);
-            }else{
-                setoverflowX(false);
-            }
-        }
-        window.addEventListener('resize', updateSize);
-        updateSize();
-    }, []);
+ 
     useEffect(()=>{
         setloadingTable(true);
         getFullBill()

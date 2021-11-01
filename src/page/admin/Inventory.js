@@ -1,10 +1,12 @@
-import React ,{useEffect,useState,useLayoutEffect,useRef} from 'react';
+import React ,{useEffect,useState,useRef} from 'react';
 import {InputNumber,Table,Image,message,Button,Modal} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {DeleteOutlined,PlusCircleOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
 export default function Inventory(){
     const [dataInventory, setdataInventory] = useState();
     const [showContent, setshowContent] = useState(false);
@@ -12,18 +14,8 @@ export default function Inventory(){
     const [showModalDeleteInventory, setshowModalDeleteInventory] = useState(false);
     const [dataItemTmp, setdataItemTmp] = useState();
     const searchInput = useRef();
-    const [overflowX, setoverflowX] = useState(false);
-    useLayoutEffect(() => {
-        function updateSize() {
-            if(window.innerWidth<700){
-                setoverflowX(true);
-            }else{
-                setoverflowX(false);
-            }
-        }
-        window.addEventListener('resize', updateSize);
-        updateSize();
-    }, []);
+    const overflowX = useSelector(state=>state.layoutReducer.overflowX);
+
     useEffect(()=>{
         setloadingTable(true);
         setshowContent(false);
@@ -115,7 +107,7 @@ export default function Inventory(){
             title:"Cập nhật lần cuối",
             key:'lastUpdate',
             sorter: (a, b) => new Date(a.update_at) - new Date(b.update_at),
-            render: record=><span>{new Date(record.update_at).toString()}</span>
+            render: record=><span>{moment(record.update_at).format('YYYY-MM-DD HH:mm:ss')}</span>
         },
         {
             title:"Tùy chỉnh",

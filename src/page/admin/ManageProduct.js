@@ -11,6 +11,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDescriprption';
 import {UploadOutlined} from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
+import { useSelector } from 'react-redux';
 
 const {Option} = Select;
 export default function ManageProduct(){
@@ -28,19 +29,7 @@ export default function ManageProduct(){
     const [optionProductType, setoptionProductType] = useState();
     const [loadingBtn, setloadingBtn] = useState(false);
     const [imageListUp, setimageListUp] = useState([]);
-    const [overflowX, setoverflowX] = useState(false);
-
-    useLayoutEffect(() => {
-        function updateSize() {
-            if(window.innerWidth<700){
-                setoverflowX(true);
-            }else{
-                setoverflowX(false);
-            }
-        }
-        window.addEventListener('resize', updateSize);
-        updateSize();
-    }, []);
+    const overflowX = useSelector(state=>state.layoutReducer.overflowX);
 
     useEffect(()=>{
         setshowContent(false);

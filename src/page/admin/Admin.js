@@ -14,6 +14,9 @@ import BillDetails from './BillDetails';
 import AddInventory from './AddInventory';
 import ManageProduct from './ManageProduct';
 import AddProduct from './AddProduct';
+import { useDispatch } from 'react-redux';
+import {updateOverflowX} from '../../redux/reducer/layout.reducer';
+
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 import {
@@ -33,6 +36,7 @@ export default function Admin(){
     const [collapsed, setcollapsed] = useState(false);
     const [widthColl, setwidthColl] = useState(80);
     const location = useLocation();
+    const dispatch = useDispatch();
     const key = "logout";
 
     useLayoutEffect(() => {
@@ -40,13 +44,16 @@ export default function Admin(){
             if(window.innerWidth<700){
                 setcollapsed(true);
                 setwidthColl(0);
+                dispatch(updateOverflowX(true))
             }else{
                 setwidthColl(80);
+                dispatch(updateOverflowX(false))
             }
         }
         window.addEventListener('resize', updateSize);
         updateSize();
     }, []);
+
     useEffect(()=>{
         document.getElementsByClassName("header-nav")[0].style.display = 'none';
         document.getElementsByClassName("footer")[0].style.display = 'none';
