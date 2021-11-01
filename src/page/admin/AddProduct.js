@@ -109,6 +109,7 @@ export default function AddProduct(){
       };
     const onChangeImage = ({ fileList: newFileList }) => {
         setimage(newFileList);
+        formadd.setFieldsValue({image:newFileList})
     };
     const onChangeImageDecription = ({ fileList: newFileList }) => {
         setimageDecription(newFileList);
@@ -121,15 +122,7 @@ export default function AddProduct(){
             formadd.setFieldsValue({nameProductType:null})
         }  
     }
-    const getFile = (e) => {
-        console.log('Upload event:', e);
- 
-        if (Array.isArray(e)) {
-          return e;
-        }
-       return e && e.fileList;
-    };
-      
+  
     return(
         <div>
             <PageHeader
@@ -138,8 +131,8 @@ export default function AddProduct(){
             />
             <Form 
                 form={formadd}
-                labelCol={{ span:4,md:6,sm:8}}
-                wrapperCol={{ span:15 }}
+                labelCol={{ xl:4,md:6,sm:8}}
+                wrapperCol={{ xl:17,md:15,sm:13 }}
                 onFinish={handleAddProdcuct}
             >
                 <Form.Item
@@ -215,8 +208,7 @@ export default function AddProduct(){
                     label="Ảnh sản phẩm"
                     name="image"
                     valuePropName="fileList"
-                    getValueFromEvent={getFile}
-                    // rules={[{ required: true, message: 'Vui lòng chọn ảnh sản phẩm'}]}
+                    rules={[{ required: true, message: 'Vui lòng chọn ảnh sản phẩm'}]}
                 >
                 <ImgCrop 
                     rotate

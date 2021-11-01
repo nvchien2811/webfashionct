@@ -19,5 +19,7 @@ app.use("/product",require("./Route/product.route"));
 app.use("/user",require("./Route/user.route"));
 app.use("/order",require("./Route/order.route"));
 app.use("/inventory",require("./Route/inventory.route"));
+app.use("/promotion",require("./Route/promotion.route"));
+
 
 app.listen(port,()=>console.log(`App listening at http://localhost:${port}`))

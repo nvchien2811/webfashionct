@@ -2,7 +2,7 @@ import React,{useEffect,useState,useRef,useLayoutEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
-import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber,Upload} from 'antd';
+import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber,Upload,message} from 'antd';
 import {EditOutlined,DeleteOutlined,} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
@@ -103,24 +103,27 @@ export default function ManageProduct(){
         setdataProduct(product)
     }
     const handleEditProduct = async()=>{
-        console.log(itemProductTmp)
+        setloadingBtn(true);
         const data = {"data":itemProductTmp};
         const res = await FetchAPI.postDataAPI("/product/editProduct",data);
         if(res.msg){
             if(res.msg==="Success"){
                 message.success("Cập nhật sản phẩm thành công !")
+                setloadingBtn(false)
             }else{
                 message.error("Có lỗi rồi !!")
+                setloadingBtn(false)
             }
         }
     }
     const onChangeImage = ({ fileList: newFileList }) => {
-        console.log(newFileList);
         if(newFileList.length===0){
-            itemProductTmp.image=null;
+            itemProductTmp.image="";
+            formEdit.setFieldsValue({image:null})
         }else{
             if(newFileList[0].response){
                 itemProductTmp.image="/Upload/ImageProduct/"+newFileList[0].response.msg.filename
+                formEdit.setFieldsValue({image:"/Upload/ImageProduct/"+newFileList[0].response.msg.filename})
             }
         }
         setimageListUp(newFileList);
@@ -311,7 +314,7 @@ export default function ManageProduct(){
                 >
                     <CKEditor
                             editor={ ClassicEditor }
-                            data={itemProductTmp.description}
+                            data={itemProductTmp.description===null?"":itemProductTmp.description}
                             config={{extraPlugins:[MyCustomUploadAdapterPlugin]}} //use this to upload image.
                             onChange={ ( event, editor ) => {
                                 const data = editor.getData();

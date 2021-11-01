@@ -16,7 +16,13 @@ module.exports.addProduct = (req,res)=>{
 }
 
 module.exports.editProduct = (req,res)=>{
-    const {name,price,promotional,image,idCategory,idProductType,imageDecription1,imageDecription2,imageDecription3,imageDecription4,description} = req.body.data;
-
-    console.log(image)
+    const {id,name,price,promotional,image,idCategory,idProductType,imageDecription1,imageDecription2,imageDecription3,imageDecription4,description} = req.body.data;
+    const sql = "UPDATE product SET name=?,price=?,promotional=?,image=?,idCategory=?,idProductType=?,imageDecription1=?,imageDecription2=?,imageDecription3=?,imageDecription4=?,description=? WHERE id=?"
+    db.query(sql,[name,price,promotional,image,idCategory,idProductType,imageDecription1,imageDecription2,imageDecription3,imageDecription4,description,id],(err,result)=>{
+        if(err){
+            return res.json({msg:err})
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
 }

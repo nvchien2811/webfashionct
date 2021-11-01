@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/charts": "^1.2.14",
     "@ckeditor/ckeditor5-build-classic": "^31.0.0",
+    "@ckeditor/ckeditor5-html-embed": "^31.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.14.1",

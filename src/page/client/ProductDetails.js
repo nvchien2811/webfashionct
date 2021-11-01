@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { updateCartCurrent } from '../../contain/updateQuanityCart';
 import PreviewImmage from '../../elements/PreviewImmage';
 import ReactHtmlParser from 'react-html-parser';
+
 const { Option } = Select;
 export default function ProductDetails(){
     const [dataProduct, setdataProduct] = useState();
