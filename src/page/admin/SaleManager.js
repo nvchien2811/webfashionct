@@ -11,6 +11,7 @@ export default function SaleManager(){
     const [showContent, setshowContent] = useState();
     const [dataFullPromotion, setdataFullPromotion] = useState();
     const [loadingTable, setloadingTable] = useState(false);
+    const [loadingBtn, setloadingBtn] = useState(false);
     const [showDrawer, setshowDrawer] = useState(false);
     const overflowX = useSelector(state=>state.layoutReducer.overflowX);
     const [dataAddSale, setdataAddSale] = useState({});
@@ -67,6 +68,7 @@ export default function SaleManager(){
         }
     }
     const handleAddSale = async()=>{
+        setloadingBtn(true);
         const data = {"data":dataAddSale};
         const res = await FetchAPI.postDataAPI("/promotion/addPromotion",data);
         if(res.msg){
@@ -74,11 +76,15 @@ export default function SaleManager(){
                 setTimeout(()=>{
                     message.success("Thêm mã khuyến mãi thành công !")
                     getFullPromotion();
+                    setdataAddSale({});
+                    formAddSale.setFieldsValue({name_event_sale:"",cost_sale:"",code_sale:"",quanity:"",time:""});
                     setshowDrawer(false);
+                    setloadingBtn(false);
                 },500)
             }else{
                 setTimeout(()=>{
                     message.error("Có lỗi rồi !!");
+                    setloadingBtn(false);
                 })
             }
         }
@@ -227,7 +233,7 @@ export default function SaleManager(){
                     />
                 </Form.Item>
                 <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>
-                    <Button type="primary" htmlType="submit" danger >
+                    <Button type="primary" htmlType="submit" danger loading={loadingBtn}>
                         Thêm mã
                     </Button>
                 </Form.Item>

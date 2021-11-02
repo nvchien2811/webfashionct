@@ -251,10 +251,10 @@ export default function ProductDetails(){
                 <Link to={"/home"}>Trang chủ</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link to={`/category/id#${dataProduct.idCategory}`}>{nameCategory}</Link>
+                <Link to={`/category/${dataProduct.idCategory}`}>{nameCategory}</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link to={`/menuproduct/id#${dataProduct.idProductType}`}>{nameProductType}</Link>
+                <Link to={`/menuproduct/${dataProduct.idProductType}`}>{nameProductType}</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>{dataProduct.name}</Breadcrumb.Item>
         </Breadcrumb>

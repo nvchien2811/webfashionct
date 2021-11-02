@@ -13,7 +13,7 @@ module.exports.getFullProductAdmin = (req,res)=>{
     })
 }
 module.exports.getProductType = (req,res)=>{
-    const sql = "SELECT * FROM product_type"
+    const sql = "SELECT product_type.*,category.name AS nameCategory FROM `product_type` INNER JOIN category ON product_type.idCategory=category.id"
     db.query(sql, (err,result)=>{
        return res.send(result);
     })

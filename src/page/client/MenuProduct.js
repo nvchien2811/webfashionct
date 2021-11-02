@@ -49,7 +49,7 @@ export default function MenuProduct(){
                 <Link to={"/home"}>Trang chủ</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-                <Link to={`/category/id#${idCategory}`}>{nameCategory}</Link>
+                <Link to={`/category/${idCategory}`}>{nameCategory}</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
                {nameProductType}

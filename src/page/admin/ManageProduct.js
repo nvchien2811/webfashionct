@@ -3,13 +3,12 @@ import { useLocation } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber,Upload,message} from 'antd';
-import {EditOutlined,DeleteOutlined,} from '@ant-design/icons';
+import {EditOutlined,DeleteOutlined,UploadOutlined} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDescriprption';
-import {UploadOutlined} from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import { useSelector } from 'react-redux';
 

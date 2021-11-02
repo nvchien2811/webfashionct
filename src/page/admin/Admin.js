@@ -14,11 +14,10 @@ import BillDetails from './BillDetails';
 import AddInventory from './AddInventory';
 import ManageProduct from './ManageProduct';
 import AddProduct from './AddProduct';
+import ManageCategory from './ManageCategory';
+import ManageProductType from './ManageProductType';
 import { useDispatch } from 'react-redux';
 import {updateOverflowX} from '../../redux/reducer/layout.reducer';
-
-const { Header, Sider, Content } = Layout;
-const { SubMenu } = Menu;
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -28,8 +27,12 @@ import {
     UserOutlined,
     PoweroffOutlined,
     ShopOutlined,
-    GiftOutlined
+    GiftOutlined,
+    DatabaseOutlined
 } from '@ant-design/icons';
+const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
+
 export default function Admin(){
     const history = useHistory();
     const [showContent, setshowContent] = useState(false);
@@ -128,6 +131,18 @@ export default function Admin(){
                     </NavLink>
                 </Menu.Item>
             </SubMenu>
+            <SubMenu key="sub2" icon={<DatabaseOutlined/>} title="Quản lý danh mục">
+                <Menu.Item key="/admin/category">
+                    <NavLink to="/admin/category"> 
+                        Danh mục sản phẩm
+                    </NavLink>
+                </Menu.Item>    
+                <Menu.Item key="/admin/producttype">
+                    <NavLink to="/admin/producttype">
+                        Loại sản phẩm
+                    </NavLink>
+                </Menu.Item> 
+            </SubMenu>
             <Menu.Item key="/admin/invoices" icon={<ContainerOutlined />}>
                 <NavLink to="/admin/invoices">
                     Hóa đơn
@@ -181,6 +196,12 @@ export default function Admin(){
             </Route>
             <Route path="/admin/addproduct">
                 <AddProduct/>
+            </Route>
+            <Route path="/admin/category">
+                <ManageCategory/>
+            </Route>
+            <Route path="/admin/producttype">
+                <ManageProductType/>
             </Route>
             <Route path="/admin">
                 <HomeAdmin />
