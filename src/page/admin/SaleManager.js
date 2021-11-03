@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import {getPriceVND} from '../../contain/getPriceVND';
-import {InputNumber,Table,DatePicker,Button,message,Drawer,Form,Input} from 'antd';
+import {InputNumber,Table,DatePicker,Button,message,Drawer,Form,Input,Modal} from 'antd';
 import moment from 'moment';
 import {PlusCircleOutlined} from '@ant-design/icons';
 import { useSelector } from 'react-redux';
@@ -13,6 +13,8 @@ export default function SaleManager(){
     const [loadingTable, setloadingTable] = useState(false);
     const [loadingBtn, setloadingBtn] = useState(false);
     const [showDrawer, setshowDrawer] = useState(false);
+    const [showModalDelete, setshowModalDelete] = useState(false);
+    const [itemTmp, setitemTmp] = useState();
     const overflowX = useSelector(state=>state.layoutReducer.overflowX);
     const [dataAddSale, setdataAddSale] = useState({});
     const [formAddSale] = Form.useForm();
@@ -89,6 +91,20 @@ export default function SaleManager(){
             }
         }
     }
+    const handleDeleteSale = async()=>{
+        const data = {"id":itemTmp.id}
+        const res = await FetchAPI.postDataAPI("/promotion/deleteSale",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Xóa mã thành công")
+                setshowModalDelete(false)
+                getFullPromotion()
+            }else{
+                message.error("Có lỗi rồi !!")
+                setshowModalDelete(false)
+            }
+        }
+    }
     const columns  = [
         {
             title:"Tên sự kiện",
@@ -142,7 +158,10 @@ export default function SaleManager(){
             title:"Tùy chỉnh",
             key:'edit',
             render: record=>(
-                <Button>
+                <Button onClick={()=>{
+                    setshowModalDelete(true);
+                    setitemTmp(record)
+                }}>
                     Xóa
                 </Button>
             )
@@ -240,6 +259,22 @@ export default function SaleManager(){
             </Form>
         </Drawer>
     )
+    const ModalDeleteSale = ()=>(
+        <div>
+        {showModalDelete &&
+        <Modal
+            title={`Xóa sản phẩm ${itemTmp.code_sale}`}
+            visible={showModalDelete}
+            onCancel={()=>{setshowModalDelete(false)}}
+            onOk={handleDeleteSale}
+            cancelText="Thoát"
+            okText="Chắc chắn"
+        >
+            <p>Bạn có chắc chắn muốn xóa mã khuyến mãi này.</p>
+        </Modal>
+        }
+        </div>
+    )
     return(
     <div>
         {showContent ?
@@ -255,7 +290,7 @@ export default function SaleManager(){
             />
      
             {DrawerAddSale()}
-         
+            {ModalDeleteSale()}
         </div>
         :
         <Spinner spinning={!showContent}/> 

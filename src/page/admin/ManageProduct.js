@@ -2,7 +2,7 @@ import React,{useEffect,useState,useRef,useLayoutEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
-import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber,Upload,message} from 'antd';
+import {Image,Table,Button,Drawer,Form,Input,Select,InputNumber,Upload,message,Modal} from 'antd';
 import {EditOutlined,DeleteOutlined,UploadOutlined} from '@ant-design/icons';
 import PreviewImmage from '../../elements/PreviewImmage';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
@@ -27,6 +27,8 @@ export default function ManageProduct(){
     const [optionFullProductType, setoptionFullProductType] = useState();
     const [optionProductType, setoptionProductType] = useState();
     const [loadingBtn, setloadingBtn] = useState(false);
+    const [loadingTable, setloadingTable] = useState(false);
+    const [showModalDeleteProduct, setshowModalDeleteProduct] = useState(false);
     const [imageListUp, setimageListUp] = useState([]);
     const overflowX = useSelector(state=>state.layoutReducer.overflowX);
 
@@ -61,6 +63,7 @@ export default function ManageProduct(){
         if(itemProductTmp!==undefined)
             filterOption(itemProductTmp.idCategory,true);
     },[drawerEdit])
+    
     const filterOption = (value,init)=>{
         let arrTmp = optionFullProductType;
         arrTmp = arrTmp.filter(e=>e.props.value[2]===value);
@@ -104,6 +107,22 @@ export default function ManageProduct(){
             }
         }
     }
+    const handleDeleteProduct = async()=>{
+        setloadingTable(true);
+        const data = {"id":itemProductTmp.id}
+        const res = await FetchAPI.postDataAPI("/product/deleteProduct",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Xóa sản phẩm thành công");
+                getFullProduct();
+                setloadingTable(false);
+                setshowModalDeleteProduct(false);
+            }else{
+                message.error("Có lỗi rồi !!");
+                setloadingTable(false);
+            }
+        }
+    }
     const onChangeImage = ({ fileList: newFileList }) => {
         if(newFileList.length===0){
             itemProductTmp.image="";
@@ -120,7 +139,7 @@ export default function ManageProduct(){
         {
             title:"Mã sản phẩm",
             key:'id',
-            render: record=><span style={{fontWeight:'bold'}}>{record.id}</span>
+            render: record=><span>{record.id}</span>
         },
         {
             title:"Tên sản phẩm",
@@ -179,7 +198,15 @@ export default function ManageProduct(){
                         >
                             <EditOutlined />
                         </Button>
-                        <Button type="primary" danger style={{ borderRadius:10,marginLeft:20 }}>
+                        <Button 
+                            type="primary" 
+                            danger 
+                            style={{ borderRadius:10,marginLeft:20 }} 
+                            onClick={()=>{
+                                setshowModalDeleteProduct(true);
+                                setitemProductTmp(record)
+                            }}
+                        >
                             <DeleteOutlined />
                         </Button>
                     </div>
@@ -321,6 +348,22 @@ export default function ManageProduct(){
         </Drawer>
        
     )
+    const ModalDeleteProduct = ()=>(
+        <div>
+        {showModalDeleteProduct &&
+        <Modal
+            title={`Xóa sản phẩm ${itemProductTmp.name}`}
+            visible={showModalDeleteProduct}
+            onCancel={()=>{setshowModalDeleteProduct(false)}}
+            onOk={handleDeleteProduct}
+            cancelText="Thoát"
+            okText="Chắc chắn"
+        >
+            <p>Nếu bạn xóa sản phẩm. Tất cả thông tin về sản phẩm và kho hàng sẽ bị xóa đi.</p>
+        </Modal>
+        }
+        </div>
+    )
     return(
         <div>
         {showContent ? 
@@ -331,8 +374,10 @@ export default function ManageProduct(){
                     columns={columns}
                     pagination={{ defaultPageSize:5 }}
                     style={overflowX?{overflowX:'scroll'}:null} 
+                    loading={loadingTable}
                 />
                  {DrawerEditProduct()}
+                 {ModalDeleteProduct()}
             </div>
 
             :

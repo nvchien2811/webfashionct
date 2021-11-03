@@ -45,3 +45,15 @@ module.exports.addPromotion = (req,res)=>{
         }
     })
 }
+module.exports.deleteSale = (req,res)=>{
+    const {id} = req.body;
+    const sql = "DELETE FROM sale WHERE id = ?"
+    db.query(sql,[id],(err,result)=>{
+        if(err){
+            console.log(err)
+            return res.json({msg:err});
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
+}

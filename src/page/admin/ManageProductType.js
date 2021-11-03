@@ -1,19 +1,24 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useRef} from 'react';
 import * as FetchAPI from '../../util/fetchApi';
-import {Table,Select,Button,Drawer,Form,Input} from 'antd';
+import {Table,Select,Button,Drawer,Form,Input,message,Modal} from 'antd';
 import Spinner from '../../elements/spinner';
-import {EditOutlined,DeleteOutlined} from '@ant-design/icons';
+import {EditOutlined,DeleteOutlined,PlusCircleOutlined} from '@ant-design/icons';
 import {useSelector} from 'react-redux';
+import {getColumnSearchProps} from '../../elements/SearchFilter';
 const {Option} = Select;
 export default function ManageProductType(){
     const [dataFullProductType, setdataFullProductType] = useState();
     const [showContent, setshowContent] = useState(false);
     const [optionCategory, setoptionCategory] = useState();
     const [drawerEdit, setdrawerEdit] = useState(false);
+    const [showModalAdd, setshowModalAdd] = useState(false);
     const [itemTmp, setitemTmp] = useState({});
+    const [dataAdd, setdataAdd] = useState({});
     const [dataFullProduct, setdataFullProduct] = useState();
     const [formEdit] = Form.useForm();
+    const [formAdd] = Form.useForm();
     const [loadingBtn, setloadingBtn] = useState(false);
+    const searchInput = useRef();
     const overflowX = useSelector(state=>state.layoutReducer.overflowX);
     useEffect(()=>{
         setshowContent(false);
@@ -37,18 +42,49 @@ export default function ManageProductType(){
         setshowContent(true)
     }
     const handleEditProductType = async()=>{
-        console.log(itemTmp)
+        setloadingBtn(true);
+        const data = {"data":itemTmp};
+        const res = await FetchAPI.postDataAPI("/product/editProductType",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Cập nhật thành công");
+                getProductType();
+                setloadingBtn(false)
+            }else{
+                message.error("Có lỗi rồi !!")
+                setloadingBtn(false)
+            }
+        }
+    }
+    const handleAddProductType = async()=>{
+        setloadingBtn(true);
+        const data = {"data":dataAdd};
+        const res = await FetchAPI.postDataAPI("/product/addProducType",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Thêm mới thành công");
+                getProductType();
+                setshowModalAdd(false);
+                setdataAdd({});
+                formAdd.setFieldsValue({name:"",idCategory:null,status:null})
+                setloadingBtn(false);
+            }else{
+                message.error("Có lỗi rồi !!")
+                setloadingBtn(false)
+            }
+        }
     }
     const columns = [
         {
             title:"Mã loại sản phẩm",
             name:"id",
-            render: record=><span style={{fontWeight:'bold'}}>{"#"+record.id}</span>
+            render: record=><span>{"#"+record.id}</span>
         },
         {
             title:"Tên loại sản phẩm",
             name:"name",
-            render: record=><span>{record.name}</span>
+            ...getColumnSearchProps('name',searchInput),
+            // render: record=><span>{record.name}</span>
         },
         {
             title:"Số sản phẩm danh mục",
@@ -98,9 +134,7 @@ export default function ManageProductType(){
                         >
                             <EditOutlined />
                         </Button>
-                        <Button type="primary" danger style={{ borderRadius:10,marginLeft:20 }}>
-                            <DeleteOutlined />
-                        </Button>
+                       
                     </div>
                 )
             }
@@ -161,20 +195,92 @@ export default function ManageProductType(){
                     <Button type="primary" htmlType="submit" danger loading={loadingBtn}>
                         Cập nhật
                     </Button>
+                    <Button type="primary" danger style={{ borderRadius:10,marginLeft:20 }}>
+                            <DeleteOutlined />
+                    </Button>
                 </Form.Item>
             </Form>
         </Drawer>
+    )
+    const ModalAddNew = ()=>(
+        <Modal
+            title="Thêm mới loại sản phẩm"
+            visible={showModalAdd}
+            onCancel={()=>setshowModalAdd(false)}
+            footer={false}
+        >
+            <Form
+                form={formAdd}
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 14 }}
+                onFinish={handleAddProductType}
+            >
+                <Form.Item
+                    label="Tên loại sản phẩm"
+                    name="name"
+                    rules={[{ required: true, message: 'Nhập tên loại sản phẩm'}]}
+                >
+                    <Input
+                        placeholder="Nhập tên loại sản phẩm"
+                        value={dataAdd.name}
+                        onChange= {(e)=>setdataAdd({...dataAdd,name:e.target.value})}
+                    /> 
+                </Form.Item>
+                <Form.Item
+                    label="Danh mục sản phẩm"
+                    name="idCategory"
+                    rules={[{ required: true, message: 'Chọn danh mục sản phẩm'}]}
+                >
+                    <Select
+                        value={dataAdd.idCategory}
+                        onChange= {(e)=>setdataAdd({...dataAdd,idCategory:e})}
+                    >
+                        {optionCategory}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Trạng thái"
+                    name="status"
+                    rules={[{ required: true, message: 'Chọn trạng thái'}]}
+                >
+                    <Select
+                        value={dataAdd.status}
+                        onChange= {(e)=>setdataAdd({...dataAdd,status:e})}
+                    >
+                        <Option value={0}>
+                            Hiển thị
+                        </Option>
+                        <Option value={1}>
+                            Ẩn
+                        </Option>
+
+                    </Select>
+                </Form.Item>
+                <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>
+                    <Button type="primary" htmlType="submit" danger loading={loadingBtn}>
+                       Thêm mới
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
     )
     return(
         <div>
             {showContent ?
             <div>
+            <Button type="primary" style={{ marginBottom:20 }} danger onClick={()=>setshowModalAdd(true)}>
+                Thêm mới <PlusCircleOutlined />
+            </Button>
+            <div>
                 <Table 
                     columns={columns}
                     dataSource={dataFullProductType}
+                    style={overflowX?{overflowX:'scroll'}:null} 
                 />
                 {DrawerEdit()}
-            </div>            
+                {ModalAddNew()}
+            </div>      
+            </div>      
             :
             <Spinner spinning={!showContent}/>
             }

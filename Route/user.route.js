@@ -11,4 +11,5 @@ router.post("/checkEmail",controller.checkEmail);
 router.post("/checkUsername",controller.checkUsername);
 
 router.get("/getFullUser",controllerAdmin.getFullUser);
+router.post("/updateStatusUser",controllerAdmin.updateStatusUser);
 module.exports = router;

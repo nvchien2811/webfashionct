@@ -26,3 +26,73 @@ module.exports.editProduct = (req,res)=>{
         }
     })
 }
+
+module.exports.editProductType = (req,res)=>{
+    const {id,idCategory,name,status} = req.body.data;
+    const slug = slugify(name);
+    const sql = "UPDATE product_type SET name=?,idCategory=?,slug=?,status=? WHERE id = ?";
+    db.query(sql,[name,idCategory,slug,status,id],(err,rows)=>{
+        if(err){
+            return res.json({msg:err})
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
+}
+module.exports.addProducType = (req,res)=>{
+    const {name,idCategory,status} = req.body.data;
+    const slug = slugify(name);
+    const id = uuid.v4()
+    const sql = "INSERT INTO product_type(id,name,slug,idCategory,status) VALUES (?,?,?,?,?)";
+    db.query(sql,[id,name,slug,idCategory,status],(err,rows)=>{
+        if(err){
+            return res.json({msg:err})
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
+}
+module.exports.addCategory = (req,res)=>{
+    const {name,status} = req.body.data;
+    const slug = slugify(name);
+    const id = uuid.v4();
+    const sql = "INSERT INTO category(id,name,slug,status) VALUES (?,?,?,?)";
+    db.query(sql,[id,name,slug,status],(err,rows)=>{
+        if(err){
+            return res.json({msg:err})
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
+}
+module.exports.editCategory = (req,res)=>{
+    const {id,name,status} = req.body.data;
+    const slug = slugify(name);
+    const sql = "UPDATE category SET name=?,slug=?,status=? WHERE id = ?";
+    db.query(sql,[name,slug,status,id],(err,rows)=>{
+        if(err){
+            return res.json({msg:err})
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
+}
+
+module.exports.deleteProduct = (req,res)=>{
+    const {id} = req.body;
+    const sql_delete_inventory = "DELETE FROM inventory WHERE idProduct = ?";
+    db.query(sql_delete_inventory,[id],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            const sql_delete_product = "DELETE FROM product WHERE id = ?";
+            db.query(sql_delete_product,[id],(err,rows)=>{
+                if(err){
+                    return res.json({msg:err});
+                }else{
+                    return res.json({msg:"Success"});
+                }
+            })
+        }
+    })
+}
