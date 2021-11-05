@@ -267,7 +267,7 @@ export default function ProductDetails(){
     return(
         <div style={{ padding:"20px 10%" }}>
             {showContent ?
-            <div>
+            <div style={{ minHeight:800 }}>
             <div style={{ paddingBottom:30}}>
                 {Direction()}
             </div>       

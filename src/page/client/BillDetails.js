@@ -185,6 +185,7 @@ export default function BillDetails(){
             <ModalReviewProduct 
                 visible={showModalReview}
                 onCancel={()=>setshowModalReview(false)}
+                refresh={()=>getProduct()}
                 dataProduct={dataProduct}
                 user={currentUser}
             /> 

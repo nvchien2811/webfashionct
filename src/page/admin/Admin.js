@@ -16,6 +16,7 @@ import ManageProduct from './ManageProduct';
 import AddProduct from './AddProduct';
 import ManageCategory from './ManageCategory';
 import ManageProductType from './ManageProductType';
+import ViewReview from './ViewReview';
 import { useDispatch } from 'react-redux';
 import {updateOverflowX} from '../../redux/reducer/layout.reducer';
 import {
@@ -28,7 +29,8 @@ import {
     PoweroffOutlined,
     ShopOutlined,
     GiftOutlined,
-    DatabaseOutlined
+    DatabaseOutlined,
+    StarOutlined
 } from '@ant-design/icons';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
@@ -163,6 +165,11 @@ export default function Admin(){
                     Sự kiện ưu đãi
                 </NavLink>    
             </Menu.Item>
+            <Menu.Item key="/admin/review" icon={<StarOutlined />}>
+                <NavLink to="/admin/review">
+                    Đánh giá sản phẩm
+                </NavLink>    
+            </Menu.Item>
             <Menu.Item icon={<PoweroffOutlined />} onClick={handleLogout}>
                 Đăng xuất
             </Menu.Item>
@@ -202,6 +209,9 @@ export default function Admin(){
             </Route>
             <Route path="/admin/producttype">
                 <ManageProductType/>
+            </Route>
+            <Route path="/admin/review">
+                <ViewReview/>
             </Route>
             <Route path="/admin">
                 <HomeAdmin />

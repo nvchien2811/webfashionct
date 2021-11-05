@@ -6,13 +6,41 @@ export default function ModalReviewProduct (props) {
     // console.log(props.dataProduct)
     // console.log(props.user.id)
     const handleAddReview = async(data)=>{
-        console.log(data)
         if(data.reviewStar===null){
             message.warning('Bạn hãy đánh giá số sao cho sản phẩm!')
         }else{
-            message.success("Bấm thành công")
+            const req = {
+                "idOrderDetails":data.id,
+                "idUser":props.user.id,
+                "idProduct":data.idProduct,
+                "comment":data.comment,
+                "reviewStar":data.reviewStar
+            }
+            const res = await FetchAPI.postDataAPI("/review/addReview",req);
+            if(res.msg){
+                if(res.msg==="Success"){
+                    message.success("Cảm ơn. Đánh giá của bạn đã được lưu");
+                    props.refresh();
+                }else{
+                    message.error("Có lỗi rồi !!");
+                }
+            }
         }
-       
+    }
+    const handleEditReview = async(data)=>{
+        const req = {
+            "reviewStar":data.reviewStar,
+            "comment":data.comment,
+            "idReview":data.idReview
+        }
+        const res = await FetchAPI.postDataAPI("/review/editReview",req);
+        if(res.msg){
+            if(res.msg==="Success"){
+                message.success("Đánh giá của bạn đã được chỉnh sửa");
+            }else{
+                message.error("Có lỗi rồi !!");
+            }
+        }
     }
     const renderItem = (item)=>{
         return(
@@ -26,7 +54,7 @@ export default function ModalReviewProduct (props) {
                     onChange= {e=>item.reviewStar=e}
                 />
                 <Input.TextArea 
-                    value={item.comment}
+                    defaultValue={item.comment}
                     placeholder="Đánh giá của bạn về sản phẩm này"
                     onChange= {(e)=>item.comment=e.target.value}
                 /> 
@@ -36,7 +64,7 @@ export default function ModalReviewProduct (props) {
                         Đánh giá
                     </Button>
                 :
-                    <Button type="primary" danger onClick={()=>console.log(item)}>
+                    <Button type="primary" danger onClick={()=>handleEditReview(item)}>
                         Chỉnh sửa đánh giá
                     </Button>
                 }
