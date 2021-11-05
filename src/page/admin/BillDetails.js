@@ -215,7 +215,7 @@ export default function BillDetails(){
                                 <li>Ngày đặt: <b>{new Date(dataBill.create_at).toString()}</b></li>
                                 <li>Tên khách hàng : <b>{dataBill.name}</b></li>
                                 <li>Email : <b>{dataBill.email}</b></li>
-                                <li>Tổng cộng : <b>{getPriceVND(totalTmp)+" đ"}</b></li>
+                                <li>Tổng cộng : <b>{getPriceVND(totalTmp-promotionprice)+" đ"}</b></li>
                                 <li>Thời gian cập nhật hóa đơn: <b>{new Date(dataBill.update_at).toString()}</b></li>
                                 <li>Phương thức thanh toán: 
                                     <b>{dataBill.methodPayment===1 ? "Chuyển khoản ngân hàng":"Trả tiền mặt"}</b>

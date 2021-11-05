@@ -96,3 +96,14 @@ module.exports.deleteProduct = (req,res)=>{
         }
     })
 }
+
+module.exports.statisProductSold = (req,res)=>{
+    const sql = "SELECT idProduct, COUNT(*) AS soldProduct, product.name AS nameProduct FROM `order_details` INNER JOIN `product` ON order_details.idProduct=product.id GROUP BY idProduct HAVING soldProduct ORDER BY soldProduct DESC";
+    db.query(sql,(err,result)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json(result)
+        }
+    })
+}

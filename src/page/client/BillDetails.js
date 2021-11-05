@@ -5,6 +5,7 @@ import {getPriceVND} from '../../contain/getPriceVND';
 import Spinner from '../../elements/spinner';
 import { useSelector } from 'react-redux';
 import { useParams,useHistory } from 'react-router-dom';
+import ModalReviewProduct from '../../elements/ModalReviewProduct';
 export default function BillDetails(){
     const history = useHistory();
     const [dataProduct, setdataProduct] = useState();
@@ -12,6 +13,7 @@ export default function BillDetails(){
     const [totalTmp, settotalTmp] = useState(0);
     const [showContent, setshowContent] = useState(false);
     const [promotionprice, setpromotionprice] = useState(0);
+    const [showModalReview, setshowModalReview] = useState(false);
     const [dataSale, setdataSale] = useState();
     const currentUser = useSelector(state=>state.userReducer.currentUser);
     const [statusUser, setstatusUser] = useState(false);
@@ -109,7 +111,9 @@ export default function BillDetails(){
                     <Table.Summary.Row>
                         <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Đánh giá sản phẩm</span></Table.Summary.Cell>
                         <Table.Summary.Cell index={1}>
-                            <Button>Đánh giá ngay</Button>
+                            <Button onClick={()=>setshowModalReview(true)}>
+                                Đánh giá ngay
+                            </Button>
                         </Table.Summary.Cell>
                     </Table.Summary.Row>
                     }
@@ -160,7 +164,7 @@ export default function BillDetails(){
                         <li>Mã đơn hàng : <b>{"#"+dataBill.id}</b></li>
                         <li>Ngày đặt: <b>{new Date(dataBill.create_at).toString()}</b></li>
                         <li>Email : <b>{dataBill.email}</b></li>
-                        <li>Tổng cộng : <b>{getPriceVND(totalTmp)+" đ"}</b></li>
+                        <li>Tổng cộng : <b>{getPriceVND(totalTmp-promotionprice)+" đ"}</b></li>
                         <li>Thời gian cập nhật hóa đơn: <b>{new Date(dataBill.update_at).toString()}</b></li>
                         <li>Phương thức thanh toán: 
                             <b>{dataBill.methodPayment===1 ? "Chuyển khoản ngân hàng":"Trả tiền mặt"}</b>
@@ -178,6 +182,12 @@ export default function BillDetails(){
                 </Card>
             </Col>
             </Row> 
+            <ModalReviewProduct 
+                visible={showModalReview}
+                onCancel={()=>setshowModalReview(false)}
+                dataProduct={dataProduct}
+                user={currentUser}
+            /> 
             </div>
             :
             <div style={{ padding:"20px 40px" }}>

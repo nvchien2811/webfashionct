@@ -115,7 +115,7 @@ module.exports.getBillById = (req,res)=>{
 }
 module.exports.getProductByIdBill = (req,res)=>{
     const {idOrder} = req.body;
-    const sql = "SELECT * FROM `order_details` WHERE idOrder = ?";
+    const sql = "SELECT order_details.*,review.reviewStar,review.comment FROM `order_details` LEFT JOIN `review` ON order_details.idReview=review.id WHERE idOrder = ?";
     db.query(sql,[idOrder],(err,rows)=>{
         if(err){
             return res.json({msg:err});

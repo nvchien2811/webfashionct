@@ -119,7 +119,7 @@ export default function Admin(){
                     Tổng quan
                 </NavLink>
             </Menu.Item>
-            <SubMenu key="sub1" icon={<DropboxOutlined />} title="Sản phẩm">
+            <SubMenu key="sub1" icon={<DropboxOutlined />} title="Quản lý sản phẩm">
                 <Menu.Item key="/admin/addproduct">
                     <NavLink to="/admin/addproduct">
                         Thêm sản phẩm
@@ -127,7 +127,7 @@ export default function Admin(){
                 </Menu.Item>
                 <Menu.Item key="/admin/manageProduct">
                     <NavLink to="/admin/manageProduct">
-                        Quản lý sản phẩm
+                        Sửa, Xóa sản phẩm
                     </NavLink>
                 </Menu.Item>
             </SubMenu>

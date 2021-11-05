@@ -145,9 +145,10 @@ export default function SaleManager(){
         {
             title:<div style={{textAlign: 'center'}}><span>Thời gian giảm giá</span></div>,
             key:'date_start',
+            sorter: (a, b) =>new Date(a.date_start)- new Date(b.date_start),
             render: record=>(
                 <RangePicker 
-                    defaultValue={[moment(record.date_start),moment(record.expired)]}
+                    value={[moment(record.date_start),moment(record.expired)]}
                     renderExtraFooter={() => 'extra footer'}
                     showTime 
                     onChange= {(e)=>handleEditDate(e,record.id)}
@@ -283,6 +284,7 @@ export default function SaleManager(){
                 Thêm mã khuyến mãi <PlusCircleOutlined />
             </Button>
             <Table 
+                showSorterTooltip={{ title: 'Nhấn để sắp xếp' }}
                 columns={columns}
                 dataSource={dataFullPromotion}
                 loading={loadingTable}

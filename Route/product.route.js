@@ -27,5 +27,7 @@ router.post('/editProductType',controllerAdmin.editProductType);
 router.post('/addProducType',controllerAdmin.addProducType);
 router.post('/addCategory',controllerAdmin.addCategory);
 router.post('/editCategory',controllerAdmin.editCategory);
-router.post('/deleteProduct',controllerAdmin.deleteProduct)
+router.post('/deleteProduct',controllerAdmin.deleteProduct);
+router.get('/statisProductSold',controllerAdmin.statisProductSold);
+
 module.exports = router;
