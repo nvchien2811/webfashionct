@@ -1,9 +1,11 @@
 import React,{useEffect,useState} from 'react';
 import * as FetchAPI from '../../util/fetchApi';
-import {Table,Button,Form,Input,Select,Modal,message,Drawer} from 'antd';
+import {Table,Button,Form,Input,Select,Modal,message,Drawer,Upload} from 'antd';
 import {PlusCircleOutlined,EditOutlined,DeleteOutlined} from '@ant-design/icons';
 import Spinner from '../../elements/spinner';
 import {useSelector} from 'react-redux';
+import {UploadOutlined} from '@ant-design/icons';
+import ImgCrop from 'antd-img-crop';
 const {Option} = Select;
 export default function ManageCategory(){
     const [dataFullCategory, setdataFullCategory] = useState();
@@ -16,6 +18,8 @@ export default function ManageCategory(){
     const [loadingBtn, setloadingBtn] = useState();
     const [formAdd] = Form.useForm();
     const [formEdit] = Form.useForm();
+    const [logoCategory, setlogoCategory] = useState([]);
+    const [logoTmp, setlogoTmp] = useState([]);
     const overflowX = useSelector(state=>state.layoutReducer.overflowX);
 
     useEffect(()=>{
@@ -31,7 +35,7 @@ export default function ManageCategory(){
     }
     const handleAddCategory = async()=>{
         setloadingBtn(true);
-        const data = {"data":dataAdd};
+        const data = {"data":dataAdd,"logo":"/Upload/ImageDescription/"+logoCategory[0].response.msg.filename};
         const res = await FetchAPI.postDataAPI("/product/addCategory",data);
         if(res.msg){
             if(res.msg==="Success"){
@@ -50,7 +54,7 @@ export default function ManageCategory(){
     }
     const handleEditCategory = async()=>{
         setloadingBtn(true);
-        const data = {"data":itemTmp};
+        const data = {"data":itemTmp,"logo":"/Upload/ImageDescription/"+logoTmp[0].response.msg.filename};
         const res = await FetchAPI.postDataAPI("/product/editCategory",data);
         if(res.msg){
             if(res.msg==="Success"){
@@ -64,6 +68,14 @@ export default function ManageCategory(){
             }
         }
     }
+    const onChangeImage = ({ fileList: newFileList }) => {
+        setlogoCategory(newFileList);
+        formAdd.setFieldsValue({logo:newFileList})
+    };
+    const onChangeLogoEdit = ({ fileList: newFileList }) => {
+        setlogoTmp(newFileList);
+        formEdit.setFieldsValue({logo:newFileList})
+    };
     const columns = [
         {
             title:"Mã danh mục",
@@ -101,6 +113,11 @@ export default function ManageCategory(){
                                 setdrawerEdit(true);
                                 setitemTmp(record);
                                 formEdit.setFieldsValue(record);
+                                if(record.logo!==null){
+                                    setlogoTmp([{url:record.logo}]);
+                                }else{
+                                    setlogoTmp([])
+                                }
                             }}
                         >
                             <EditOutlined />
@@ -150,6 +167,32 @@ export default function ManageCategory(){
                         </Option>
 
                     </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Logo"
+                    name="logo"
+                    rules={[{ required: true, message: 'Vui lòng chọn logo'}]}
+                >
+                     <ImgCrop 
+                        rotate
+                        grid
+                        aspect={1.5/2.2}
+                    >
+                        <Upload
+                            action="/uploads/uploadImageProductDescription"
+                            listType="picture-card"
+                            name="image"
+                            fileList={logoTmp}
+                            onChange={onChangeLogoEdit}
+                        >
+                            {logoTmp.length<1 &&
+                                <div>
+                                    <UploadOutlined />
+                                    <span>   Tải ảnh lên</span> 
+                                </div>
+                            }                            
+                        </Upload>  
+                    </ImgCrop>
                 </Form.Item>
                 <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>
                     <Button type="primary" htmlType="submit" danger loading={loadingBtn}>
@@ -204,6 +247,32 @@ export default function ManageCategory(){
                         </Option>
 
                     </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Logo"
+                    name="logo"
+                    rules={[{ required: true, message: 'Bạn phải chọn logo cho danh mục sản phẩm'}]}
+                >
+                <ImgCrop 
+                    rotate
+                    grid
+                    aspect={1.5/2.2}
+                >
+                    <Upload
+                        action="/uploads/uploadImageProductDescription"
+                        listType="picture-card"
+                        name="image"
+                        fileList={logoCategory}
+                        onChange={onChangeImage}
+                    >
+                        {logoCategory.length===0 && 
+                        <div>
+                            <UploadOutlined />
+                            <span>   Tải ảnh lên</span> 
+                        </div>
+                        }
+                    </Upload>  
+                </ImgCrop>
                 </Form.Item>
                 <Form.Item style={{ paddingTop:20 }}  wrapperCol={{ span: 12, offset: 10 }}>
                     <Button type="primary" htmlType="submit" danger loading={loadingBtn}>
