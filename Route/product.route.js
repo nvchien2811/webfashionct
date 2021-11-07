@@ -4,6 +4,8 @@ var controller = require('../Controller/product.controller');
 var controllerAdmin = require('../Controller/admin/product.controller');
 
 //Client
+
+router.get('/getproductSale', controller.getproductSale);// lấy 3 sản phẩm khuyến mãi nhất
 router.get('/getFullProduct',controller.getFullProduct);
 router.get('/getProductType',controller.getProductType);
 router.get('/getCategory',controller.getCategory);

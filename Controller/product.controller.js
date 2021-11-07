@@ -1,5 +1,12 @@
 var db = require('../db');
 
+module.exports.getproductSale= (req,res)=>{
+    const sql = "SELECT * FROM product where promotional > 0"
+    db.query(sql, (err,result)=>{
+        return res.send(result);
+    })
+}
+
 module.exports.getFullProduct = (req,res)=>{
     const sql = "SELECT * FROM product"
     db.query(sql, (err,result)=>{
