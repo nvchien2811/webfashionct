@@ -54,10 +54,11 @@ module.exports.addProducType = (req,res)=>{
 }
 module.exports.addCategory = (req,res)=>{
     const {name,status} = req.body.data;
+    const {logo} = req.body;
     const slug = slugify(name);
     const id = uuid.v4();
-    const sql = "INSERT INTO category(id,name,slug,status) VALUES (?,?,?,?)";
-    db.query(sql,[id,name,slug,status],(err,rows)=>{
+    const sql = "INSERT INTO category(id,name,slug,logo,status) VALUES (?,?,?,?,?)";
+    db.query(sql,[id,name,slug,logo,status],(err,rows)=>{
         if(err){
             return res.json({msg:err})
         }else{
@@ -67,9 +68,10 @@ module.exports.addCategory = (req,res)=>{
 }
 module.exports.editCategory = (req,res)=>{
     const {id,name,status} = req.body.data;
+    const {logo} = req.body;
     const slug = slugify(name);
-    const sql = "UPDATE category SET name=?,slug=?,status=? WHERE id = ?";
-    db.query(sql,[name,slug,status,id],(err,rows)=>{
+    const sql = "UPDATE category SET name=?,slug=?,status=?,logo=? WHERE id = ?";
+    db.query(sql,[name,slug,status,logo,id],(err,rows)=>{
         if(err){
             return res.json({msg:err})
         }else{
