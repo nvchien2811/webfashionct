@@ -5,6 +5,7 @@ import * as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import {Link} from 'react-router-dom';
 import Spinner from '../../elements/spinner';
+import moment from 'moment';
 const { TabPane } = Tabs;
 export default function BillFollow (){
     const datauser = useSelector(state=>state.userReducer.currentUser);
@@ -48,7 +49,7 @@ export default function BillFollow (){
             key:'date',
             render:(record)=>{
                return(
-                   <span>{new Date(record.create_at).toString()}</span>
+                   <span>{moment(record.create_at).format('YYYY-MM-DD HH:mm:ss')}</span>
                )
             }   
         },

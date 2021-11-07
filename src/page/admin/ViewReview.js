@@ -3,10 +3,12 @@ import {Table,Rate,Image} from 'antd';
 import Spinner from '../../elements/spinner';
 import * as FetchAPI from '../../util/fetchApi';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
+import { useSelector } from 'react-redux';
 export default function ViewReview(){
     const [showContent, setshowContent] = useState(false);
     const [dataFullReview, setdataFullReview] = useState({});
     const searchInput = useRef();
+    const overflowX = useSelector(state=>state.layoutReducer.overflowX);
     useEffect(()=>{
         getFullReview()
     },[])
@@ -57,6 +59,7 @@ export default function ViewReview(){
                 <Table 
                     columns={columns}
                     dataSource={dataFullReview}
+                    style={overflowX?{overflowX:'scroll'}:null} 
                 />
             </div>
             :

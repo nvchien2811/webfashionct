@@ -23,6 +23,8 @@ export default function ProductDetails(){
     const [outOfStock, setoutOfStock] = useState(false);
     const [dataRelate, setdataRelate] = useState([]);
     const [imageDecription, setimageDecription] = useState();
+    const [reviewStar, setreviewStar] = useState(5);
+    const [quanityReview, setquanityReview] = useState(0);
     const {idProduct} = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -37,6 +39,12 @@ export default function ProductDetails(){
                     "id":idProduct
                 }
                 const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
+                const rate = await FetchAPI.postDataAPI("/review/getReviewStarProduct",data);
+                console.log(rate)
+                if(rate.length!==0){
+                    setreviewStar(rate[0].reviewStar);
+                    setquanityReview(rate[0].quanity);
+                }
                 getImageDecripton(res[0]);
                 setdataProduct(res[0]);
                 getName(res[0]);
@@ -176,8 +184,11 @@ export default function ProductDetails(){
     )
     const ProductInformation = ()=>(
         <div style={{ display:'flex',flexDirection:'column' }}>
-            <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>   
-            <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={5} disabled/>
+            <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>  
+            <div> 
+                <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={reviewStar} disabled/>
+                <span>{`(${quanityReview} đánh giá)`}</span>
+            </div>
             <span><span style={{ fontWeight:'bold' }}>Mã SP : </span>{dataProduct.id}</span>
         </div>
     )
