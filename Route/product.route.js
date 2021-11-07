@@ -3,9 +3,9 @@ var router = express.Router();
 var controller = require('../Controller/product.controller');
 var controllerAdmin = require('../Controller/admin/product.controller');
 
-//Client
-
-router.get('/topProductSale', controller.topProductSale);// lấy 3 sản phẩm khuyến mãi nhất
+//Client 
+router.get('/getTopProductSale', controller.getTopProductSale);// lấy 3 sản phẩm khuyến mãi nhất
+router.get('/getproductSale', controller.getproductSale);
 router.get('/getFullProduct',controller.getFullProduct);
 router.get('/getProductType',controller.getProductType);
 router.get('/getCategory',controller.getCategory);

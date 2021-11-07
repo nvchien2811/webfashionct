@@ -15,6 +15,7 @@ import BillFollow from './client/BillFollow';
 import InfoAccount from '../elements/menuAccount';
 import BillDetails from './client/BillDetails';
 import DropDownCart from '../elements/dropDownCart';
+import ProductSale from './client/ProductSale';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
@@ -160,7 +161,11 @@ export default function App() {
           {menu}
         </SubMenu>
         <Menu.Item key="3">Giới thiệu</Menu.Item>
-        <Menu.Item key="4">Sản phẩm khuyến mãi</Menu.Item>
+        <Menu.Item key="4">
+          <Link to="/productsale/1">
+            Sản phẩm khuyến mãi
+          </Link>
+        </Menu.Item>
         <Menu.Item key="5">Bộ sưu tập</Menu.Item>
         <Menu.Item key="6">Chính sách</Menu.Item>
         <Menu.Item key="7">Liên hệ</Menu.Item>
@@ -205,6 +210,9 @@ export default function App() {
           </Route>
           <Route path="/billdetails/:idBill">
             <BillDetails/>
+          </Route>
+          <Route path="/productsale/:page">
+            <ProductSale />
           </Route>
           <Route path="/loginadmin">
             <LoginAdmin/>

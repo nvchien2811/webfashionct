@@ -5,6 +5,7 @@ var controller = require('../Controller/reivew.controller');
 router.post("/getReviewById",controller.getReviewById);
 router.post("/addReview",controller.addReview);
 router.post("/editReview",controller.editReview);
+router.post("/getReviewStarProduct",controller.getReviewStarProduct);
 
 //admin
 router.get("/getFullReview",controller.getFullReview);
