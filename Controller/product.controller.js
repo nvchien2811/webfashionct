@@ -7,7 +7,6 @@ module.exports.getTopProductSale= (req,res)=>{
     })
 }
 
-
 module.exports.getproductSale= (req,res)=>{
     const sql = "SELECT * FROM product where promotional > 0 ORDER BY (price-promotional)/(price) DESC"
     db.query(sql, (err,result)=>{

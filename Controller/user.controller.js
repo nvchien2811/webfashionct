@@ -16,7 +16,7 @@ module.exports.getUser = (req,res)=>{
             if(err){
                 return res.json({msg:err})
             }else{
-                const sql = 'SELECT id,username,name,email,avartar,ruler FROM user WHERE id = ? ';
+                const sql = 'SELECT id,username,name,email,avartar,ruler,status FROM user WHERE id = ? ';
                 db.query(sql,[decoded.id],(err,rows,fields)=>{
                     if (err) {
                         return res.json({msg:err});
@@ -128,4 +128,48 @@ module.exports.checkUsername = (req,res)=>{
         }
     }
     )
+}
+
+module.exports.getInforUser = (req,res)=>{
+    const {idUser} = req.body;
+    const sql = "SELECT user.*,customer.address,customer.phone FROM `user` LEFT JOIN customer ON user.id = customer.idUser WHERE user.id= ?";
+    db.query(sql,[idUser],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json(rows);
+        }
+    })
+}
+
+module.exports.updateProfile = (req,res)=>{
+    const {id,name,email,address,phone} = req.body.data;
+    const sql_update_user = "UPDATE user SET name = ? WHERE id = ?";
+    const sql_check_customer ="SELECT * FROM customer WHERE idUser=?";
+    db.query(sql_check_customer,[id],(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }
+        if(rows.length===0){
+            const sql_insert = "INSERT INTO customer(idUser,email,address,phone,active) VALUES (?,?,?,?,?)";
+            db.query(sql_insert,[id,email,address,phone,0],(err,rows)=>{
+                if (err) {
+                    return res.json({msg:err})
+                }else{
+                    return res.json({msg:"Success"})
+                }
+            })
+        }else{
+            const sql_update_customer = "UPDATE customer SET address = ?,phone=? WHERE idUser = ?"
+            db.query(sql_update_customer,[address,phone,id],(err,rows)=>{
+                if(err){
+                    return res.json({msg:err})
+                }else{
+                    return res.json({msg:"Success"})
+                }
+            })
+        }
+        db.query(sql_update_user,[name,id])
+    })
+ 
 }
