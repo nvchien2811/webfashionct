@@ -8,11 +8,15 @@ export const getUser = async(token,dispatch)=>{
         if(res.msg.message ==="jwt expired"){
             localStorage.removeItem("token");
             return false;
-        }else{
-            
         }
     }else{
-        dispatch(updateUser(res[0]));  
+        if(res[0].status===1){
+            localStorage.removeItem("token");
+            return "block";
+        }else{
+            dispatch(updateUser(res[0]));  
+        }
+       
     }
     
 }

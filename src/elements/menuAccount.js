@@ -14,16 +14,15 @@ export default function menuAccount (props){
     }
     return(
         <Menu theme="dark">
-            <Menu.Item key="control" >
-                Bảng điều khiển
-            </Menu.Item>
             <Menu.Item key="bill" >
                 <Link to="/billfollow">
                 Đơn hàng
                 </Link>
             </Menu.Item>
             <Menu.Item key="profile" >
-                {"Thông tin tài khoản ("+name+")" }
+                <Link to="/profile">
+                    {"Thông tin tài khoản ("+name+")" }
+                </Link>
             </Menu.Item>
             
             <Menu.Item key="logout" onClick={handleLogout}>

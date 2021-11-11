@@ -16,6 +16,7 @@ import InfoAccount from '../elements/menuAccount';
 import BillDetails from './client/BillDetails';
 import DropDownCart from '../elements/dropDownCart';
 import ProductSale from './client/ProductSale';
+import Profile from './client/Profile';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
@@ -67,7 +68,11 @@ export default function App() {
       if(status===false){
         message.warning("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại !");
         setstatusUser(false);
-      }else{
+      }if(status=="block"){
+        message.error("Tài khoản của bạn đang bị khóa, vui lòng liên hệ với quản lý!");
+        setstatusUser(false);
+      }
+      else{
         setstatusUser(true);
       }
     }
@@ -213,6 +218,9 @@ export default function App() {
           </Route>
           <Route path="/productsale/:page">
             <ProductSale />
+          </Route>
+          <Route path="/profile">
+              <Profile/>
           </Route>
           <Route path="/loginadmin">
             <LoginAdmin/>

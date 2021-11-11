@@ -187,7 +187,7 @@ export default function ProductDetails(){
             <span style={{ fontSize:18,fontWeight:'bold' }}>{dataProduct.name}</span>  
             <div> 
                 <Rate allowHalf style={{ color:"orange"}} tooltips="12345" defaultValue={reviewStar} disabled/>
-                <span>{`(${quanityReview} đánh giá)`}</span>
+                <span style={{ marginLeft:10 }}>{`(${quanityReview} đánh giá)`}</span>
             </div>
             <span><span style={{ fontWeight:'bold' }}>Mã SP : </span>{dataProduct.id}</span>
         </div>
