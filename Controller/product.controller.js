@@ -8,7 +8,7 @@ module.exports.getTopProductSale= (req,res)=>{
 }
 
 module.exports.getproductSale= (req,res)=>{
-    const sql = "SELECT * FROM product where promotional > 0"
+    const sql = "SELECT * FROM product where promotional > 0 ORDER BY (price-promotional)/(price) DESC"
     db.query(sql, (err,result)=>{
         return res.send(result);
     })
@@ -46,8 +46,8 @@ module.exports.getProduct= (req,res)=>{
 }
 module.exports.getProductDetails= (req,res)=>{
     const {id} = req.body;
-    const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.id=? GROUP BY product.id HAVING quanityReview";
-    db.query(sql,[id], (err,result)=>{
+    const sql = `SELECT * FROM product WHERE id='${id}'`;
+    db.query(sql, (err,result)=>{
        return res.send(result);
     })
 }
@@ -60,15 +60,15 @@ module.exports.getCategoryById= (req,res)=>{
 }
 module.exports.getProductTypeById= (req,res)=>{
     const {id} = req.body;
-    const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.idProductType=? GROUP BY product.id HAVING quanityReview";
-    db.query(sql,[id], (err,result)=>{
+    const sql = `SELECT * FROM product_type WHERE id='${id}'`;
+    db.query(sql, (err,result)=>{
        return res.send(result);
     })
 }
 module.exports.getProductByType= (req,res)=>{
     const {id} = req.body;
-    const sql = `SELECT * FROM product WHERE idProductType='${id}'`;
-    db.query(sql, (err,result)=>{
+    const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.idProductType=? GROUP BY product.id HAVING quanityReview";
+    db.query(sql,[id], (err,result)=>{
        return res.send(result);
     })
 }
