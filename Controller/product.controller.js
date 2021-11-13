@@ -46,8 +46,8 @@ module.exports.getProduct= (req,res)=>{
 }
 module.exports.getProductDetails= (req,res)=>{
     const {id} = req.body;
-    const sql = `SELECT * FROM product WHERE id='${id}'`;
-    db.query(sql, (err,result)=>{
+    const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.id=? GROUP BY product.id HAVING quanityReview";
+    db.query(sql,[id], (err,result)=>{
        return res.send(result);
     })
 }
