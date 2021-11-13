@@ -39,11 +39,10 @@ export default function ProductDetails(){
                     "id":idProduct
                 }
                 const res = await FetchAPI.postDataAPI("/product/getProductDetails",data);
-                const rate = await FetchAPI.postDataAPI("/review/getReviewStarProduct",data);
-                console.log(rate)
-                if(rate.length!==0){
-                    setreviewStar(rate[0].reviewStar);
-                    setquanityReview(rate[0].quanity);
+                console.log(res)
+                if(res[0].reviewStar!==null){
+                    setreviewStar(res[0].reviewStar);
+                    setquanityReview(res[0].quanityReview);
                 }
                 getImageDecripton(res[0]);
                 setdataProduct(res[0]);

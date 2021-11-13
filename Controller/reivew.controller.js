@@ -55,14 +55,3 @@ module.exports.getFullReview = (req,res)=>{
         }
     })
 }
-module.exports.getReviewStarProduct = (req,res)=>{
-    const {id} = req.body;
-    const sql = "SELECT AVG(reviewStar) AS reviewStar,COUNT(*) AS quanity FROM `review` WHERE idProduct=? GROUP BY idProduct HAVING quanity";
-    db.query(sql,[id],(err,rows)=>{
-        if(err){
-            return res.json({msg:err});
-        }else{
-            return res.json(rows)
-        }
-    })
-}
