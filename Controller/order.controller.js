@@ -15,7 +15,7 @@ module.exports.getProductByCart = (req,res)=>{
                 console.log(err)
             }
             // rows.concat({"quanity":item.quanity,"option":item.option});
-            arr.push({...rows,"quanity":item.quanity,"option":item.option});
+            arr.push({...rows,"quanity":item.quanity,"option":item.option,"status":false});
             if(index===objData.length-1){
                 return res.json(arr)
             }
