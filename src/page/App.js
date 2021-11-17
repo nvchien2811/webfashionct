@@ -17,6 +17,7 @@ import BillDetails from './client/BillDetails';
 import DropDownCart from '../elements/dropDownCart';
 import ProductSale from './client/ProductSale';
 import Profile from './client/Profile';
+import SearchView from './client/SearchView';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
@@ -80,7 +81,9 @@ export default function App() {
   const handleCancel = () => {
     setshowModalAccount(false);
   };
-
+  const onSearch = (value)=>{
+    history.push(`/search/${value}`)
+  }
   const getMenu = async()=>{
     try {
       let item = [];
@@ -154,7 +157,12 @@ export default function App() {
           </div>
           </Col>
           <Col className="search"  style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
-            <Search placeholder="Nhập tên sản phẩm" enterButton style={{width:'70%'}}/>
+            <Search 
+              placeholder="Nhập tên sản phẩm" 
+              enterButton 
+              style={{width:'70%'}} 
+              onSearch={onSearch}
+            />
           </Col>
       </Row>
   )
@@ -219,6 +227,10 @@ export default function App() {
           <Route path="/productsale/:page">
             <ProductSale />
           </Route>
+          <Route path="/search/:datasearch">
+            <SearchView/>
+          </Route>
+
           <Route path="/profile">
               <Profile/>
           </Route>

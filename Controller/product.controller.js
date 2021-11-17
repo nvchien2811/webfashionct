@@ -156,3 +156,16 @@ module.exports.getProductDeal = (req,res)=>{
         }
     })
 }
+
+module.exports.searchProduct = (req,res)=>{
+    const {datasearch} = req.body;
+    console.log(datasearch)
+    const sql = `SELECT * FROM product WHERE name LIKE "%${datasearch}%"`;
+    db.query(sql,(err,rows)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json(rows)
+        }
+    })
+}
