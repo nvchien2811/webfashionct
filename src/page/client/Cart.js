@@ -82,10 +82,12 @@ export default function Cart (){
         
     }
     const handlePayment = ()=>{
+ 
         history.push({
             pathname:'/payment',
             dataSale:dataSale
         });
+    
     }
     const handleValidationCodeSale = async()=>{
         if(codeSale===""){
@@ -188,6 +190,14 @@ export default function Cart (){
             }
         }
     ]
+    
+    // rowSelection object indicates the need for row selection
+    // const rowSelection = {
+    //     onChange: (selectedRowKeys, selectedRows) => {
+    //        console.log(selectedRows)
+    //     },
+        
+    // };
     const ViewPayment = ()=>(
         <div style={{ paddingLeft:20 }}>
            <span style={{ fontWeight:'bold',fontSize:16 }}> Cộng giỏ hàng</span>
@@ -239,6 +249,10 @@ export default function Cart (){
             size="small" 
             style={overflowX?{overflowX:'scroll'}:null} 
             pagination={{ defaultPageSize: 3 }}
+            // rowSelection={{ 
+            //     type:'checkbox',
+            //     ...rowSelection
+            // }}
         />
         <Button type="primary" danger style={{ height:40,marginBottom:20 }}>
             <Link to="/">

@@ -159,13 +159,16 @@ export default function ProductDetails(){
                 setoutOfStock(false);
             }
         }
-        res.map((item)=>(
-            i.push(
-                <Option value={[item.size,item.quanity-item.sold]}>
-                    {item.size +" - "}<span style={{ color:'gray' }}>{item.quanity-item.sold}</span>
-                </Option>
-            )
-        ))
+        res.map((item)=>{
+            if(item.quanity-item.sold!==0){
+                i.push(
+                    <Option value={[item.size,item.quanity-item.sold]}>
+                        {item.size +" - "}<span style={{ color:'gray' }}>{item.quanity-item.sold}</span>
+                    </Option>
+                )
+            }
+
+        })
         setdataOption(i);
     }
     const ItemProductRelate = dataRelate.map((item)=>{

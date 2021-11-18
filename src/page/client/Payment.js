@@ -5,6 +5,7 @@ import {getPriceVND} from '../../contain/getPriceVND';
 import {Link,useLocation} from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import {updateCartCurrent} from '../../contain/updateQuanityCart';
+
 export default function Payment (props){
     const [name, setname] = useState("");
     const [email, setemail] = useState();

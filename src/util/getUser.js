@@ -14,7 +14,8 @@ export const getUser = async(token,dispatch)=>{
             localStorage.removeItem("token");
             return "block";
         }else{
-            dispatch(updateUser(res[0]));  
+            dispatch(updateUser(res[0]));
+            return true  
         }
        
     }

@@ -12,6 +12,10 @@ export const updateCartCurrent = async(dispatch)=>{
         dispatch(updateQuanityProduct(obj.length));
         const d = {"data":localStorage.getItem("cart")};
         const res = await FetchAPI.postDataAPI("/order/getProductByCart",d);
-        dispatch(updateCart(res));
+        let arrTmp = [];
+        res.map((item,index)=>{
+            arrTmp.push({key:index,...item})
+        })
+        dispatch(updateCart(arrTmp));
     }
 }
