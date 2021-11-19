@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
-import {Row,Col,Pagination} from 'antd';
+import {Row,Col,Pagination,Breadcrumb} from 'antd';
 import Product from '../../elements/product';
-import { useParams,useHistory,useLocation } from 'react-router-dom';
+import { useParams,useHistory,useLocation,Link } from 'react-router-dom';
 export default function ProductSale (){
     const [showContent, setshowContent] = useState(false);
     const [totalProduct, settotalProduct] = useState();
@@ -44,6 +44,14 @@ export default function ProductSale (){
         <div style={{ minHeight:450 }}>
             {showContent ?
             <div style={{ padding:"20px 0px" }}>
+                 <Breadcrumb style={{ fontSize:18,padding:"20px 20px"}}>
+                    <Breadcrumb.Item>
+                        <Link to={"/home"}>Trang chủ</Link>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        {`Sản phẩm khuyến mãi`}
+                    </Breadcrumb.Item>
+                </Breadcrumb>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProduct}
                 </Row>

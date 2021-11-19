@@ -160,7 +160,7 @@ module.exports.getProductDeal = (req,res)=>{
 module.exports.searchProduct = (req,res)=>{
     const {datasearch} = req.body;
     console.log(datasearch)
-    const sql = `SELECT * FROM product WHERE name LIKE "%${datasearch}%"`;
+    const sql = `SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM product LEFT JOIN review ON product.id=review.idProduct WHERE name LIKE "%${datasearch}%" GROUP BY product.id HAVING quanityReview`;
     db.query(sql,(err,rows)=>{
         if(err){
             return res.json({msg:err});
