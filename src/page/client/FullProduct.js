@@ -1,37 +1,35 @@
-import React,{useEffect,useState} from 'react';
+import React ,{useEffect,useState} from 'react';
 import * as FetchAPI from '../../util/fetchApi';
-import Spinner from '../../elements/spinner';
-import {Row,Col,Pagination,Breadcrumb} from 'antd';
+import {Pagination,Col,Row,Breadcrumb} from 'antd';
 import Product from '../../elements/product';
 import { useParams,useHistory,useLocation,Link } from 'react-router-dom';
-export default function ProductSale (){
+import Spinner from '../../elements/spinner';
+export default function FullProduct(){
     const [showContent, setshowContent] = useState(false);
+    const [dataProduct, setdataProduct] = useState([]);
     const [totalProduct, settotalProduct] = useState();
-    const [dataShow, setdataShow] = useState([]);
     const PageSize = 8;
     const {page} = useParams();
     const history = useHistory();
     const location = useLocation();
-
     useEffect(()=>{
-        setshowContent(false);
-        window.scroll(0,0);
-        getProductSale()
+        window.scroll(0,0)
+        getFullProduct();
     },[location])
-    const getProductSale = async()=>{
+    const getFullProduct = async()=>{
+        setshowContent(false)
         let arrTmp = []
-        const res = await FetchAPI.getAPI("/product/getproductSale");
+        const res = await FetchAPI.getAPI("/product/getFullProduct");
         res.map((item,index)=>{
             if(index<PageSize*page&&index>=PageSize*(page-1)){
                 arrTmp.push(item)
             }
         })
-        setdataShow(arrTmp);
+        setdataProduct(arrTmp)
         settotalProduct(res.length)
         setshowContent(true)
     }
-  
-    const ItemProduct = dataShow.map((item)=>{
+    const ItemProduct = dataProduct.map((item)=>{
         return(
             <Col style={{display:'flex', justifyContent:'center' }} xl={6} md={8} xs={12}>
                 <Product
@@ -44,26 +42,23 @@ export default function ProductSale (){
         <div style={{ minHeight:450 }}>
             {showContent ?
             <div style={{ padding:"20px 0px" }}>
-                 <Breadcrumb style={{ fontSize:18,padding:"20px 20px"}}>
+                <Breadcrumb style={{ fontSize:18,padding:"20px 20px"}}>
                     <Breadcrumb.Item>
                         <Link to={"/home"}>Trang chủ</Link>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                        <Link to={"/fullproduct/1"}>Cửa hàng</Link>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                        {`Sản phẩm khuyến mãi`}
+                        {`Cửa hàng`}
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
-                    {ItemProduct}
+                        {ItemProduct}
                 </Row>
                 <div style={{ justifyContent:'center',display:'flex',paddingTop:20 }}>
                 <Pagination 
                     defaultPageSize={PageSize} 
                     defaultCurrent={page} 
                     total={totalProduct} 
-                    onChange= {(e)=>history.push(`/productsale/${e}`)}
+                    onChange= {(e)=>history.push(`/fullproduct/${e}`)}
                 />
                 </div>
             </div>
