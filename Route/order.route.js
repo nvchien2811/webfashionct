@@ -4,6 +4,8 @@ var controller = require('../Controller/order.controller');
 var controllerSale = require('../Controller/promotion.controller');
 var controllerAdmin = require('../Controller/admin/order.controller');
 
+
+router.post("/getProductByCartApp",controller.getProductByCartApp)
 router.post("/getProductByCart",controller.getProductByCart)
 router.post("/addBill",controller.addBill);
 router.post("/getBillByIdUser",controller.getBillByIdUser);

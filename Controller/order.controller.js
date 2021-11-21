@@ -5,7 +5,7 @@ module.exports.getProductByCart = (req,res)=>{
     const {data} = req.body;
     const objData = JSON.parse(data);
     if(objData===null){
-        return;
+        return;ipcon
     }
     const sql = "SELECT * FROM product WHERE id= ?";
     let arr = [];
@@ -24,6 +24,30 @@ module.exports.getProductByCart = (req,res)=>{
     }
     )
 
+}
+
+//thêm mới
+module.exports.getProductByCartApp = (req,res)=>{
+    const {data} = req.body;
+    const objData = JSON.parse(data);
+    if(objData===null){
+        return;ipcon
+    }
+    const sql = "SELECT * FROM product WHERE id= ?";
+    let arr = [];
+    objData.map((item,index)=>{
+        db.query(sql,[item.id],async(err,rows,fields)=>{
+            if(err){
+                console.log(err)
+            }
+            // rows.concat({"quanity":item.quanity,"option":item.option});
+            arr.push({...rows,"quanity":item.quanity,"option":item.option,"status":item.status});
+            if(index===objData.length-1){
+                return res.json(arr)
+            }
+        })        
+    }
+    )
 }
 
 module.exports.addBill = (req,res)=>{
