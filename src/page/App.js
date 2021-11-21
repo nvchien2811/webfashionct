@@ -18,6 +18,7 @@ import DropDownCart from '../elements/dropDownCart';
 import ProductSale from './client/ProductSale';
 import Profile from './client/Profile';
 import SearchView from './client/SearchView';
+import FullProduct from './client/FullProduct';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
@@ -69,7 +70,7 @@ export default function App() {
       if(status===false){
         message.warning("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại !");
         setstatusUser(false);
-      }if(status=="block"){
+      }else if(status=="block"){
         message.error("Tài khoản của bạn đang bị khóa, vui lòng liên hệ với quản lý!");
         setstatusUser(false);
       }
@@ -179,7 +180,11 @@ export default function App() {
             Sản phẩm khuyến mãi
           </Link>
         </Menu.Item>
-        <Menu.Item key="5">Bộ sưu tập</Menu.Item>
+        <Menu.Item key="5">
+          <Link to="/fullproduct/1">
+            Cửa hàng
+          </Link>
+        </Menu.Item>
         <Menu.Item key="6">Chính sách</Menu.Item>
         <Menu.Item key="7">Liên hệ</Menu.Item>
       </Menu>
@@ -230,7 +235,9 @@ export default function App() {
           <Route path="/search/:datasearch">
             <SearchView/>
           </Route>
-
+          <Route path="/fullproduct/:page">
+            <FullProduct />
+          </Route>
           <Route path="/profile">
               <Profile/>
           </Route>

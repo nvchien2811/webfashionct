@@ -251,7 +251,9 @@ export default function ProductDetails(){
                     }
                 </Button>
                 <div style={{ paddingTop:50 }}> 
+                    {dataProduct.description!==null &&
                     <span style={{ fontSize:16}}> <h4>THÔNG TIN SẢN PHẨM</h4> </span>
+                    }
                     <span style={{ fontSize:16}}>{ReactHtmlParser(dataProduct.description)}</span>
                 </div>
             </div>

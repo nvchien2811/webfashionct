@@ -32,6 +32,9 @@ export default function SearchView (){
                 <Link to={"/home"}>Trang chủ</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
+                <Link to={"/fullproduct/1"}>Cửa hàng</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
                 {`Kết quả tìm kiếm của "${datasearch}"`}
             </Breadcrumb.Item>
         </Breadcrumb>
