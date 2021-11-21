@@ -1,6 +1,6 @@
 var db = require('../db');
 const uuid = require('uuid');
-
+const Email = require('./sendEmail.controller');
 module.exports.getProductByCart = (req,res)=>{
     const {data} = req.body;
     const objData = JSON.parse(data);
@@ -147,4 +147,8 @@ module.exports.getProductByIdBill = (req,res)=>{
             return res.json(rows)
         }
     })
+}
+
+module.exports.sendMail= (req,res)=>{
+    Email.SendEmail("hvtrung.18it4@vku.udn.vn","Cảm ơn bạn đã đặt hàng !! ","<b>Kiểm tra đơn hàng của bạn ở đây</b> <br/> Đơn hàng của bạn là")
 }
