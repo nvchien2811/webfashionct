@@ -4,7 +4,7 @@ var controller = require('../Controller/order.controller');
 var controllerSale = require('../Controller/promotion.controller');
 var controllerAdmin = require('../Controller/admin/order.controller');
 
-
+router.post("/getProductFavorite",controller.getProductFavorite)
 router.post("/getProductByCartApp",controller.getProductByCartApp)
 router.post("/getProductByCart",controller.getProductByCart)
 router.post("/addBill",controller.addBill);
@@ -18,4 +18,5 @@ router.post("/getSaleById",controllerSale.getSaleById);
 router.get("/getFullBill",controllerAdmin.getFullBill);
 router.post("/updateStatusBill",controllerAdmin.updateStatusBill);
 router.post("/deleteBill",controllerAdmin.deleteBill);
+
 module.exports = router;

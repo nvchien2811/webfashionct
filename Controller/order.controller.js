@@ -1,6 +1,7 @@
 var db = require('../db');
 const uuid = require('uuid');
-
+const Email = require('./sendEmail.controller');
+const getPriceVND = require('./util/getPriceVND');
 module.exports.getProductByCart = (req,res)=>{
     const {data} = req.body;
     const objData = JSON.parse(data);
@@ -49,6 +50,29 @@ module.exports.getProductByCartApp = (req,res)=>{
     }
     )
 }
+// favorite
+module.exports.getProductFavorite = (req,res)=>{
+    const {data} = req.body;
+    const objData = JSON.parse(data);
+    if(objData===null){
+        return;
+    }
+    const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.id=? GROUP BY product.id HAVING quanityReview";
+    let arr = [];
+    objData.map((item,index)=>{
+        db.query(sql,[item.id],async(err,rows,fields)=>{
+            if(err){
+                console.log(err)
+            }
+            // rows.concat({"quanity":item.quanity,"option":item.option});
+            arr.push({...rows,"quanity":item.name});
+            if(index===objData.length-1){
+                return res.json(arr)
+            }
+        })        
+    }
+    )
+}
 
 module.exports.addBill = (req,res)=>{
     let {name,address,email,phone,total_price,message,dataProduct,methodPayment,user,idSale} =req.body;
@@ -64,6 +88,7 @@ module.exports.addBill = (req,res)=>{
             return res.json({msg:err});
         }
         else{
+            let str_product = "";
             // console.log(typeof(dataProduct));
             dataProduct.map((item,index)=>{
                 const idProduct = item[0].id;
@@ -82,10 +107,61 @@ module.exports.addBill = (req,res)=>{
                         return res.json({msg:err});
                     }
                     hanldeEditQuanityInventory(idProduct,size,quanity);
+                    str_product = str_product+`  
+                        <tr style="border: 1px solid black">
+                            <td>
+                                ${item[0].name}
+                            </td>
+                            <td>
+                                ${size}
+                            </td>
+                            <td style="text-align: center">
+                                ${quanity}
+                            </td>
+                            <td>
+                                ${getPriceVND.getPriceVND(price*quanity)} đ
+                            </td>
+                        </tr>
+                        
+                    `
                     if(idSale!==null){
                         handleEditSale(idSale)
                     }
                     if(index==dataProduct.length-1){
+                        const detail_Bill = ` 
+                        - Địa chỉ giao hàng : ${address}<br/>
+                        - Ngày đặt : ${new Date(Date.now()).toString()}<br/>
+                        - Tình trạng : <b>Đang xử lý </b><br/>
+                        <table style="border: 1px solid black;width: 80%;border-collapse: collapse">
+                           <tr style="border: 1px solid black">
+                           <td >
+                               <b> Sản phẩm </b>
+                           </td>
+                           <td >
+                                <b> Size/Màu sắc </b>
+                            </td>
+                           <td style="text-align: center">
+                               <b>Số lượng</b>
+                           </td>
+                           <td>
+                               <b>Tạm tính</b>
+                           </td>
+                           </tr>
+                           ${str_product}
+                        </table>
+                        <b>Tổng tiền: ${getPriceVND.getPriceVND(total_price)} đ</b> 
+                        `
+                        //Send mail for customer
+                        Email.SendEmail(email,"CTFASHION-Đặt hàng thành công",
+                            `
+                            Chào ${name}. <br/>
+                            Cảm ơn bạn đã mua sắm tại CT Fashion. <br/>
+                            - Mã đơn hàng của bạn là : #${code_order}<br/>
+                            ${detail_Bill}<br/>
+                            Chúng tôi sẽ thông tin trạng thái đơn hàng trong email tiếp theo.<br/>
+                            Bạn vui lòng kiểm tra email thường xuyên nhé !
+                            `
+                        )
                         return res.json({msg:"success"})
                     }
                 })
