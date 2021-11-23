@@ -5,7 +5,7 @@ module.exports.getProductByCart = (req,res)=>{
     const {data} = req.body;
     const objData = JSON.parse(data);
     if(objData===null){
-        return;ipcon
+        return;
     }
     const sql = "SELECT * FROM product WHERE id= ?";
     let arr = [];
@@ -31,7 +31,7 @@ module.exports.getProductByCartApp = (req,res)=>{
     const {data} = req.body;
     const objData = JSON.parse(data);
     if(objData===null){
-        return;ipcon
+        return;
     }
     const sql = "SELECT * FROM product WHERE id= ?";
     let arr = [];
