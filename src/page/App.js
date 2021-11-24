@@ -28,6 +28,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import { getUser} from '../util/getUser';
 import { updateCartCurrent } from '../contain/updateQuanityCart';
 import { updateUser } from '../redux/reducer/user.reducer';
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
@@ -254,6 +255,7 @@ export default function App() {
         </Switch>
     </Content>
   )
+
   return (
     <div >
       {showContent &&
@@ -272,7 +274,15 @@ export default function App() {
             <div className="back-top">
               <ArrowUpOutlined />
             </div>
+           
           </BackTop>
+           {/* <MessengerCustomerChat
+              pageId="103589342159207"
+              appId="571045450624452"
+              // htmlRef="<REF_STRING>"
+            />
+           */}
+  
         </Layout>
       }
     </div>

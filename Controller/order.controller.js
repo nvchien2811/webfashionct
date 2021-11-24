@@ -162,6 +162,15 @@ module.exports.addBill = (req,res)=>{
                             Bạn vui lòng kiểm tra email thường xuyên nhé !
                             `
                         )
+                        //Send email for admininstrator
+                        Email.SendEmail(process.env.EMAIL,`Đơn hàng mới #${code_order}`,
+                            `
+                            - Tên khách hàng : ${name} <br/>
+                            - Email đặt hàng : ${email} <br/>
+                            - Số điện thoại đặt hàng : ${phone} <br/>
+                            ${detail_Bill}
+                            `
+                        )
                         return res.json({msg:"success"})
                     }
                 })

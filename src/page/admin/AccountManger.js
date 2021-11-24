@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import {Table,Select,message} from 'antd';
 import Spinner from '../../elements/spinner';
 import {getColumnSearchProps} from '../../elements/SearchFilter';
+import {InfoCircleOutlined} from '@ant-design/icons'
 const {Option} = Select;
 export default function AccountManger(){
     const [dataUser, setdataUser] = useState();
@@ -63,6 +64,14 @@ export default function AccountManger(){
                     </Option>
                 </Select>
             )
+        },
+        {
+            title:"Chi tiết",
+            key:'details',
+            render: record=>
+            <div style={{ paddingLeft:15 }}>
+                <InfoCircleOutlined style={{fontSize:18,cursor:"pointer" }}/>
+            </div>
         }
     ]
     return(
