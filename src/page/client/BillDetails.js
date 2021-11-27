@@ -104,8 +104,12 @@ export default function BillDetails(){
                         </Table.Summary.Row>
                     }
                     <Table.Summary.Row>
+                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Phí vận chuyển</span></Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}>{getPriceVND(30000)+" đ"}</Table.Summary.Cell>
+                    </Table.Summary.Row>
+                    <Table.Summary.Row>
                         <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
-                        <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promotionprice)+" đ"}</Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promotionprice+30000)+" đ"}</Table.Summary.Cell>
                     </Table.Summary.Row>
                     {dataBill.status===2 &&
                     <Table.Summary.Row>

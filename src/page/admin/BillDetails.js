@@ -77,6 +77,7 @@ export default function BillDetails(){
         let inforbill = document.getElementById('Inforbill');
         let product = document.getElementsByClassName('BillProduct');
         let price = document.getElementsByClassName('BillPrice');
+        let shipping = document.getElementsByClassName('Shipping');
         let totalBill = document.getElementsByClassName('TotalBill');
         let saleBill = document.getElementsByClassName('SaleBill');
         let tableProduct = "<table style=\"width:100%;text-align:center\"><tr><td style=\"width:33%;border:2px solid black;height:40px\"><b>Sản phẩm</b></td><td style=\"width:33%;border:2px solid black\"><b>Tạm tính</b></td></tr>";
@@ -86,6 +87,7 @@ export default function BillDetails(){
         let pri = document.getElementById('ifmcontentstoprint').contentWindow;
         pri.document.open();
         pri.document.write(inforbill.outerHTML);
+        pri.document.write("<b>Phí vận chuyển :</b>   "+shipping[0].innerHTML);
         pri.document.write(tableProduct+"</table>");
         if(saleBill.length!==0){
             pri.document.write("<div style=\" padding-top:18px;font-size:24px\"><b> Mã khuyến mãi :  </b>"+saleBill[0].innerHTML+"</div>");
@@ -150,9 +152,13 @@ export default function BillDetails(){
                             <Table.Summary.Cell className="SaleBill" index={1}>{"-"+getPriceVND(promotionprice)+" đ"}</Table.Summary.Cell>
                         </Table.Summary.Row>
                     }
+                    <Table.Summary.Row>
+                        <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Phí vận chuyển</span></Table.Summary.Cell>
+                        <Table.Summary.Cell index={1}  className="Shipping" >{getPriceVND(30000)+" đ"}</Table.Summary.Cell>
+                    </Table.Summary.Row>
                     <Table.Summary.Row >
                         <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
-                        <Table.Summary.Cell className="TotalBill" index={1}>{getPriceVND(totalTmp-promotionprice)+" đ"}</Table.Summary.Cell>
+                        <Table.Summary.Cell className="TotalBill" index={1}>{getPriceVND(totalTmp-promotionprice+30000)+" đ"}</Table.Summary.Cell>
                     </Table.Summary.Row>
                 </Table.Summary>
         )}

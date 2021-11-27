@@ -60,10 +60,12 @@ export default function Payment (props){
             setphone(user.phone);
             setshowUser(true)
         }else{  
-            form.setFieldsValue({name:"",email:""})
+            form.setFieldsValue({name:"",email:"",address:"",phone:""})
             setname("");
             setemail("");
-            setidUser("")
+            setidUser("");
+            setaddress("");
+            setphone("");
             setshowUser(true);
         }
     }
@@ -76,7 +78,7 @@ export default function Payment (props){
     }
     const handleOrder = async()=>{
         let idSale = null;
-        let total = totalTmp;
+        let total = totalTmp+30000;
         if(dataSale!== undefined){
             idSale = dataSale.id
             total = total-dataSale.cost_sale
@@ -207,6 +209,7 @@ export default function Payment (props){
                     onChange= {(e)=>setemail(e.target.value)}
                     maxLength={24}
                     style={{height:40}}
+                    disabled={datauser.id!==undefined}
                 />
             </Form.Item>
             <Form.Item
@@ -247,8 +250,12 @@ export default function Payment (props){
                         </Table.Summary.Row>
                         }
                         <Table.Summary.Row>
+                            <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Phí vận chuyển</span></Table.Summary.Cell>
+                            <Table.Summary.Cell index={1}>{getPriceVND(30000)+" đ"}</Table.Summary.Cell>
+                        </Table.Summary.Row>
+                        <Table.Summary.Row>
                             <Table.Summary.Cell index={0}><span style={{fontWeight:'bold'}}>Tổng</span></Table.Summary.Cell>
-                            <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promoprice)+" đ"}</Table.Summary.Cell>
+                            <Table.Summary.Cell index={1}>{getPriceVND(totalTmp-promoprice+30000)+" đ"}</Table.Summary.Cell>
                         </Table.Summary.Row>
                     </Table.Summary>
             )}/>
