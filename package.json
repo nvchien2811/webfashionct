@@ -39,9 +39,11 @@
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-simple-chatbot": "^0.6.1",
     "react-wow": "^1.0.0",
     "redux": "^4.1.1",
     "slugify": "^1.6.1",
+    "styled-components": "^5.3.3",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
   },
