@@ -62,6 +62,7 @@ export default function Admin(){
     useEffect(()=>{
         document.getElementsByClassName("header-nav")[0].style.display = 'none';
         document.getElementsByClassName("footer")[0].style.display = 'none';
+        document.getElementsByClassName("sc-bqiRlB bHmrDE rsc-float-button")[0].style.display = 'none';
     },[])
     useEffect(()=>{
         setshowContent(false);

@@ -16,7 +16,7 @@ export default function ChatBotPage(){
         fontFamily: 'Helvetica Neue',
         headerBgColor: '#EF6C00',
         headerFontColor: '#fff',
-        headerFontSize: '15px',
+        headerFontSize: '18px',
         botBubbleColor: '#EF6C00',
         botFontColor: '#fff',
         userBubbleColor: '#fff',
@@ -25,7 +25,6 @@ export default function ChatBotPage(){
     return(
         <ThemeProvider theme={theme}>
         <ChatBot
-            speechSynthesis={{ enable: true, lang: 'en' }}
             steps={[
                 {
                 id: '1',
@@ -38,6 +37,7 @@ export default function ChatBotPage(){
                       { value: 1, label: 'Địa chỉ cửa hàng ở đâu ?', trigger: '3' },
                       { value: 2, label: 'Phí vận chuyển là bao nhiêu ?', trigger: '4' },
                       { value: 3, label: 'Cửa hàng gồm những loại sản phẩm gì ?', trigger: '5' },
+                      { value: 4, label: 'Liên hệ với nhân viên chúng tôi bằng cách nào ?', trigger: '6' },
                     ],
                 },
                 {
@@ -53,6 +53,11 @@ export default function ChatBotPage(){
                   {
                     id:'5',
                     message: 'Áo, Quần và các Phụ Kiện như túi sách, mắt kính ...',
+                    trigger: '2'
+                  },
+                  {
+                    id:'6',
+                    message: 'Bạn có thể liên hệ đến email ctfashionbeatiful@gmail.com hoặc số điện thoại 0705982473,0795646909',
                     trigger: '2'
                   }
             ]}
