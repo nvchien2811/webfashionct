@@ -271,15 +271,15 @@ export default function App() {
         </div>
           {Body()}
           <Footer className="footer" style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
-          <div>
+          
           <BackTop>
             <div className="back-top">
               <ArrowUpOutlined />
             </div>
           </BackTop>
-          </div>
-          
+      
           <ChatBotPage />
+        
            {/* <MessengerCustomerChat
               pageId="103589342159207"
               appId="571045450624452"

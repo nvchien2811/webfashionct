@@ -4,10 +4,10 @@ import { ThemeProvider } from 'styled-components';
 export default function ChatBotPage(){
     // all available config props
     const config ={
-        width: "400px",
-        height: "500px",
-        floating: true,
-        headerTitle:"CT Fashion",
+      width: "400px",
+      height: "500px",
+      floating: true,
+      headerTitle:"CT Fashion",
         
     };
   // all available props
@@ -57,7 +57,7 @@ export default function ChatBotPage(){
                   },
                   {
                     id:'6',
-                    message: 'Bạn có thể liên hệ đến email ctfashionbeatiful@gmail.com hoặc số điện thoại 0705982473,0795646909',
+                    message: 'Bạn có thể liên hệ đến email ctfashionbeatiful@gmail.com hoặc số điện thoại 0705982473,0795646909 từ 8:00 đến 17:00 hằng ngày.',
                     trigger: '2'
                   }
             ]}
