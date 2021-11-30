@@ -17,6 +17,7 @@ router.post('/getProductByType',controller.getProductByType);
 router.post('/getProductByCategory',controller.getProductByCategory);
 router.post('/getProductInventory',controller.getProductInventory);
 router.post('/searchProduct',controller.searchProduct);
+router.post('/getProductTypeByCategory',controller.getProductTypeByCategory)
 
 //Page
 router.get('/getProductNew/:page',controller.getProductNew);

@@ -65,6 +65,13 @@ module.exports.getProductTypeById= (req,res)=>{
        return res.send(result);
     })
 }
+module.exports.getProductTypeByCategory = (req,res)=>{
+    const {id} = req.body;
+    const sql = `SELECT * FROM product_type WHERE idCategory='${id}'`;
+    db.query(sql, (err,result)=>{
+        return res.send(result);
+     })
+}
 module.exports.getProductByType= (req,res)=>{
     const {id} = req.body;
     const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.idProductType=? GROUP BY product.id HAVING quanityReview";
@@ -74,8 +81,8 @@ module.exports.getProductByType= (req,res)=>{
 }
 module.exports.getProductByCategory= (req,res)=>{
     const {id} = req.body;
-    const sql = `SELECT * FROM product WHERE idCategory='${id}'`;
-    db.query(sql, (err,result)=>{
+    const sql = "SELECT product.*,AVG(review.reviewStar) AS reviewStar,COUNT(*) AS quanityReview FROM `product` LEFT JOIN `review` ON product.id=review.idProduct WHERE product.idCategory=? GROUP BY product.id HAVING quanityReview";
+    db.query(sql,[id], (err,result)=>{
        return res.send(result);
     })
 }
@@ -169,3 +176,4 @@ module.exports.searchProduct = (req,res)=>{
         }
     })
 }
+
