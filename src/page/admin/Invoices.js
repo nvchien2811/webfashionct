@@ -29,9 +29,9 @@ export default function Invoices(){
             setloadingTable(false);
         }
     }
-    const hanldeUpdateStatus = async(value,code,id)=>{
+    const hanldeUpdateStatus = async(value,code,id,email)=>{
         setloadingTable(true);
-        const data = {"code_order":code,"status":value};
+        const data = {"code_order":code,"status":value,"email": email};
         const res = await FetchAPI.postDataAPI("/order/updateStatusBill",data);
         if(res.msg){
             if(res.msg==="Success"){
@@ -123,7 +123,7 @@ export default function Invoices(){
                     <Select 
                         value={record.status}  
                         style={{ width: 120 }} 
-                        onChange={(value)=>hanldeUpdateStatus(value,record.code_order,record.id)}
+                        onChange={(value)=>hanldeUpdateStatus(value,record.code_order,record.id,record.email)}
                     >
                         <Option value={0}>
                             <span style={{ color:'red' }}>Đang xử lý</span>

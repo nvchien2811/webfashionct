@@ -1,5 +1,5 @@
 import React ,{useEffect,useState}from 'react'; 
-import { PageHeader,Table,Row,Col,Space,Card ,Button} from 'antd';
+import { PageHeader,Table,Row,Col,Space,Card ,Button,message,Modal} from 'antd';
 import * as FetchAPI from '../../util/fetchApi';
 import {getPriceVND} from '../../contain/getPriceVND';
 import Spinner from '../../elements/spinner';
@@ -14,6 +14,7 @@ export default function BillDetails(){
     const [showContent, setshowContent] = useState(false);
     const [promotionprice, setpromotionprice] = useState(0);
     const [showModalReview, setshowModalReview] = useState(false);
+    const [showModalCancel, setshowModalCancel] = useState(false);
     const [dataSale, setdataSale] = useState();
     const currentUser = useSelector(state=>state.userReducer.currentUser);
     const [statusUser, setstatusUser] = useState(false);
@@ -64,6 +65,37 @@ export default function BillDetails(){
             setpromotionprice(res[0].cost_sale)
         }
     }
+    const handleCancelBill = async()=>{
+        const data = {"code_order":dataBill.code_order,"status":3,"email":currentUser.email}
+        const res = await FetchAPI.postDataAPI("/order/updateStatusBill",data);
+        if(res.msg){
+            if(res.msg==="Success"){
+                setTimeout(()=>{
+                    setshowModalCancel(false)
+                    message.success("Hủy đơn hàng thành công !");
+                    history.goBack();
+                },500)
+            }else{
+                setTimeout(()=>{
+                    setshowModalCancel(false)
+                    message.error("Có lỗi rồi !!");
+                 
+                },500)
+            }
+        }
+    }
+    const ModalCancelBill = ()=>(
+        <Modal
+            title={`Bạn chắc chắn muốn hủy đơn #${dataBill.id}`}
+            visible={showModalCancel}
+            onOk={handleCancelBill}
+            onCancel={()=>setshowModalCancel(false)}
+            cancelText="Thoát"
+            okText="Chắc chắn"
+        >
+            <p>Bạn chắc chắn với quyết định của mình ! Đơn hàng này của bạn sẽ bị hủy.</p>
+        </Modal>
+    )
     const columns  = [
         {
             title:"Sản phẩm",
@@ -130,8 +162,10 @@ export default function BillDetails(){
             return <b>Đang xử lý</b>
         }else if(a===1){
             return <b>Đang giao hàng</b>
-        }else{
+        }else if(a===2){
             return <b>Đã hoàn thành</b>
+        }else{
+            return <b>Đã hủy</b>
         }
     }
     return(
@@ -177,7 +211,7 @@ export default function BillDetails(){
                             Tình trạng : {getTextStatus(dataBill.status)}
                         </li>
                         <div>
-                            <Button type="primary" danger disabled={dataBill.status!==0} >
+                            <Button type="primary" onClick={()=>setshowModalCancel(true)} danger disabled={dataBill.status!==0} >
                                 Hủy đơn
                             </Button>
                         </div>
@@ -193,6 +227,7 @@ export default function BillDetails(){
                 dataProduct={dataProduct}
                 user={currentUser}
             /> 
+            {ModalCancelBill()}
             </div>
             :
             <div style={{ padding:"20px 40px" }}>
