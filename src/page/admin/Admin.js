@@ -32,6 +32,7 @@ import {
     DatabaseOutlined,
     StarOutlined
 } from '@ant-design/icons';
+import moment from 'moment';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
@@ -232,13 +233,17 @@ export default function Admin(){
                 <NavMenu/>
             </Sider>
              <Layout>
-               <Header className="site-layout-background">
-               {collapsed ? 
-               <MenuUnfoldOutlined onClick={()=>setcollapsed(!collapsed)}/> 
-               : 
-               <MenuFoldOutlined onClick={()=>setcollapsed(!collapsed)}/>
-               }
-               <span style={{ paddingLeft:20 }}>Fashion CT</span>
+               <Header className="site-layout-background" style={{ display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+                <div>
+                    {collapsed ? 
+                    <MenuUnfoldOutlined onClick={()=>setcollapsed(!collapsed)}/> 
+                    : 
+                    <MenuFoldOutlined onClick={()=>setcollapsed(!collapsed)}/>
+                    }
+                    <span style={{ paddingLeft:20 }}>Fashion CT</span>
+                </div>
+                <span>{moment(new Date()).format("DD/MM/YYYY")}</span>
+              
                </Header>
                <Content  
                     className="site-layout-background"

@@ -8,6 +8,7 @@ import {DownloadOutlined} from '@ant-design/icons';
 import logomorning from '../../images/morning.png';
 import logoafternoon from '../../images/afternoon.png';
 import logoevening from '../../images/evening.png';
+import {LeftOutlined,RightOutlined} from '@ant-design/icons'
 export default function HomeAdmin(){
     const [thisMonthNumber, setthisMonthNumber] = useState(0);
     const [thisDayNumber, setthisDayNumber] = useState(0);
@@ -15,7 +16,7 @@ export default function HomeAdmin(){
     const [showContent, setshowContent] = useState(false);
     const [dataChartColumn, setdataChartColumn] = useState([]);
     const [dataChartPie, setdataChartPie] = useState();
-    const [thisYear, setthisYear] = useState();
+    const [thisYear, setthisYear] = useState(new Date().getFullYear());
     const [sessionTime, setsessionTime] = useState();
     const [logoSessionTime, setlogoSessionTime] = useState();
     const refColumn = useRef();
@@ -44,7 +45,7 @@ export default function HomeAdmin(){
     useEffect(()=>{
         setshowContent(false);
         getFullBill()
-    },[])
+    },[thisYear])
 
     const getFullBill = async()=>{
         const res = await FetchAPI.getAPI("/order/getFullBill");
@@ -67,7 +68,6 @@ export default function HomeAdmin(){
             if(item.status!==3){
                 const date_order = new Date(item.create_at);
                 const date_now = new Date();
-                setthisYear(date_now.getFullYear());
                 if(date_order.getDate()===date_now.getDate()){
                     dayNumber++;
                 }
@@ -75,7 +75,7 @@ export default function HomeAdmin(){
                     monthNumber++;
                     monthSum += parseInt(item.total_price);
                 }
-                setValueChartColumn(arrTmpColumn,date_order,date_now);
+                setValueChartColumn(arrTmpColumn,date_order);
             }
             if(index===res.length-1){
                 settotalMonth(monthSum);
@@ -85,8 +85,8 @@ export default function HomeAdmin(){
             }
         })
     }
-    const setValueChartColumn = (arrTmp,date_order,date_now)=>{
-        if(date_order.getFullYear()===date_now.getFullYear()){
+    const setValueChartColumn = (arrTmp,date_order)=>{
+        if(date_order.getFullYear()===thisYear){
             arrTmp.map((e)=>{
                 if(`Tháng ${date_order.getMonth()+1}`===e.month){
                     e.value++;
@@ -179,12 +179,14 @@ export default function HomeAdmin(){
         <div style={{ padding:30,boxShadow:'2px 0px 30px #00000026' }}>
         <Button onClick={()=>refColumn.current?.downloadImage()}><DownloadOutlined /></Button>
         <div style={{ paddingBottom:30,textAlign:'center',fontWeight:'bold' }}>
-            <span >{`Thống kê số đơn hàng của năm ${thisYear}`}</span>
+            <LeftOutlined style={{cursor:'pointer'}} onClick={()=>setthisYear(thisYear-1)}/>
+            <span style={{ marginLeft:20,marginRight:20 }}>{`Thống kê số đơn hàng của năm ${thisYear}`}</span>
+            <RightOutlined style={{cursor:'pointer'}} onClick={()=>setthisYear(thisYear+1)}/>
         </div>
         <Column  
             {...configChartColumn}   
             onReady={(plot) => {
-            refColumn.current = plot;
+                refColumn.current = plot;
             }}
         />
         </div>
