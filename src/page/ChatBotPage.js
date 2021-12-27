@@ -8,7 +8,7 @@ export default function ChatBotPage(){
       height: "500px",
       floating: true,
       headerTitle:"CT Fashion",
-        
+    
     };
   // all available props
     const theme = {

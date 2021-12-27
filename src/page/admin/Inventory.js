@@ -138,7 +138,7 @@ export default function Inventory(){
         />
         {showModalDeleteInventory &&
             <Modal
-                title={`Bạn chắc chắn muốn xóa ${dataItemTmp.nameProduct} loại ${dataItemTmp.size}`}
+                title={`Bạn chắc chắn muốn xóa ${dataItemTmp.name} loại ${dataItemTmp.size}`}
                 visible={showModalDeleteInventory}
                 onOk={handleDeleteItem}
                 onCancel={()=>setshowModalDeleteInventory(false)}

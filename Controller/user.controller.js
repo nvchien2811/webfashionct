@@ -132,7 +132,7 @@ module.exports.checkUsername = (req,res)=>{
 
 module.exports.getInforUser = (req,res)=>{
     const {idUser} = req.body;
-    const sql = "SELECT user.*,customer.address,customer.phone FROM `user` LEFT JOIN customer ON user.id = customer.idUser WHERE user.id= ?";
+    const sql = "SELECT user.*,customer.address,customer.phone,COUNT(`order`.id) AS totalBill FROM `user` LEFT JOIN customer ON user.id = customer.idUser INNER JOIN `order` ON user.id=`order`.idUser WHERE user.id= ?";
     db.query(sql,[idUser],(err,rows)=>{
         if(err){
             return res.json({msg:err});

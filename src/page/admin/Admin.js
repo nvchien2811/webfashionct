@@ -32,7 +32,6 @@ import {
     DatabaseOutlined,
     StarOutlined
 } from '@ant-design/icons';
-import moment from 'moment';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
@@ -60,7 +59,7 @@ export default function Admin(){
         updateSize();
     }, []);
 
-    useEffect(()=>{
+    useEffect(()=>{ 
         document.getElementsByClassName("header-nav")[0].style.display = 'none';
         document.getElementsByClassName("footer")[0].style.display = 'none';
         document.getElementsByClassName("sc-bqiRlB bHmrDE rsc-float-button")[0].style.display = 'none';
@@ -111,72 +110,72 @@ export default function Admin(){
         }
     }
     const NavMenu = ()=>(
-        <Menu 
-            theme="dark" 
-            mode="inline" 
-            defaultSelectedKeys={['/admin/home']} 
-            style={{ paddingTop:20 }} 
-            selectedKeys={[location.pathname]}
-        >
-            <Menu.Item key="/admin/home" icon={<BarChartOutlined />}>
-                <NavLink to="/admin/home">
-                    Tổng quan
-                </NavLink>
-            </Menu.Item>
-            <SubMenu key="sub1" icon={<DropboxOutlined />} title="Sản phẩm">
-                <Menu.Item key="/admin/addproduct">
-                    <NavLink to="/admin/addproduct">
-                        Thêm sản phẩm
+            <Menu 
+                theme="dark" 
+                mode="inline" 
+                defaultSelectedKeys={['/admin/home']} 
+                style={{ paddingTop:20 }} 
+                selectedKeys={[location.pathname]}
+            >
+                <Menu.Item key="/admin/home" icon={<BarChartOutlined />}>
+                    <NavLink to="/admin/home">
+                        Tổng quan
                     </NavLink>
                 </Menu.Item>
-                <Menu.Item key="/admin/manageProduct">
-                    <NavLink to="/admin/manageProduct">
-                        Sửa, Xóa sản phẩm
+                <SubMenu key="sub1" icon={<DropboxOutlined />} title="Sản phẩm">
+                    <Menu.Item key="/admin/addproduct">
+                        <NavLink to="/admin/addproduct">
+                            Thêm sản phẩm
+                        </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="/admin/manageProduct">
+                        <NavLink to="/admin/manageProduct">
+                            Sửa, Xóa sản phẩm
+                        </NavLink>
+                    </Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub2" icon={<DatabaseOutlined/>} title="Danh mục">
+                    <Menu.Item key="/admin/category">
+                        <NavLink to="/admin/category"> 
+                            Danh mục sản phẩm
+                        </NavLink>
+                    </Menu.Item>    
+                    <Menu.Item key="/admin/producttype">
+                        <NavLink to="/admin/producttype">
+                            Loại sản phẩm
+                        </NavLink>
+                    </Menu.Item> 
+                </SubMenu>
+                <Menu.Item key="/admin/invoices" icon={<ContainerOutlined />}>
+                    <NavLink to="/admin/invoices">
+                        Hóa đơn
                     </NavLink>
                 </Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<DatabaseOutlined/>} title="Danh mục">
-                <Menu.Item key="/admin/category">
-                    <NavLink to="/admin/category"> 
-                        Danh mục sản phẩm
-                    </NavLink>
-                </Menu.Item>    
-                <Menu.Item key="/admin/producttype">
-                    <NavLink to="/admin/producttype">
-                        Loại sản phẩm
-                    </NavLink>
-                </Menu.Item> 
-            </SubMenu>
-            <Menu.Item key="/admin/invoices" icon={<ContainerOutlined />}>
-                <NavLink to="/admin/invoices">
-                    Hóa đơn
-                </NavLink>
-            </Menu.Item>
-            <Menu.Item key={currentMenuKeyInventory("/admin/inventory")} icon={<ShopOutlined />}>
-                <NavLink to="/admin/inventory">
-                    Kho hàng
-                </NavLink>    
-            </Menu.Item>
-            <Menu.Item key="/admin/account" icon={<UserOutlined />}>
-                <NavLink to="/admin/account">
-                    Tài khoản
-                </NavLink>    
-            </Menu.Item>
-            <Menu.Item key="/admin/sale" icon={<GiftOutlined />}>
-                <NavLink to="/admin/sale">
-                    Sự kiện ưu đãi
-                </NavLink>    
-            </Menu.Item>
-            <Menu.Item key="/admin/review" icon={<StarOutlined />}>
-                <NavLink to="/admin/review">
-                    Đánh giá sản phẩm
-                </NavLink>    
-            </Menu.Item>
-            <Menu.Item icon={<PoweroffOutlined />} onClick={handleLogout}>
-                Đăng xuất
-            </Menu.Item>
-        </Menu>
-    )
+                <Menu.Item key={currentMenuKeyInventory("/admin/inventory")} icon={<ShopOutlined />}>
+                    <NavLink to="/admin/inventory">
+                        Kho hàng
+                    </NavLink>    
+                </Menu.Item>
+                <Menu.Item key="/admin/account" icon={<UserOutlined />}>
+                    <NavLink to="/admin/account">
+                        Tài khoản
+                    </NavLink>    
+                </Menu.Item>
+                <Menu.Item key="/admin/sale" icon={<GiftOutlined />}>
+                    <NavLink to="/admin/sale">
+                        Sự kiện ưu đãi
+                    </NavLink>    
+                </Menu.Item>
+                <Menu.Item key="/admin/review" icon={<StarOutlined />}>
+                    <NavLink to="/admin/review">
+                        Đánh giá sản phẩm
+                    </NavLink>    
+                </Menu.Item>
+                <Menu.Item icon={<PoweroffOutlined />} onClick={handleLogout}>
+                    Đăng xuất
+                </Menu.Item>
+            </Menu>
+        )
     const Body = ()=>(
         <Switch>
             <Route path="/admin/home">
@@ -233,17 +232,15 @@ export default function Admin(){
                 <NavMenu/>
             </Sider>
              <Layout>
-               <Header className="site-layout-background" style={{ display:'flex',justifyContent:'space-between',alignItems:'center' }}>
-                <div>
-                    {collapsed ? 
-                    <MenuUnfoldOutlined onClick={()=>setcollapsed(!collapsed)}/> 
-                    : 
-                    <MenuFoldOutlined onClick={()=>setcollapsed(!collapsed)}/>
-                    }
-                    <span style={{ paddingLeft:20 }}>Fashion CT</span>
-                </div>
-                <span>{moment(new Date()).format("DD/MM/YYYY")}</span>
-              
+               <Header className="site-layout-background" >
+            
+                {collapsed ? 
+                <MenuUnfoldOutlined  onClick={()=>setcollapsed(!collapsed)}/> 
+                : 
+                <MenuFoldOutlined  onClick={()=>setcollapsed(!collapsed)}/>
+                }
+                <span style={{ paddingLeft:20 }}>Fashion CT</span>
+            
                </Header>
                <Content  
                     className="site-layout-background"

@@ -69,11 +69,17 @@ export default function HomeAdmin(){
                 const date_order = new Date(item.create_at);
                 const date_now = new Date();
                 if(date_order.getDate()===date_now.getDate()){
-                    dayNumber++;
+                    if(date_order.getMonth()===date_now.getMonth()){
+                        if(date_order.getFullYear()===date_now.getFullYear()){
+                            dayNumber++;
+                        }
+                    }
                 }
                 if(date_order.getMonth()===date_now.getMonth()){
-                    monthNumber++;
-                    monthSum += parseInt(item.total_price);
+                    if(date_order.getFullYear()===date_now.getFullYear()){
+                        monthNumber++;
+                        monthSum += parseInt(item.total_price);
+                    }
                 }
                 setValueChartColumn(arrTmpColumn,date_order);
             }
