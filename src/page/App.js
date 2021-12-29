@@ -28,7 +28,6 @@ import { useDispatch,useSelector } from 'react-redux';
 import { getUser} from '../util/getUser';
 import { updateCartCurrent } from '../contain/updateQuanityCart';
 import { updateUser } from '../redux/reducer/user.reducer';
-import MessengerCustomerChat from 'react-messenger-customer-chat';
 import ChatBotPage from './ChatBotPage';
 const { Header, Footer,Content} = Layout;
 const { SubMenu } = Menu;
@@ -48,8 +47,15 @@ export default function App() {
 
   useEffect(()=>{
     document.addEventListener('scroll', () => {
-      const isTop = window.scrollY < 200;
+      const isTop = window.scrollY < 500;
       settop(isTop);
+      if(!isTop){
+        document.getElementsByClassName("ant-layout-header")[0].style.animation = "move-nav 0.8s"
+      }else{
+        if(document.getElementsByClassName("ant-layout-header")!==undefined){
+          document.getElementsByClassName("ant-layout-header")[0].style.animation = ""
+        }
+      }
     });
     getMenu();
     setshowContent(false); 
@@ -120,7 +126,7 @@ export default function App() {
   const Top = ()=>(
       <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
-            <img src={logo} width='120' height='120' alt="logo"/>
+            <img  className="img-logo" src={logo} width='120' height='120' alt="logo"/>
             <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
           <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>

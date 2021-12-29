@@ -33,10 +33,14 @@ export default function product(props){
                 cover={
                 <div>
                     {s === 100 ? 
-                    <Image alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
+                    <div style={{ overflow:"hidden" }}>
+                        <Image  alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
+                    </div>
                     :
                     <Badge.Ribbon text={s+"%"} color="red">
-                        <Image alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
+                        <div style={{ overflow:"hidden" }}>
+                            <Image style={{ overflow:"hidden" }} alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
+                        </div>
                     </Badge.Ribbon>
                     }
                 </div>
