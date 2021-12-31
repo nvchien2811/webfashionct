@@ -11,6 +11,12 @@
 .wrapper-category-product{
     padding:50px 100px;
 }
+.title-card-product{
+    color:black
+}
+.title-card-product:hover{
+    color:#5142FC
+}
 @media only screen and (max-width:1024px) {
     .wrapper-menu-product{
         padding:50px 30px;

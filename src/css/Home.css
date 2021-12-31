@@ -1,7 +1,7 @@
 .imgCarousel{
    width: 100%;
    height:400px;
- 
+   overflow:hidden
 }
 .contentHome{
     padding:50px 20px;
@@ -40,7 +40,7 @@
 }
 .reason-choose div.item div.image :hover{
     transition: all 3s ease-in;
-    animation: rorateItem 3s linear;
+    animation: rorateItem 3s linear infinite;
 }
 .reason-choose div.item div.img.style1{
     background-color:#5142FC;
@@ -53,6 +53,18 @@
 }
 .reason-choose div.item div.img.style4{
     background-color: #DF4949;
+}
+.slider-item-new{
+    width:100%;
+    overflow:'hidden';
+}
+.hello{
+    display:flex !important;
+    justify-content:center;
+}
+.btn-loadmore:hover{
+    background-color: tomato !important;
+    color:white !important
 }
 @media only screen and (max-width:1200px){
     .productRelate{

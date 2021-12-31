@@ -8,20 +8,56 @@ import Product from '../../elements/product';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import { useLocation } from 'react-router-dom';
-import {BulbFilled,FormatPainterFilled,CompassFilled,ToolFilled} from '@ant-design/icons'
+import {BulbFilled,FormatPainterFilled,CompassFilled,ToolFilled} from '@ant-design/icons';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export default function Home(){
     const [itemProductNew, setitemProductNew] = useState([]);
     const [itemProductDeal, setitemProductDeal] = useState([]);
     const [showContent, setshowContent] = useState(false);
-    const [pageNew, setpageNew] = useState(1);
-    const [moreNew, setmoreNew] = useState(true);
     const [pageDeal, setpageDeal] = useState(1);
     const [moreDeal, setmoreDeal] = useState(true);
     const location = useLocation();
+    var settings = {
+        dots: true,
+        infinite: true,
+        arrows:false,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1240,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 990,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              initialSlide: 2
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+        ]
+    };
     useEffect(()=>{
         setshowContent(false);
         getProductNew();
-    },[pageNew])
+    },[])
 
     useEffect(()=>{
         setshowContent(false);
@@ -33,13 +69,8 @@ export default function Home(){
     },[location])
   
     const getProductNew = async()=>{
-        let item = itemProductNew;
-        const res = await FetchAPI.getAPI(`/product/getProductNew/${pageNew}`);
-        item = item.concat(res.item);
-        if(res.msg==="Out of data"){
-            setmoreNew(false);
-        }
-        setitemProductNew(item);
+        const res = await FetchAPI.getAPI(`/product/getProductNew/1`);
+        setitemProductNew(res.item);
         setshowContent(true);
     }
     const getProductDeal = async()=>{
@@ -53,7 +84,7 @@ export default function Home(){
         setshowContent(true);
     }
     const slide = ()=>(
-        <Carousel autoplay >
+        <Carousel style={{ overflow:"hidden" }} autoplay>
             <div >
                 <img className="imgCarousel" src={slider1} alt="slider1"  />
             </div>
@@ -65,15 +96,6 @@ export default function Home(){
             </div>
         </Carousel>
     )
-    const ItemProduct = itemProductNew.map((item)=>{
-        return(
-            <Col style={{display:'flex', justifyContent:'center' }} xl={6} lg={8} md={12} sm={12} xs={24}>
-                <Product
-                    item={item}
-                />
-            </Col>
-        )
-    })
     const ItemProductDeal = itemProductDeal.map((item)=>{
         return(
             <Col style={{display:'flex', justifyContent:'center' }} xl={6} lg={8} md={12} sm={12} xs={24}>
@@ -92,23 +114,23 @@ export default function Home(){
                 <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
                     SẢN PHẨM MỚI 
                 </span>
-                <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
-                    {ItemProduct}
-                </Row>
-                {moreNew &&
-                <div style={{ padding:"20px 0px",justifyContent:'center',display:'flex',width:"100%" }}>
-                    <Button onClick={()=>setpageNew(pageNew+1)} type="primary"  danger ghost>
-                        Xem thêm...
-                    </Button>
-                </div>
-                }
+                <Slider className="slider-item-new" {...settings}>
+                {itemProductNew.map(item=>(
+                    <div class="hello">
+                        <Product 
+                            item={item}
+                        />
+                    </div>
+                ))}
+                
+                </Slider>
                 <span style={{ fontSize:20,paddingBottom:40,fontWeight:'bold',padding:"20px 0px" }}>SẢN PHẨM DEAL HOT</span>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProductDeal}
                 </Row>
                 {moreDeal &&
                 <div style={{ padding:"20px 0px",width:"100%",justifyContent:'center',display:'flex' }}>
-                    <Button onClick={()=>setpageDeal(pageDeal+1)} type="primary"  danger ghost>
+                    <Button className="btn-loadmore" onClick={()=>setpageDeal(pageDeal+1)} type="primary"  danger ghost>
                         Xem thêm...
                     </Button>
                 </div>

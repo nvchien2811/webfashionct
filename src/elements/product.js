@@ -24,7 +24,9 @@ export default function product(props){
             )
         }   
     }
-    
+    const title2 = (
+        <Link className="title-card-product" to={path}>{name}</Link>
+    )
     return(
             <Card
                 className="itemProduct"
@@ -48,9 +50,7 @@ export default function product(props){
             
                 }
             >
-                <Link to={path}>
-                    <Meta title={name} description={hanldeShowPrice()} />
-                </Link>
+                <Meta title={title2} description={hanldeShowPrice()} />
             </Card>
        
     )
