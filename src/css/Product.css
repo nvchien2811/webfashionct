@@ -5,3 +5,17 @@
     justify-content:center;
     flex-direction:column;
 }
+.wrapper-menu-product{
+    padding:50px 100px;
+}
+.wrapper-category-product{
+    padding:50px 100px;
+}
+@media only screen and (max-width:1024px) {
+    .wrapper-menu-product{
+        padding:50px 30px;
+    }
+    .wrapper-category-product{
+        padding: 50px 30px;
+    }
+}

@@ -55,9 +55,104 @@ html {
   cursor: pointer;
   animation: rorate-logo 1s;
 }
+.ant-input-group-wrapper.input-search{
+  width: 70%;
+  display: inline-block;
+}
+.ant-input-group-wrapper.input-search input{
+  height:40px;
+  border-radius: 50px;
+}
+.ant-input-group-wrapper.input-search button{
+  height:40px;
+}
+.ant-layout-footer.footer{
+  width: '100%';
+  bottom:0;
+  background-color: #F8F8F8;
+  padding : 60px 50px;
+}
+.widget-footer{
+  padding-top:20px;
+  display:flex;
+  flex-direction: column;
+}
+.widget-footer.style1{
+  padding-top:0px;
+  letter-spacing: 0.5px;
+  color: gray;
+}
+.widget-footer.style2{
+  padding-left: 50px;
+}
+.widget-footer.style3{
+  padding-left: 0px;
+}
+.widget-footer ul{ 
+  list-style: none;
+  padding-left: 20px;
+}
+.widget-footer li{
+  margin-top:20px;
+  cursor: pointer;
+}
+.widget-footer li a{
+  color:rgba(0, 0, 0, 0.85);
+}
+.widget-footer li a:hover {
+  color:#1088e9;
+}
+.widget-footer.style4 ul{
+  display:flex;
+  flex-direction: row;
+} 
+.widget-footer.style4 li a{
+  margin-right: 20px;
+  width:40px;
+  height:40px;
+  border-radius: 5px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 21px;
+  background-color: #ebebeb;
+  color: #7a798a;
+}
+.widget-footer.style4 ul li :hover{
+  background-color: #5142FC;
+  color: #ebebeb;
+}
+@media only screen and (max-width:1200px) {
+  .ant-input-group-wrapper.input-search{
+    margin-bottom: 10px;
+  }
+  .widget-footer.style2{
+    padding-left: 0px;
+  }
+  .widget-footer.style3{
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+@media only screen and (max-width:600px) {
+  .ant-input-group-wrapper.input-search{
+    display:inline-block
+  }
+  .widget-footer.style2{
+    padding-left: 0px;
+  }
+  .widget-footer.style3{
+    padding-left: 50px;
+  }
+  .imgCarousel{
+    resize:cover;
+    height:300px;
+  }
+}
 @keyframes rorate-logo {
   from{
-    transform: rotateY(0deg);
+    transform: rotateY(0deg); 
   }
   to{
     transform: rotateY(360deg);

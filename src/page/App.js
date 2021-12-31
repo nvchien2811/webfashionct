@@ -19,6 +19,7 @@ import ProductSale from './client/ProductSale';
 import Profile from './client/Profile';
 import SearchView from './client/SearchView';
 import FullProduct from './client/FullProduct';
+import FooterWeb from '../elements/FooterWeb';
 import '../css/App.css';
 import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
@@ -29,7 +30,7 @@ import { getUser} from '../util/getUser';
 import { updateCartCurrent } from '../contain/updateQuanityCart';
 import { updateUser } from '../redux/reducer/user.reducer';
 import ChatBotPage from './ChatBotPage';
-const { Header, Footer,Content} = Layout;
+const { Header,Content} = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
 
@@ -125,11 +126,11 @@ export default function App() {
 
   const Top = ()=>(
       <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
-          <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} xs={24}>
+          <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} md={12} xs={8}>
             <img  className="img-logo" src={logo} width='120' height='120' alt="logo"/>
             <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
-          <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
+          <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} md={12} xs={16}>
             {!statusUser ?
             <div 
               className="btnLogin" 
@@ -167,9 +168,9 @@ export default function App() {
           </Col>
           <Col className="search"  style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
             <Search 
+              className="input-search"
               placeholder="Nhập tên sản phẩm" 
               enterButton 
-              style={{width:'70%'}} 
               onSearch={onSearch}
             />
           </Col>
@@ -276,13 +277,11 @@ export default function App() {
           {Navigation()}
         </div>
           {Body()}
-          <Footer className="footer" style={{ textAlign: 'center',bottom:0,width:'100%' }}>Fashion CT ©2020 Created by CT</Footer>
-          
-          <BackTop style={{ right:40,top:'81%' }}>
+          <FooterWeb />
+          <BackTop style={{ right:40,top:'79%' }}>
             <div className="back-top">
               <ArrowUpOutlined />
             </div>
-           
           </BackTop>
           <ChatBotPage />
          

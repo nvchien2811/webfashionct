@@ -4,21 +4,78 @@
  
 }
 .contentHome{
-    padding:20px;
+    padding:50px 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
 }
 .itemProduct{
     width:240px;
     border-radius: 10px;
 }
+.reason-choose{
+    width:100%;
+    padding: 20px 50px
+}
+.reason-choose div.item{
+    display:flex;
+    flex-direction:column;
+}
+.reason-choose div.item div.image{
+    width:100%;
+    padding: 10px 0;
+}
+.reason-choose div.item div.img{
+    width:60px;
+    height:60px;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    color:white;
+    font-size: 24px;
+    display: flex;
+    justify-content:center;
+    align-items:center
+}
+.reason-choose div.item div.image :hover{
+    transition: all 3s ease-in;
+    animation: rorateItem 3s linear;
+}
+.reason-choose div.item div.img.style1{
+    background-color:#5142FC;
+}
+.reason-choose div.item div.img.style2{
+    background-color: #47A432;
+}
+.reason-choose div.item div.img.style3{
+    background-color: #9835FB;
+}
+.reason-choose div.item div.img.style4{
+    background-color: #DF4949;
+}
 @media only screen and (max-width:1200px){
     .productRelate{
         display:none
     }
+    .reason-choose{
+        padding:20px 0px
+    }
 }
+@keyframes rorateItem {
+    0% {
+        transform: rotateY(0deg)
+    }
+    25% {
+        transform: rotateY(360deg)
+    }
+    50% {
+        transform: rotateY(0deg)
+    }
+    100% {
+        transform: rotateY(360deg)
+    }
+}   
 @media only screen and (max-width:600px){
     .imgCarousel{
         width: 100%;
@@ -35,5 +92,4 @@
     .itemProduct{
         width:150px
     }
-    
 }

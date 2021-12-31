@@ -31,7 +31,7 @@ export default function FullProduct(){
     }
     const ItemProduct = dataProduct.map((item)=>{
         return(
-            <Col style={{display:'flex', justifyContent:'center' }} xl={6} md={8} xs={12}>
+            <Col style={{display:'flex', justifyContent:'center' }} xl={6} lg={8} md={12} sm={12} xs={24}>
                 <Product
                     item={item}
                 />

@@ -32,7 +32,7 @@ export default function CategoryProduct(){
     }
     const ItemProduct = dataProduct.map((item)=>{
         return(
-            <Col xl={6} md={8} xs={12} style={{display:'flex', justifyContent:'center' }} >
+            <Col xl={6} lg={8} md={12} sm={12} xs={24} style={{display:'flex', justifyContent:'center' }} >
                 <Product
                     item={item}
                 />
@@ -50,7 +50,7 @@ export default function CategoryProduct(){
         </Breadcrumb>
     )
     return(
-        <div style={{ padding:"50px 100px" }}>
+        <div className="wrapper-category-product">
         
             {showContent ?
              

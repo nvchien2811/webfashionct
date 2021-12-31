@@ -30,6 +30,7 @@ export default function ProductDetails(){
     const history = useHistory();
     const location = useLocation();
     useEffect(() => {    
+        window.scroll(0,0);
         const getDetailProduct = async()=>{
             try {
                 setshowContent(false);

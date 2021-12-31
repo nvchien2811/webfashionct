@@ -8,6 +8,7 @@ import Product from '../../elements/product';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import { useLocation } from 'react-router-dom';
+import {BulbFilled,FormatPainterFilled,CompassFilled,ToolFilled} from '@ant-design/icons'
 export default function Home(){
     const [itemProductNew, setitemProductNew] = useState([]);
     const [itemProductDeal, setitemProductDeal] = useState([]);
@@ -66,7 +67,7 @@ export default function Home(){
     )
     const ItemProduct = itemProductNew.map((item)=>{
         return(
-            <Col style={{display:'flex', justifyContent:'center' }} xl={6} md={8} xs={12}>
+            <Col style={{display:'flex', justifyContent:'center' }} xl={6} lg={8} md={12} sm={12} xs={24}>
                 <Product
                     item={item}
                 />
@@ -75,7 +76,7 @@ export default function Home(){
     })
     const ItemProductDeal = itemProductDeal.map((item)=>{
         return(
-            <Col style={{display:'flex', justifyContent:'center' }} xl={6} md={8} xs={12}>
+            <Col style={{display:'flex', justifyContent:'center' }} xl={6} lg={8} md={12} sm={12} xs={24}>
                 <Product
                     item={item}
                 />
@@ -88,30 +89,71 @@ export default function Home(){
            <div>
            {slide()}
            <div className="contentHome"  >
-                <span  style={{ fontSize:20,paddingBottom:20,fontWeight:'bold' }}>
+                <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
                     SẢN PHẨM MỚI 
                 </span>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProduct}
                 </Row>
                 {moreNew &&
-                <div style={{ padding:"20px 0px" }}>
+                <div style={{ padding:"20px 0px",justifyContent:'center',display:'flex',width:"100%" }}>
                     <Button onClick={()=>setpageNew(pageNew+1)} type="primary"  danger ghost>
                         Xem thêm...
                     </Button>
                 </div>
                 }
-                <span style={{ fontSize:20,paddingBottom:20,fontWeight:'bold',padding:"20px 0px" }}>SẢN PHẨM DEAL HOT</span>
+                <span style={{ fontSize:20,paddingBottom:40,fontWeight:'bold',padding:"20px 0px" }}>SẢN PHẨM DEAL HOT</span>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProductDeal}
                 </Row>
                 {moreDeal &&
-                <div style={{ padding:"20px 0px" }}>
+                <div style={{ padding:"20px 0px",width:"100%",justifyContent:'center',display:'flex' }}>
                     <Button onClick={()=>setpageDeal(pageDeal+1)} type="primary"  danger ghost>
                         Xem thêm...
                     </Button>
                 </div>
                 }
+                <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
+                    HÃY CHỌN CTFASHION
+                </span>
+                <Row className="reason-choose">
+                    <Col className="item" xl={6} md={12} sm={24}>
+                        <div className="image">
+                            <div className="img style1">
+                                <CompassFilled />
+                            </div>
+                        </div>
+                        <h2>Giao hàng toàn quốc</h2>
+                        <span>Giao hàng vô cùng nhanh với chỉ 30.000đ.</span>
+                    </Col>
+                    <Col className="item" xl={6} md={12} sm={24}>
+                        <div className="image">
+                            <div className="img style2">
+                                <FormatPainterFilled />
+                            </div>
+                        </div>
+                        <h2>Sản phẩm đa dạng</h2>
+                        <span>Áo, quần, phụ kiện các loại luôn chờ đón bạn.</span>
+                    </Col>
+                    <Col className="item" xl={6}  md={12} sm={24}>
+                        <div className="image">
+                            <div className="img style3">
+                                <BulbFilled />
+                            </div>
+                        </div>
+                        <h2>Tiện ích</h2>
+                        <span>Bạn có thể theo dõi đơn hàng của mình mọi lúc.</span>
+                    </Col>
+                    <Col className="item" xl={6}  md={12} sm={24}>
+                        <div className="image">
+                            <div className="img style4">
+                                <ToolFilled />
+                            </div>
+                        </div>
+                        <h2>Hỗ trợ mua hàng trên nhiều nền tảng</h2>
+                        <span>Chúng tôi có website, ứng dụng di động để bạn có thể dễ dàng kết nối.</span>
+                    </Col>
+                </Row>
            </div>
            </div>
            :

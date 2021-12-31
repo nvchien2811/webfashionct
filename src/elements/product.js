@@ -29,12 +29,12 @@ export default function product(props){
             <Card
                 className="itemProduct"
                 hoverable
-                style={props.width!==undefined?{width:props.width}:null}
+                style={props.width!==undefined?{width:props.width}:{width:270}}
                 cover={
                 <div>
                     {s === 100 ? 
                     <div style={{ overflow:"hidden" }}>
-                        <Image  alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
+                        <Image alt="example" src={image} preview={{mask:(<PreviewImmage/>)}}/>
                     </div>
                     :
                     <Badge.Ribbon text={s+"%"} color="red">
