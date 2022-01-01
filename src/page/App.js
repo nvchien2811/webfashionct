@@ -126,32 +126,31 @@ export default function App() {
 
   const Top = ()=>(
       <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
-          <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} md={12} xs={8}>
+          <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} md={12} xs={10}>
             <img  className="img-logo" src={logo} width='120' height='120' alt="logo"/>
             <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
-          <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} md={12} xs={16}>
+          <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} md={12} xs={14}>
             {!statusUser ?
             <div 
-              className="btnLogin" 
-              style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
+              className="btn-header" 
+              style={{ display:'flex',alignItems:'center',fontSize:17}} 
               onClick={()=>setshowModalAccount(true)}
             >
-              <FaUser /><span style={{ paddingLeft:5 }}>Đăng nhập</span>
+              <FaUser /><span className="title" style={{ paddingLeft:5 }}>Đăng nhập</span>
             </div>
             :
-            <Dropdown overlay={MenuAccount} placement="bottomLeft" arrow>
+            <Dropdown className="btn-header" overlay={MenuAccount} placement="bottomLeft" arrow>
             <div 
-              className="btnLogin" 
-              style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
+              style={{ display:'flex',alignItems:'center',color:'#aaaaaa',fontSize:17}} 
             >
-              <FaUser /><span style={{ paddingLeft:5 }}>Tài khoản </span>
+              <FaUser /><span className="title" style={{ paddingLeft:5 }}>Tài khoản </span>
             </div>
             </Dropdown>
             }
-            <div style={{ display:'flex',flexDirection:'row',alignItems:'center' }}>
+            <div className="btn-header cart" style={{ display:'flex',flexDirection:'row',alignItems:'center' }}>
             <Link 
-              style={{ display:'flex',alignItems:'center',color:'gray',fontSize:17,paddingLeft:20 }} 
+              style={{ display:'flex',alignItems:'center',color:'#aaaaaa',fontSize:17 }} 
               onClick={()=>console.log(datauser)} 
               to={{ pathname:"/cart" }}
             >
@@ -159,7 +158,7 @@ export default function App() {
             </Link>
             <Dropdown overlay={Cartdrop} placement="bottomCenter" arrow>
                 <Badge count={quanityCart} offset={[5,-10]} >
-                <span style={{ paddingLeft:5,fontSize:17,color:'gray',cursor:"pointer" }}>
+                <span className="title" style={{ paddingLeft:5,fontSize:17,color:'#aaaaaa',cursor:"pointer" }}>
                   Giỏ hàng
                 </span>
                 </Badge>

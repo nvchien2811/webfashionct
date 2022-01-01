@@ -19,7 +19,7 @@ export default function Home(){
     const [pageDeal, setpageDeal] = useState(1);
     const [moreDeal, setmoreDeal] = useState(true);
     const location = useLocation();
-    var settings = {
+    var settings_carsoule_new = {
         dots: true,
         infinite: true,
         arrows:false,
@@ -84,7 +84,7 @@ export default function Home(){
         setshowContent(true);
     }
     const slide = ()=>(
-        <Carousel style={{ overflow:"hidden" }} autoplay>
+        <Carousel style={{ overflow:"hidden" }} autoplaySpeed={3000} autoplay dots={false}>
             <div >
                 <img className="imgCarousel" src={slider1} alt="slider1"  />
             </div>
@@ -111,10 +111,11 @@ export default function Home(){
            <div>
            {slide()}
            <div className="contentHome"  >
+
                 <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
                     SẢN PHẨM MỚI 
                 </span>
-                <Slider className="slider-item-new" {...settings}>
+                <Slider className="slider-item-new" {...settings_carsoule_new}>
                 {itemProductNew.map(item=>(
                     <div class="hello">
                         <Product 
@@ -122,8 +123,8 @@ export default function Home(){
                         />
                     </div>
                 ))}
-                
                 </Slider>
+
                 <span style={{ fontSize:20,paddingBottom:40,fontWeight:'bold',padding:"20px 0px" }}>SẢN PHẨM DEAL HOT</span>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProductDeal}
@@ -135,6 +136,7 @@ export default function Home(){
                     </Button>
                 </div>
                 }
+                
                 <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
                     HÃY CHỌN CTFASHION
                 </span>

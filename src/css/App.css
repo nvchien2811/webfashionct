@@ -122,6 +122,25 @@ html {
   background-color: #5142FC;
   color: #ebebeb;
 }
+.btn-header{
+  border-radius: 20px;
+  border: 1px solid #aaaaaa;
+  padding: 5px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  color:#aaaaaa
+}
+.btn-header:hover{
+  background-color: #aaaaaa;
+  color:white !important;
+  border-width: 0;
+}
+.btn-header:hover a{
+  color:white !important
+}
+.btn-header:hover span{
+  color:white !important
+}
 @media only screen and (max-width:1200px) {
   .ant-input-group-wrapper.input-search{
     margin-bottom: 10px;
@@ -132,6 +151,16 @@ html {
   .widget-footer.style3{
     padding-left: 50px;
     padding-right: 50px;
+  }
+  .btn-header{
+    padding:10px 20px;
+  }
+  .btn-header svg{
+    transition: all 1s ease;
+    animation: move-btn-header 1s;
+  }
+  .btn-header span.title{
+    display:none
   }
 }
 @media only screen and (max-width:600px) {
@@ -155,6 +184,16 @@ html {
   }
   to{
     transform: rotateY(360deg);
+  }
+}
+@keyframes move-btn-header {
+  from{
+    -webkit-transform: translateY(-40px);
+    transform: translateY(-40px)
+  }
+  to{
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px)
   }
 }
 @keyframes move-product {

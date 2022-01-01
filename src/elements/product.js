@@ -31,7 +31,7 @@ export default function product(props){
             <Card
                 className="itemProduct"
                 hoverable
-                style={props.width!==undefined?{width:props.width}:{width:270}}
+                style={props.width!==undefined?{width:props.width}:{width:270,borderRadius:20}}
                 cover={
                 <div>
                     {s === 100 ? 
