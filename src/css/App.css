@@ -124,8 +124,8 @@ html {
 }
 .btn-header{
   border-radius: 20px;
-  border: 1px solid #aaaaaa;
-  padding: 5px 20px;
+  border: .1px solid #aaaaaa;
+  padding: 5px 18px;
   margin-left: 10px;
   cursor: pointer;
   color:#aaaaaa

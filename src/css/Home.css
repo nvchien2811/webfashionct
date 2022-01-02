@@ -57,14 +57,32 @@
 .slider-item-new{
     width:100%;
     overflow:'hidden';
+    cursor: grab;
 }
 .hello{
     display:flex !important;
     justify-content:center;
+    min-height: 534px;
 }
 .btn-loadmore:hover{
     background-color: tomato !important;
     color:white !important
+}
+.title-list{
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+}
+.title-list:hover{
+    background: linear-gradient(to right,#E250E5,#4B50E6,#E250E5);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-size: 200% 200%;
+    color: #1F1F2C;
+    transition: color .2s ease-in-out;
+    animation: rainbow 2s ease-in-out infinite;
+    
 }
 @media only screen and (max-width:1200px){
     .productRelate{
@@ -74,20 +92,6 @@
         padding:20px 0px
     }
 }
-@keyframes rorateItem {
-    0% {
-        transform: rotateY(0deg)
-    }
-    25% {
-        transform: rotateY(360deg)
-    }
-    50% {
-        transform: rotateY(0deg)
-    }
-    100% {
-        transform: rotateY(360deg)
-    }
-}   
 @media only screen and (max-width:600px){
     .imgCarousel{
         width: 100%;
@@ -105,3 +109,28 @@
         width:150px
     }
 }
+@keyframes rorateItem {
+    0% {
+        transform: rotateY(0deg)
+    }
+    25% {
+        transform: rotateY(360deg)
+    }
+    50% {
+        transform: rotateY(0deg)
+    }
+    100% {
+        transform: rotateY(360deg)
+    }
+} 
+@keyframes rainbow {
+    0% {
+        background-position: left;
+    }
+    50% {
+        background-position: right;
+    }
+    100% {
+        background-position: left;
+    }
+  }  

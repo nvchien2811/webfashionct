@@ -4,7 +4,6 @@ import * as MENU from '../../util/menuProduct';
 import {Link,useLocation,useParams} from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Product from '../../elements/product';
-import '../../css/Product.css';
 import Spinner from '../../elements/spinner';
 export default function MenuProduct(){
     const [showContent, setshowContent] = useState(false);

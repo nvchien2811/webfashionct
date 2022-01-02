@@ -124,7 +124,7 @@ export default function AddProduct(){
     }
   
     return(
-        <div>
+        <div style={{ overflow:"hidden" }}>
             <PageHeader
                 title="Thêm sản phẩm Fashion CT" 
                 className="site-page-header"

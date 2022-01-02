@@ -1,4 +1,4 @@
-import React ,{useEffect,useState} from 'react';
+import React ,{useEffect,useState,useLayoutEffect} from 'react';
 import { Layout, Menu,Input,Row,Col,BackTop, Dropdown,message,Badge } from 'antd';
 import * as FetchAPI from '../util/fetchApi';
 import logo from '../images/Fashion-removebg-preview.png';
@@ -20,7 +20,6 @@ import Profile from './client/Profile';
 import SearchView from './client/SearchView';
 import FullProduct from './client/FullProduct';
 import FooterWeb from '../elements/FooterWeb';
-import '../css/App.css';
 import {Switch,Route, Link,useHistory,Redirect} from "react-router-dom";
 import {HistoryOutlined,PhoneOutlined,ArrowUpOutlined} from '@ant-design/icons';
 import {FaUser,FaShoppingCart} from 'react-icons/fa';
@@ -45,8 +44,7 @@ export default function App() {
   const quanityCart = useSelector(state=>state.productReducer.quanityCart);
   const dataCart = useSelector(state=>state.productReducer.cart);
   const dispatch = useDispatch();
-
-  useEffect(()=>{
+  useLayoutEffect(() => {
     document.addEventListener('scroll', () => {
       const isTop = window.scrollY < 500;
       settop(isTop);
@@ -58,11 +56,14 @@ export default function App() {
         }
       }
     });
+  },[])
+  useEffect(()=>{
     getMenu();
     setshowContent(false); 
     updateQuanityCart();
     checkUser();
   },[])
+  
   const updateQuanityCart = ()=>{
     updateCartCurrent(dispatch);
   }
@@ -130,7 +131,7 @@ export default function App() {
             <img  className="img-logo" src={logo} width='120' height='120' alt="logo"/>
             <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
-          <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} md={12} xs={14}>
+          <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} md={6} xs={14}>
             {!statusUser ?
             <div 
               className="btn-header" 
@@ -165,7 +166,7 @@ export default function App() {
             </Dropdown>
           </div>
           </Col>
-          <Col className="search"  style={{ justifyContent:'center',display:'flex' }}  xl={6} xs={24}>
+          <Col className="search"  style={{ justifyContent:'center',display:'flex' }}  xl={6} md={6} xs={24}>
             <Search 
               className="input-search"
               placeholder="Nhập tên sản phẩm" 

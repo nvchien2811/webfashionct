@@ -3,15 +3,13 @@ import { Carousel,Col,Row,Button  } from 'antd';
 import slider1 from '../../images/slider1.jpg';
 import slider2 from '../../images/slider2.jpg';
 import slider3 from '../../images/slider3.jpg';
-import '../../css/Home.css';
 import Product from '../../elements/product';
 import * as FetchAPI from '../../util/fetchApi';
 import Spinner from '../../elements/spinner';
 import { useLocation } from 'react-router-dom';
 import {BulbFilled,FormatPainterFilled,CompassFilled,ToolFilled} from '@ant-design/icons';
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 export default function Home(){
     const [itemProductNew, setitemProductNew] = useState([]);
     const [itemProductDeal, setitemProductDeal] = useState([]);
@@ -112,7 +110,7 @@ export default function Home(){
            {slide()}
            <div className="contentHome"  >
 
-                <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
+                <span className="title-list"  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
                     SẢN PHẨM MỚI 
                 </span>
                 <Slider className="slider-item-new" {...settings_carsoule_new}>
@@ -125,7 +123,7 @@ export default function Home(){
                 ))}
                 </Slider>
 
-                <span style={{ fontSize:20,paddingBottom:40,fontWeight:'bold',padding:"20px 0px" }}>SẢN PHẨM DEAL HOT</span>
+                <span className="title-list" style={{ fontSize:20,paddingBottom:40,fontWeight:'bold',padding:"20px 0px" }}>SẢN PHẨM DEAL HOT</span>
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%' }} >
                     {ItemProductDeal}
                 </Row>
@@ -137,7 +135,7 @@ export default function Home(){
                 </div>
                 }
                 
-                <span  style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
+                <span className="title-list" style={{ fontSize:20,paddingBottom:40,fontWeight:'bold' }}>
                     HÃY CHỌN CTFASHION
                 </span>
                 <Row className="reason-choose">

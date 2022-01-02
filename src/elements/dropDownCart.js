@@ -90,7 +90,7 @@ export default function dropDownCart(props){
                     style={{ fontWeight:'bold',justifyContent:'center',width:'100%',display:'flex',padding:"10px 0px"}}
                 >
                     <span style={{ color:'gray' }}>TẠM TÍNH : </span>
-                    <span >{getPriceVND(total)+" đ"}</span>
+                    <span style={{ padding:"0 5px" }}>{getPriceVND(total)+" đ"}</span>
                 </div>
                 <div>
                     <Button type="primary" style={{ width:'100%',height:40 }}>
