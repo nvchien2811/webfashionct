@@ -124,22 +124,36 @@ html {
 }
 .btn-header{
   border-radius: 20px;
-  border: .1px solid #aaaaaa;
+  border: .1px solid #8a8a8a;
   padding: 5px 18px;
   margin-left: 10px;
   cursor: pointer;
-  color:#aaaaaa
+  color:#8a8a8a
 }
 .btn-header:hover{
   background-color: #aaaaaa;
   color:white !important;
-  border-width: 0;
 }
 .btn-header:hover a{
   color:white !important
 }
 .btn-header:hover span{
   color:white !important
+}
+.title-logo{
+  background: linear-gradient(to right,#E250E5,#4B50E6,#E250E5);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-size: 200% 200%;
+  color: #1F1F2C;
+  transition: color .2s ease-in-out;
+  animation: rainbow 1.5s ease-in-out infinite;
+  cursor: pointer;
+  letter-spacing: .5px;
+}
+.item-of-submenu:hover{
+  animation: mov-item-submenu 1s;
 }
 @media only screen and (max-width:1200px) {
   .ant-input-group-wrapper.input-search{
@@ -224,6 +238,15 @@ html {
   100% {
     -webkit-transform: translateY(0px);
     transform: translateY(0px);
+  }
+}
+@keyframes mov-item-submenu {
+  from{
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px)
+  }to{
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px)
   }
 }
 @media only screen and (max-width:750px){

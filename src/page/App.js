@@ -109,7 +109,7 @@ export default function App() {
                       pathname:`/menuproduct/${item.id}`
                     }
                     return(
-                      <Menu.Item key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
+                      <Menu.Item className="item-of-submenu" key={item.slug}>{item.name} <Link to={localmenu}/></Menu.Item>
                     )
                   }
                   return false;   
@@ -129,7 +129,7 @@ export default function App() {
       <Row className="top" gutter={[{},{lg:0,md:20,xs:10}]} style={{ paddingBottom:10 }} >
           <Col className="logo" style={{ justifyContent:'center',display:'flex',alignItems:'center' }} xl={12} md={12} xs={10}>
             <img  className="img-logo" src={logo} width='120' height='120' alt="logo"/>
-            <span style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
+            <span className="title-logo" style={{ fontSize:17,color:'gray' }}> Just Beautiful Be Your Style</span>
           </Col>
           <Col style={{ justifyContent:'center',display:'flex' }}  xl={6} md={6} xs={14}>
             {!statusUser ?
@@ -143,7 +143,7 @@ export default function App() {
             :
             <Dropdown className="btn-header" overlay={MenuAccount} placement="bottomLeft" arrow>
             <div 
-              style={{ display:'flex',alignItems:'center',color:'#aaaaaa',fontSize:17}} 
+              style={{ display:'flex',alignItems:'center',color:'#8a8a8a',fontSize:17}} 
             >
               <FaUser /><span className="title" style={{ paddingLeft:5 }}>Tài khoản </span>
             </div>
@@ -151,7 +151,7 @@ export default function App() {
             }
             <div className="btn-header cart" style={{ display:'flex',flexDirection:'row',alignItems:'center' }}>
             <Link 
-              style={{ display:'flex',alignItems:'center',color:'#aaaaaa',fontSize:17 }} 
+              style={{ display:'flex',alignItems:'center',color:'#8a8a8a',fontSize:17 }} 
               onClick={()=>console.log(datauser)} 
               to={{ pathname:"/cart" }}
             >
@@ -159,7 +159,7 @@ export default function App() {
             </Link>
             <Dropdown overlay={Cartdrop} placement="bottomCenter" arrow>
                 <Badge count={quanityCart} offset={[5,-10]} >
-                <span className="title" style={{ paddingLeft:5,fontSize:17,color:'#aaaaaa',cursor:"pointer" }}>
+                <span className="title" style={{ paddingLeft:5,fontSize:17,color:'#8a8a8a',cursor:"pointer" }}>
                   Giỏ hàng
                 </span>
                 </Badge>

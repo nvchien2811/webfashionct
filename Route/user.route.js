@@ -14,4 +14,6 @@ router.post("/checkUsername",controller.checkUsername);
 router.get("/getFullUser",controllerAdmin.getFullUser);
 router.post("/updateStatusUser",controllerAdmin.updateStatusUser);
 router.post("/updateProfile",controller.updateProfile);
+router.post("/updateAvatarUser", controller.updateAvatarUser);
+
 module.exports = router;

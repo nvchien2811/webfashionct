@@ -173,3 +173,15 @@ module.exports.updateProfile = (req,res)=>{
     })
  
 }
+module.exports.updateAvatarUser = (req,res)=>{
+    console.log("đã vào")
+    const {IDUSER,URLIMAGE} = req.body;
+    const sql = "UPDATE user SET avartar = ? WHERE id = ?"
+    db.query(sql,[URLIMAGE,IDUSER], (err,result)=>{
+        if(err){
+            return res.json({msg:err});
+        }else{
+            return res.json({msg:"Success"})
+        }
+    })
+}

@@ -169,7 +169,7 @@ export default function BillDetails(){
         }
     }
     return(
-        <div style={{ minHeight:450 }}>
+        <div style={{ minHeight:450,paddingBottom:20 }}>
             {showContent ?
             <div>
             {statusUser ?
