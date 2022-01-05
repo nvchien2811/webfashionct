@@ -40,9 +40,9 @@ export default function FooterWeb (){
                 <Col xl={6} className="widget-footer style4">
                 <h2 className="widget-title-footer">Phản hồi với chúng tôi</h2>
                 <ul>
-                    <li><a href="https://www.facebook.com/ken.navi.1/"><FacebookFilled/></a></li>
+                    <li><a href="https://www.facebook.com/ken.navi.1/" target="_blank"><FacebookFilled/></a></li>
                     <li><a><GoogleCircleFilled /></a></li>
-                    <li><a href="https://github.com/nvchien2811"><GithubFilled /></a></li>
+                    <li><a href="https://github.com/nvchien2811" target="_blank"><GithubFilled /></a></li>
                     <li><a><TwitterCircleFilled /></a></li>
                 </ul>
                 </Col>

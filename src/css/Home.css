@@ -96,8 +96,8 @@
 @media only screen and (max-width:600px){
     .imgCarousel{
         width: 100%;
-        height:180px; 
-        resize: cover;
+        height:350px; 
+        resize: contain;
     }
     .topbar{
         height:35px;

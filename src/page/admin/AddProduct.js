@@ -6,6 +6,7 @@ import {UploadOutlined} from '@ant-design/icons'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MyCustomUploadAdapterPlugin from '../../contain/uploadImageDescriprption';
+import { useHistory } from 'react-router-dom';
 const {Option} = Select;
 export default function AddProduct(){
     const [name, setname] = useState();
@@ -21,7 +22,7 @@ export default function AddProduct(){
     const [optionCategory, setoptionCategory] = useState();
     const [loadingBtn, setloadingBtn] = useState(false);
     const [formadd] = Form.useForm();
-
+    const history = useHistory();
     useEffect(async()=>{
         let arrTmpCateGory = [];
         let arrTmpProductType = [];
@@ -85,7 +86,7 @@ export default function AddProduct(){
             if(res.msg==="Success"){
                 message.success("Thêm sản phẩm thành công");
                 formadd.setFieldsValue(null);
-                window.location.reload();
+                history.replace('/admin/notify_add_product')
                 setloadingBtn(false);
             }else{
                 message.error("Có lỗi rồi !!");

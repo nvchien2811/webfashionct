@@ -16,6 +16,7 @@ import ManageProduct from './ManageProduct';
 import AddProduct from './AddProduct';
 import ManageCategory from './ManageCategory';
 import ManageProductType from './ManageProductType';
+import NotifyAddProductSucess from './NotifyAddProductSucess';
 import ViewReview from './ViewReview';
 import { useDispatch } from 'react-redux';
 import {updateOverflowX} from '../../redux/reducer/layout.reducer';
@@ -213,6 +214,9 @@ export default function Admin(){
             </Route>
             <Route path="/admin/review">
                 <ViewReview/>
+            </Route>
+            <Route path="/admin/notify_add_product">
+                <NotifyAddProductSucess />
             </Route>
             <Route path="/admin">
                 <HomeAdmin />
