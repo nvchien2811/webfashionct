@@ -5,6 +5,7 @@ import {Link,useLocation,useParams} from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Product from '../../elements/product';
 import Spinner from '../../elements/spinner';
+import FilterProduct from '../../elements/FilterProduct';
 export default function MenuProduct(){
     const [showContent, setshowContent] = useState(false);
     const [nameCategory, setnameCategory] = useState("");
@@ -14,6 +15,7 @@ export default function MenuProduct(){
     const [empty, setempty] = useState(false);
     const {idProductType} = useParams();
     const location = useLocation();
+    const [currentKeyFilter, setcurrentKeyFilter] = useState();
     useEffect(()=>{
         setshowContent(false);
         const getMenu = async()=>{
@@ -68,8 +70,16 @@ export default function MenuProduct(){
         <div className="wrapper-menu-product">
         {showContent ?
         <div>
-            <div>
+            <div style={{ display:'flex',justifyContent:'space-between',paddingBottom:20 }}>
                 {Direction()}
+                <div style={{ paddingRight:20 }}>
+                    <FilterProduct 
+                        currentKey={currentKeyFilter}
+                        setCurrentKey={(e)=>setcurrentKeyFilter(e)}
+                        data = {dataProduct}
+                        replaceData = {e=>setdataProduct(e)}
+                    />
+                </div>
             </div>
             {empty ? 
                 <Empty className="empty" description="Không có sản phẩm"  />

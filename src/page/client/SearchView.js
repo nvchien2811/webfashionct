@@ -4,10 +4,12 @@ import { useParams,Link } from 'react-router-dom';
 import * as FetchAPI from '../../util/fetchApi';
 import Product from '../../elements/product';
 import Spinner from '../../elements/spinner';
+import FilterProduct from '../../elements/FilterProduct';
 export default function SearchView (){
     const [dataProduct, setdataProduct] = useState([]);
     const {datasearch} = useParams();
     const [showContent, setshowContent] = useState(false);
+    const [currentKeyFilter, setcurrentKeyFilter] = useState();
     useEffect(()=>{
         setshowContent(false)
         getProduct();
@@ -43,7 +45,16 @@ export default function SearchView (){
         <div style={{ minHeight:500 }}>
             {showContent ? 
             <div style={{ padding:"20px 10px" }}>
-                <span style={{ fontWeight:'bold',fontSize:18 }}>{`Kết quả tìm kiếm của "${datasearch}"`}</span>
+                <div style={{ width:'100%',flexDirection:'row',justifyContent:'space-between',display:'flex' }}>
+                    <span style={{ fontWeight:'bold',fontSize:18 }}>{`Kết quả tìm kiếm của "${datasearch}"`}</span>
+                    <FilterProduct 
+                        currentKey={currentKeyFilter}
+                        setCurrentKey={(e)=>setcurrentKeyFilter(e)}
+                        data = {dataProduct}
+                        replaceData = {e=>setdataProduct(e)}
+                    />
+                </div>
+               
                 {Direction()}
                 {dataProduct.length!==0 ?
                 <Row gutter={ [{ xs: 8, sm: 16, md: 24, lg: 24 },20]} style={{ width:'100%',paddingTop:20 }} >

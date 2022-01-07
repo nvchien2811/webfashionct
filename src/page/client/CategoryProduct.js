@@ -5,6 +5,7 @@ import {useLocation,Link,useParams} from 'react-router-dom';
 import {Row,Col,Empty,Breadcrumb} from 'antd';
 import Product from '../../elements/product';
 import Spinner from '../../elements/spinner';
+import FilterProduct from '../../elements/FilterProduct';
 export default function CategoryProduct(){
     const [dataProduct, setdataProduct] = useState([]);
     const [showContent, setshowContent] = useState(false);
@@ -12,6 +13,7 @@ export default function CategoryProduct(){
     const [empty, setempty] = useState(false);
     const {id} = useParams();
     const location = useLocation();
+    const [currentKeyFilter, setcurrentKeyFilter] = useState();
     useEffect(()=>{
         setshowContent(false);
         getCategory();
@@ -53,10 +55,18 @@ export default function CategoryProduct(){
         <div className="wrapper-category-product">
         
             {showContent ?
-             
+
                 <div>
-                    <div>
+                    <div style={{ display:'flex',justifyContent:'space-between',paddingBottom:20 }}>
                         {Direction()}
+                        <div style={{ paddingRight:20 }}>
+                            <FilterProduct 
+                                currentKey={currentKeyFilter}
+                                setCurrentKey={(e)=>setcurrentKeyFilter(e)}
+                                data = {dataProduct}
+                                replaceData = {e=>setdataProduct(e)}
+                            />
+                        </div>
                     </div>
                 {empty ?
                     <Empty className="empty" description="Không có sản phẩm"  />
