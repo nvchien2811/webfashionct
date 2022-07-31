@@ -46,8 +46,6 @@ export default function product(props){
                     </Badge.Ribbon>
                     }
                 </div>
-               
-            
                 }
             >
                 <Meta title={title2} description={hanldeShowPrice()} />

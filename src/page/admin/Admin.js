@@ -33,6 +33,7 @@ import {
     DatabaseOutlined,
     StarOutlined
 } from '@ant-design/icons';
+import TimerCount from '../../elements/Timer';
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
@@ -232,6 +233,7 @@ export default function Admin(){
                 <div className="logo" style={{ alignItems:'center',display:'flex',paddingTop:20,flexDirection:'column' }}>
                     <Image src={logo} width={80} preview={false}/>   
                     <span style={{ color:'gray',fontWeight:'bold' }}>Fashion CT</span> 
+                    <TimerCount />
                 </div>
                 <NavMenu/>
             </Sider>

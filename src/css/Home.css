@@ -85,6 +85,9 @@
     animation: rainbow 2s ease-in-out infinite;
     
 }
+.rsc-header-title{
+    color:white !important 
+}
 @media only screen and (max-width:1200px){
     .productRelate{
         display:none

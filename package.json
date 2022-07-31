@@ -25,6 +25,7 @@
     "json-loader": "^0.5.7",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
+    "moment": "^2.29.3",
     "multer": "^1.4.3",
     "mysql": "^2.18.1",
     "nodemailer": "^6.7.1",
@@ -57,7 +58,7 @@
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm start\""
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": [
       "react-app",
